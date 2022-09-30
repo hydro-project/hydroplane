@@ -6,11 +6,13 @@ from pathlib import Path
 import logging
 import os
 import sys
+from typing import Literal, Optional
 import uuid
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from pydantic import BaseModel, SecretStr
 
 from .secret_store import SecretStore
 
@@ -18,6 +20,16 @@ from .secret_store import SecretStore
 DEFAULT_SECRET_STORE_LOCATION = os.path.expanduser(Path('~/.hydro_secrets'))
 
 SENTINEL_TEST_PHRASE = "It's a secret to everybody"
+
+
+class Settings(BaseModel):
+    secret_store_type: Literal['local'] = 'local'
+
+    store_location: Path
+
+    # This field is marked optional so that we can add it in at runtime by prompting the user at
+    # startup without the settings parser complaining
+    password: Optional[SecretStr]
 
 
 class LocalSecretStore(SecretStore):
@@ -33,9 +45,9 @@ class LocalSecretStore(SecretStore):
     experiments, it should be fine.
     """
 
-    def __init__(self, store_location: Path, password: str):
-        self.store_location = store_location
-        self.password = password
+    def __init__(self, settings: Settings):
+        self.store_location = settings.store_location
+        self.password = settings.password
 
     def _get_fernet(self, validate_sentinel: bool = True) -> Fernet:
         with open(self._salt_path, 'rb') as fp:
@@ -48,7 +60,11 @@ class LocalSecretStore(SecretStore):
             iterations=390000,
         )
 
-        fernet = Fernet(base64.urlsafe_b64encode(kdf.derive(self.password.encode('utf-8'))))
+        fernet = Fernet(
+            base64.urlsafe_b64encode(
+                kdf.derive(self.password.get_secret_value().encode('utf-8'))
+            )
+        )
 
         # Check sentinel file to make sure the password matches the one
         # that was used to create the store
@@ -184,12 +200,12 @@ if __name__ == '__main__':
                 logging.fatal("Provided passwords don't match")
                 sys.exit(1)
 
-            store = LocalSecretStore(store_location, password_1)
+            store = LocalSecretStore(Settings(store_location=store_location, password=password_1))
 
             store.initialize_store()
         else:
             password = getpass.getpass('Enter the password for the secret store: ')
-            store = LocalSecretStore(store_location, password)
+            store = LocalSecretStore(Settings(store_location=store_location, password=password))
 
             if func == 'add':
                 secret_data = getpass.getpass('Enter the contents of the secret: ')

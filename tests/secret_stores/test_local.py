@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from hydroplane.secret_stores.local import LocalSecretStore
+from hydroplane.secret_stores.local import LocalSecretStore, Settings
 
 TEST_PASSWORD = 'secret123'
 
@@ -11,7 +11,7 @@ TEST_PASSWORD = 'secret123'
 def new_test_store(parent_dir: Path) -> LocalSecretStore:
     secret_store_dir = parent_dir / 'secret_store'
 
-    store = LocalSecretStore(store_location=secret_store_dir, password=TEST_PASSWORD)
+    store = LocalSecretStore(Settings(store_location=secret_store_dir, password=TEST_PASSWORD))
 
     store.initialize_store()
 
@@ -32,7 +32,9 @@ def test_missing_store_directory_raises():
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
 
-        store = LocalSecretStore(store_location=tmpdir / 'bad-path', password=TEST_PASSWORD)
+        store = LocalSecretStore(
+            Settings(store_location=tmpdir / 'bad-path', password=TEST_PASSWORD)
+        )
 
         with pytest.raises(ValueError):
             store.add_secret('my_secret', 'secret contents')

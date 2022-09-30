@@ -1,8 +1,15 @@
 from fastapi import FastAPI
 
 from .models.process_spec import ProcessSpec
+from .config import get_settings
 
 app = FastAPI()
+
+
+@app.on_event('startup')
+async def on_startup():
+    # Make sure settings are warmed up before we start
+    get_settings()
 
 
 @app.get('/')
