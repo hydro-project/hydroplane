@@ -21,9 +21,11 @@ DEFAULT_SECRET_STORE_LOCATION = os.path.expanduser(Path('~/.hydro_secrets'))
 
 SENTINEL_TEST_PHRASE = "It's a secret to everybody"
 
+SECRET_STORE_TYPE = 'local'
+
 
 class Settings(BaseModel):
-    secret_store_type: Literal['local'] = 'local'
+    secret_store_type: Literal[SECRET_STORE_TYPE] = SECRET_STORE_TYPE
 
     store_location: Path
 
