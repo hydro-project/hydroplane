@@ -15,5 +15,8 @@ RUN poetry export --format requirements.txt -o requirements.txt
 RUN pip install --user -r requirements.txt
 
 COPY hydroplane/ /home/hydroplane/hydroplane/
+COPY bin/ /home/hydroplane/bin/
 
-ENTRYPOINT ["/home/hydroplane/.local/bin/uvicorn", "hydroplane.main:app"]
+ENV PATH="${PATH}:/home/hydroplane/.local/bin"
+
+ENTRYPOINT ["/home/hydroplane/bin/hydroplane"]

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+uvicorn hydroplane.main:app
