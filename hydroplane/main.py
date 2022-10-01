@@ -2,6 +2,8 @@ from fastapi import FastAPI
 
 from .models.process_spec import ProcessSpec
 from .config import get_settings
+from .runtimes.factory import get_runtime
+from .secret_stores.factory import get_secret_store
 
 app = FastAPI()
 
@@ -21,9 +23,19 @@ async def root():
 
 @app.post('/launch')
 async def launch(process_spec: ProcessSpec):
-    return process_spec
+    settings = get_settings()
+    secret_store = get_secret_store()
+    runtime = get_runtime(secret_store, settings)
+
+    runtime.start_process(process_spec)
 
 
-@app.post('/terminate')
-async def terminate(process_name: str):
-    return process_name
+# FIXME doesn't quite work yet
+
+# @app.post('/terminate')
+# async def terminate(process_name: str):
+#     settings = get_settings()
+#     secret_store = get_secret_store()
+#     runtime = get_runtime(secret_store, settings)
+
+#     runtime.stop_process(process_name)

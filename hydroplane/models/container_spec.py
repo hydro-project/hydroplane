@@ -19,8 +19,9 @@ class EnvironmentVariable:
 @dataclass
 class ContainerSpec:
     image_uri: str
-    username: Optional[Union[str, SecretValue]]
-    password: Optional[SecretValue]
     ports: List[PortMapping]
     env: List[EnvironmentVariable]
     command: List[str]
+
+    username: Optional[Union[str, SecretValue]]
+    password: Optional[SecretValue]

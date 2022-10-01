@@ -1,9 +1,11 @@
 from functools import lru_cache
 from getpass import getpass
+import os
 
 from pydantic import BaseSettings
 
 from .secret_stores.local import Settings as LocalSecretStoreSettings
+from .runtimes.docker import Settings as DockerRuntimeSettings
 
 
 class Settings(BaseSettings):
@@ -12,8 +14,12 @@ class Settings(BaseSettings):
     #     Field(..., discriminator='secret_store_type')
     secret_store: LocalSecretStoreSettings
 
+    # TODO: same here when there's more than one runtime
+    runtime: DockerRuntimeSettings
+
     class Config:
         case_sensitive = False
+        env_file = os.getenv('ENV_FILE', '.env')
 
 
 @lru_cache()
