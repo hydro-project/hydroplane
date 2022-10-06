@@ -36,3 +36,11 @@ def test_container_spec_with_out_of_bounds_port_raises():
                 {'container_port': 8675309}
             ]
         })
+
+
+def test_container_spec_with_missing_host_port_raises():
+    with raises(ValidationError):
+        ContainerSpec.parse_obj({
+            'image_uri': 'missing_port',
+            'ports': [{}]
+        })
