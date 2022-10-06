@@ -2,6 +2,7 @@ import json
 from typing import Literal
 
 import docker
+from fastapi import HTTPException
 from pydantic import BaseModel
 
 from ..models.process_spec import ProcessSpec
@@ -60,4 +61,9 @@ class DockerRuntime(Runtime):
     def stop_process(self, process_name: str):
         client = docker.from_env()
 
-        client.containers.stop(name=process_name)
+        try:
+            container = client.containers.get(process_name)
+        except docker.errors.NotFound:
+            raise HTTPException(status_code=404, detail=f"Process '{process_name} not found'")
+
+        container.kill()

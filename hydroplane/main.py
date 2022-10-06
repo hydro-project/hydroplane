@@ -30,12 +30,10 @@ async def launch(process_spec: ProcessSpec):
     runtime.start_process(process_spec)
 
 
-# FIXME doesn't quite work yet
+@app.post('/terminate/process/{process_name}')
+async def terminate(process_name: str):
+    settings = get_settings()
+    secret_store = get_secret_store()
+    runtime = get_runtime(secret_store, settings)
 
-# @app.post('/terminate')
-# async def terminate(process_name: str):
-#     settings = get_settings()
-#     secret_store = get_secret_store()
-#     runtime = get_runtime(secret_store, settings)
-
-#     runtime.stop_process(process_name)
+    runtime.stop_process(process_name)
