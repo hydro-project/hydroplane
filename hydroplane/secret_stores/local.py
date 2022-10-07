@@ -3,6 +3,7 @@ import base64
 import getpass
 import hashlib
 from pathlib import Path
+import json
 import logging
 import os
 import sys
@@ -136,6 +137,7 @@ class LocalSecretStore(SecretStore):
 
     def get_secret(self, secret_value: SecretValue) -> str:
         secret_name = secret_value.secret_name
+        secret_key = secret_value.key
 
         secret_file = self._secret_path(secret_name)
 
@@ -147,7 +149,25 @@ class LocalSecretStore(SecretStore):
             encrypted_secret = fp.read()
 
             f = self._get_fernet()
-            return f.decrypt(encrypted_secret).decode('utf-8')
+            decrypted_secret = f.decrypt(encrypted_secret).decode('utf-8')
+
+            if secret_key is not None:
+                try:
+                    decrypted_secret_json = json.loads(decrypted_secret)
+                except json.JSONDecodeError:
+                    raise ValueError(
+                        f"Contents of secret '{secret_name}' are not valid JSON, "
+                        f"so key '{secret_key}' cannot be retrieved from it"
+                    )
+
+                if secret_key not in decrypted_secret_json:
+                    raise ValueError(
+                        f"Secret '{secret_name}' does not contain key '{secret_key}'"
+                    )
+
+                return decrypted_secret_json[secret_key]
+            else:
+                return decrypted_secret
 
     def remove_secret(self, secret_name: str):
         secret_file = self._secret_path(secret_name)

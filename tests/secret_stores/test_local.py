@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import tempfile
 
@@ -82,3 +83,15 @@ def test_remove_secret_happy_path():
 
         with pytest.raises(KeyError):
             store.get_secret(SecretValue(secret_name='my_secret'))
+
+
+def test_get_secret_with_key():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmpdir = Path(tmpdir)
+
+        store = new_test_store(tmpdir)
+
+        store.add_secret('nested_secret', json.dumps({'x': 'foo', 'y': 'bar'}))
+
+        assert store.get_secret(SecretValue(secret_name='nested_secret', key='x')) == 'foo'
+        assert store.get_secret(SecretValue(secret_name='nested_secret', key='y')) == 'bar'
