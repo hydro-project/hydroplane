@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from pydantic import BaseModel, SecretStr
 
 from .secret_store import SecretStore
-from ..models.secret import SecretValue
+from ..models.secret import SecretValue, SecretSource
 
 
 # The default location where the local secret store will store secrets
@@ -136,6 +136,10 @@ class LocalSecretStore(SecretStore):
             fp.write(fernet.encrypt(secret_data.encode('utf-8')))
 
     def get_secret(self, secret_value: SecretValue) -> str:
+        if secret_value.source != SecretSource.HYDROPLANE_SECRET_STORE:
+            raise ValueError(f"Local secret store can't retrieve secrets from "
+                             f"source '{secret_value.source}'")
+
         secret_name = secret_value.secret_name
         secret_key = secret_value.key
 
