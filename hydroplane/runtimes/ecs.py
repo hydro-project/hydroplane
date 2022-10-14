@@ -101,7 +101,7 @@ def process_spec_to_task_definition(process_spec: ProcessSpec, secret_store: Sec
                 'value': e.value
             }
             for e in container_spec.env
-            if isinstance(e, str)
+            if isinstance(e.value, str)
         ],
         # We can only pass secrets to the container that are stored in an AWS secret store
         'secrets': [
@@ -110,7 +110,7 @@ def process_spec_to_task_definition(process_spec: ProcessSpec, secret_store: Sec
                 'value': e.value.secret_name
             }
             for e in container_spec.env
-            if isinstance(e, SecretValue) and
+            if isinstance(e.value, SecretValue) and
             e.source in (SecretSource.AWS_SSM, SecretSource.AWS_SECRETS_MANAGER)
         ]
     }
@@ -130,35 +130,8 @@ class ECSRuntime(Runtime):
         self.settings = settings
         self.secret_store = secret_store
 
-
     def start_process(self, process_spec: ProcessSpec):
-        client = self.get_boto3_client('ecs')
-
-        task_definition = process_spec_to_task_definition(process_spec)
-
-        family = orchestrator_config.task_definition.family
-        revision = orchestrator_config.task_definition.revision
-
-
-
-        if isinstance(orchestrator_config.task_definition, TaskDefinition):
-            # Caller has supplied a new task definition rather than a pointer to an existing
-            # one. We'll need to create a task definition if one doesn't already exist.
-
-            client = boto3_client_from_creds(self.settings.credentials)
-
-            task_definition_paginator = client.get_paginator('list_task_definitions')
-
-            for task_definition_page in task_definition_paginator.paginate(familyPrefix=family):
-                for task_definition_arn in task_definition_page['taskDefinitionArns']:
-                    task_definition = client.describe_task_definition(
-                        taskDefinition=task_definition_arn
-                    )
-
-
-
-
-
+        raise NotImplementedError("ECS support hasn't been implemented yet")
 
     def stop_process(self, process_name: str):
-        client = boto3.client('ecs')
+        raise NotImplementedError("ECS support hasn't been implemented yet")

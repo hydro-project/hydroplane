@@ -9,6 +9,7 @@ from .secret import SecretValue
 class PortMapping(BaseModel):
     container_port: conint(ge=1, le=65535)
     host_port: Optional[conint(ge=1, le=65535)]
+    name: Optional[str] = Field(None)
 
     @validator('host_port', pre=True, always=True)
     def default_host_port(cls, v, *, values, **kwargs):

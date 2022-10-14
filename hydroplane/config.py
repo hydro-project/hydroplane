@@ -1,11 +1,13 @@
 from functools import lru_cache
 from getpass import getpass
 import os
+from typing import Union
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, Field
 
 from .secret_stores.local import Settings as LocalSecretStoreSettings
 from .runtimes.docker import Settings as DockerRuntimeSettings
+from .runtimes.eks import Settings as EKSRuntimeSettings
 
 
 class Settings(BaseSettings):
@@ -15,7 +17,8 @@ class Settings(BaseSettings):
     secret_store: LocalSecretStoreSettings
 
     # TODO: same here when there's more than one runtime
-    runtime: DockerRuntimeSettings
+    runtime: Union[DockerRuntimeSettings, EKSRuntimeSettings] = \
+        Field(..., discriminator='runtime_type')
 
     class Config:
         case_sensitive = False
