@@ -8,6 +8,7 @@ from ..secret_stores.secret_store import SecretStore
 
 def boto3_client_from_creds(
         service_name: str,
+        region: str,
         credentials: AWSCredentials,
         secret_store: SecretStore
 ):
@@ -40,6 +41,7 @@ def boto3_client_from_creds(
     # Now that we have credentials, create and return the client
     return boto3.client(
         service_name,
+        region_name=region,
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         aws_session_token=session_token

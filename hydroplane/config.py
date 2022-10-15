@@ -3,7 +3,7 @@ from getpass import getpass
 import os
 from typing import Union
 
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, SecretStr
 
 from .secret_stores.local import Settings as LocalSecretStoreSettings
 from .runtimes.docker import Settings as DockerRuntimeSettings
@@ -30,7 +30,9 @@ def get_settings() -> Settings:
     settings = Settings()
 
     if settings.secret_store.secret_store_type == 'local':
-        settings.secret_store.password = getpass('Enter local secret store password: ').strip()
+        settings.secret_store.password = SecretStr(
+            getpass('Enter local secret store password: ').strip()
+        )
         if len(settings.secret_store.password) == 0:
             raise ValueError('Must provide a password for local secret stores')
 

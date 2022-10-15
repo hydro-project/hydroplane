@@ -21,12 +21,15 @@ RUNTIME_TYPE = 'eks'
 
 TOKEN_EXPIRATION_MINS = 14
 
+K8S_AWS_ID_HEADER = 'x-k8s-aws-id'
+
 
 class Settings(BaseModel):
     runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
 
     credentials: AWSCredentials
     cluster_name: str
+    region: str
     namespace: Optional[str] = Field('default')
 
 
@@ -129,7 +132,9 @@ class EKSRuntime(Runtime):
         """
 
         # First, retrieve information about the EKS cluster from AWS via boto3
-        eks_client = boto3_client_from_creds('eks', self.settings.credentials, self.secret_store)
+        eks_client = boto3_client_from_creds(
+            'eks', self.settings.region, self.settings.credentials, self.secret_store
+        )
 
         cluster_data = eks_client.describe_cluster(name=cluster_name)['cluster']
 
@@ -164,10 +169,29 @@ class EKSRuntime(Runtime):
 
         return cert_file_path
 
+    def _retrieve_k8s_aws_id(self, params, context, **kwargs):
+        if K8S_AWS_ID_HEADER in params:
+            context[K8S_AWS_ID_HEADER] = params.pop(K8S_AWS_ID_HEADER)
+
+    def _inject_k8s_aws_id_header(self, request, **kwargs):
+        if K8S_AWS_ID_HEADER in request.context:
+            request.headers[K8S_AWS_ID_HEADER] = request.context[K8S_AWS_ID_HEADER]
+
     def _generate_bearer_token(self, cluster_name: str) -> dict:
         # We're borrowing the technique that the AWS CLI uses to retrieve a bearer token
         # (https://github.com/aws/aws-cli/blob/develop/awscli/customizations/eks/get_token.py#L128)
-        sts_client = boto3_client_from_creds('sts', self.settings.credentials, self.secret_store)
+        sts_client = boto3_client_from_creds(
+            'sts', self.settings.region, self.settings.credentials, self.secret_store
+        )
+        sts_client.meta.events.register(
+            'provide-client-params.sts.GetCallerIdentity',
+            self._retrieve_k8s_aws_id
+        )
+
+        sts_client.meta.events.register(
+            'before-sign.sts.GetCallerIdentity',
+            self._inject_k8s_aws_id_header
+        )
 
         token = TokenGenerator(sts_client).get_token(cluster_name)
 
