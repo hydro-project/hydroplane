@@ -5,6 +5,7 @@ import tempfile
 from typing import Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
+from fastapi import HTTPException
 import kubernetes
 from pydantic import BaseModel, Field
 
@@ -139,10 +140,22 @@ class EKSRuntime(Runtime):
 
         pod_manifest = process_spec_to_pod_manifest(process_spec)
 
-        k8s_client.create_namespaced_pod(
-            body=pod_manifest,
-            namespace=self.settings.namespace
-        )
+        try:
+            k8s_client.create_namespaced_pod(
+                body=pod_manifest,
+                namespace=self.settings.namespace
+            )
+        except kubernetes.client.exceptions.ApiException as e:
+            if e.status == 409 and e.reason == 'Conflict':
+                raise HTTPException(
+                    status_code=409,
+                    detail=f'A pod named "{process_spec.process_name}" already exists'
+                )
+            else:
+                raise HTTPException(
+                    status_code=e.status,
+                    detail=f"{e.reason}: {e.body}"
+                )
 
     def stop_process(self, process_name: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
