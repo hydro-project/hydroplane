@@ -14,6 +14,9 @@ class SecretSource(str, Enum):
     # Secret is stored in AWS Secrets Manager
     AWS_SECRETS_MANAGER = 'AWS_SECRETS_MANAGER'
 
+    # Kubernetes Secret
+    K8S_SECRET = 'K8S_SECRET'
+
 
 class SecretValue(BaseModel):
     # The name of the secret within the secret store
