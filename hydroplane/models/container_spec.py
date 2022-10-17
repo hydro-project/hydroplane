@@ -23,8 +23,8 @@ class EnvironmentVariable(BaseModel):
 
 
 class ResourceSpec(BaseModel):
-    cpu_vcpu: condecimal(ge=Decimal("0.001")) = Field(Decimal("1.0"))
-    memory_mib: Optional[conint(ge=0)] = Field(512)
+    cpu_vcpu: Optional[condecimal(ge=Decimal("0.001"))] = Field(None)
+    memory_mib: Optional[conint(ge=0)] = Field(None)
 
 
 class ContainerSpec(BaseModel):
@@ -48,11 +48,19 @@ class ContainerSpec(BaseModel):
             resource_request = values['resource_request']
 
             if resource_request is not None:
-                if resource_request.cpu_vcpu > v.cpu_vcpu:
+                if (
+                        resource_request.cpu_vcpu is not None and
+                        v.cpu_vcpu is not None and
+                        resource_request.cpu_vcpu > v.cpu_vcpu
+                ):
                     raise ValueError(f'Requested vCPUs ({resource_request.cpu_vcpu}) '
                                      f'exceeds limit ({v.cpu_vcpu})')
 
-                if resource_request.memory_mib > v.memory_mib:
+                if (
+                        resource_request.memory_mib is not None and
+                        v.memory_mib is not None and
+                        resource_request.memory_mib > v.memory_mib
+                ):
                     raise ValueError(f'Requested memory ({resource_request.memory_mib} MiB) '
                                      f'exceeds limit ({v.memory_mib} MiB)')
 

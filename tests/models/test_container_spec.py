@@ -53,7 +53,7 @@ def test_resource_spec_in_bounds():
         'image_uri': 'foo/baz',
         'resource_request': {
             'cpu_vcpu': '0.5',
-            'memory_mib': '256'
+            'memory_mib': 256
         }
     })
 
@@ -62,13 +62,41 @@ def test_resource_spec_in_bounds():
     assert spec.resource_request.memory_mib == 256
 
 
+def test_partial_resource_limit():
+    spec = ContainerSpec.parse_obj({
+        'image_uri': 'foo/baz',
+        'resource_request': {
+            'cpu_vcpu': '2.5'
+        },
+        'resource_limit': {
+            'cpu_vcpu': '3.5'
+        }
+    })
+
+    assert spec.resource_limit.cpu_vcpu == Decimal('3.5')
+    assert spec.resource_limit.memory_mib is None
+
+    spec = ContainerSpec.parse_obj({
+        'image_uri': 'foo/baz',
+        'resource_request': {
+            'cpu_vcpu': '2.0'
+        },
+        'resource_limit': {
+            'memory_mib': 256
+        }
+    })
+
+    assert spec.resource_limit.cpu_vcpu is None
+    assert spec.resource_limit.memory_mib == 256
+
+
 def test_resource_spec_out_of_bounds_raises():
     with raises(ValidationError):
         spec = ContainerSpec.parse_obj({
             'image_uri': 'foo/baz',
             'resource_request': {
                 'cpu_vcpu': '-1.0',
-                'memory_mib': '256'
+                'memory_mib': 256
             }
         })
 
@@ -77,7 +105,7 @@ def test_resource_spec_out_of_bounds_raises():
             'image_uri': 'foo/baz',
             'resource_request': {
                 'cpu_vcpu': '2.0',
-                'memory_mib': '-256'
+                'memory_mib': -256
             }
         })
 
@@ -88,11 +116,11 @@ def test_resource_request_greater_than_limit_raises():
             'image_uri': 'foo/baz',
             'resource_request': {
                 'cpu_vcpu': '1.0',
-                'memory_mib': '512'
+                'memory_mib': 512
             },
             'resource_limit': {
                 'cpu_vcpu': '1.0',
-                'memory_mib': '256'
+                'memory_mib': 256
             }
         })
 
@@ -101,10 +129,10 @@ def test_resource_request_greater_than_limit_raises():
             'image_uri': 'foo/baz',
             'resource_request': {
                 'cpu_vcpu': '2.0',
-                'memory_mib': '512'
+                'memory_mib': 512
             },
             'resource_limit': {
                 'cpu_vcpu': '1.0',
-                'memory_mib': '512'
+                'memory_mib': 512
             }
         })
