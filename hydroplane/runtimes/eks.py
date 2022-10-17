@@ -108,7 +108,7 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
                 'env': env,
                 'ports': ports
             }],
-            'restartPolicy': 'never'
+            'restartPolicy': 'Never'
         }
     }
 
@@ -151,7 +151,7 @@ class EKSRuntime(Runtime):
         # Now that we've got all those pieces, we can configure the client itself
         kube_config = kubernetes.config.kube_config.Configuration(
             host=endpoint,
-            api_key={'authorization': f'Bearer {bearer_token}'}
+            api_key={'authorization': f"Bearer {bearer_token['status']['token']}"}
         )
 
         kube_config.ssl_ca_cert = ca_cert_file
