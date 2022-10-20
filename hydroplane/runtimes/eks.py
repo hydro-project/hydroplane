@@ -14,7 +14,11 @@ from ..models.process_spec import ProcessSpec
 from .runtime import Runtime
 from ..secret_stores.secret_store import SecretStore
 from ..utils.aws import boto3_client_from_creds
-from ..utils.k8s import discover_k8s_api_version, process_spec_to_pod_manifest
+from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
+                         discover_k8s_api_version,
+                         k8s_api_exception_to_http_exception,
+                         process_spec_to_pod_manifest,
+                         process_spec_to_service_manifest)
 
 RUNTIME_TYPE = 'eks'
 
@@ -152,10 +156,24 @@ class EKSRuntime(Runtime):
                     detail=f'A pod named "{process_spec.process_name}" already exists'
                 )
             else:
-                raise HTTPException(
-                    status_code=e.status,
-                    detail=f"{e.reason}: {e.body}"
+                raise k8s_api_exception_to_http_exception(e)
+
+        if process_spec.has_public_ip:
+            service_manifest = process_spec_to_service_manifest(process_spec)
+
+            try:
+                k8s_client.create_namespaced_service(
+                    body=service_manifest,
+                    namespace=self.settings.namespace
                 )
+            except kubernetes.client.exceptions.ApiException as e:
+                if e.status == 409 and e.reason == 'Conflict':
+                    raise HTTPException(
+                        status_code=409,
+                        detail=f'A service named "{process_spec.process_name}" already exists'
+                    )
+                else:
+                    raise k8s_api_exception_to_http_exception(e)
 
     def stop_process(self, process_name: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
@@ -164,3 +182,17 @@ class EKSRuntime(Runtime):
             name=process_name,
             namespace=self.settings.namespace
         )
+
+        # Check if there's a service associated with this process
+        service_list = k8s_client.list_namespaced_service(
+            label_selector=f'{HYDROPLANE_PROCESS_LABEL}={process_name}',
+            namespace=self.settings.namespace
+        )
+
+        for service in service_list.items:
+            service_name = service.metadata.name
+
+            k8s_client.delete_namespaced_service(
+                name=service_name,
+                namespace=self.settings.namespace
+            )

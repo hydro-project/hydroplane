@@ -21,7 +21,11 @@ def test_process_spec_to_pod_manifest_basic():
         'apiVersion': 'v1',
         'kind': 'Pod',
         'metadata': {
-            'name': 'basic'
+            'name': 'basic',
+            'labels': {
+                'managed-by': 'hydroplane',
+                'hydroplane-process-id': 'basic'
+            }
         },
         'spec': {
             'containers': [

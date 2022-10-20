@@ -1,9 +1,15 @@
 import os
 import json
 
+from fastapi import HTTPException
+from kubernetes.client.exceptions import ApiException
+
 from ..models.container_spec import ResourceSpec
 from ..models.process_spec import ProcessSpec
 from ..models.secret import SecretValue, SecretSource
+
+
+HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
 
 
 def discover_k8s_api_version():
@@ -106,7 +112,10 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
         'apiVersion': 'v1',
         'kind': 'Pod',
         'metadata': {
-            'name': process_spec.process_name
+            'name': process_spec.process_name,
+            'labels': {
+                HYDROPLANE_PROCESS_LABEL: process_spec.process_name,
+            }
         },
         'spec': {
             'containers': [main_container_manifest],
@@ -115,6 +124,37 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
     }
 
     return pod_manifest
+
+
+def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
+    # We're going to expose the pod as a NodePort service, so that it's visible externally
+    # without a load balancer sitting in the middle. This is a bit unorthodox (a lot of k8s
+    # assumes that you've got fungible pods fronted by a load balancer), but for our purposes
+    # it'll work just fine.
+
+    container_spec = process_spec.container
+
+    service_manifest = {
+        'apiVersion': 'v1',
+        'kind': 'Service',
+        'metadata': {
+            'name': process_spec.process_name,
+            'labels': {
+                HYDROPLANE_PROCESS_LABEL: process_spec.process_name
+            }
+        },
+        'spec': {
+            'type': 'NodePort',
+            'selector': {
+                HYDROPLANE_PROCESS_LABEL: process_spec.process_name
+            },
+            'ports': [
+                {'port': p.container_port} for p in container_spec.ports
+            ]
+        }
+    }
+
+    return service_manifest
 
 
 def resource_spec_to_manifest(spec: ResourceSpec) -> dict:
@@ -127,3 +167,10 @@ def resource_spec_to_manifest(spec: ResourceSpec) -> dict:
         manifest['memory'] = f"{spec.memory_mib}Mi"
 
     return manifest
+
+
+def k8s_api_exception_to_http_exception(e: ApiException) -> HTTPException:
+    return HTTPException(
+        status_code=e.status,
+        detail=f"{e.reason}: {e.body}"
+    )

@@ -48,10 +48,15 @@ class DockerRuntime(Runtime):
             else:
                 container_env[env_var.name] = env_var.value
 
+        if process_spec.has_public_ip:
+            host_ip = '0.0.0.0'
+        else:
+            host_ip = '127.0.0.1'
+
         client.containers.run(
             image=container_spec.image_uri,
             name=process_spec.process_name,
-            ports={str(p.container_port): p.host_port for p in container_spec.ports},
+            ports={str(p.container_port): (host_ip, p.host_port) for p in container_spec.ports},
             environment=container_env,
             command=container_spec.command,
             auto_remove=True,

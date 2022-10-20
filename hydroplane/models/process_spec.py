@@ -9,3 +9,5 @@ class ProcessSpec(BaseModel):
     process_name: str
     container: ContainerSpec
     orchestrator_config: Optional[Dict[str, Any]] = Field(default_factory=lambda: {})
+
+    has_public_ip: bool = Field(False)
