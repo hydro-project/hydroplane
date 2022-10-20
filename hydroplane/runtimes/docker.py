@@ -1,10 +1,11 @@
 import json
-from typing import Literal
+from typing import Literal, List
 
 import docker
 from fastapi import HTTPException
 from pydantic import BaseModel
 
+from ..models.process_info import ProcessInfo, SocketAddress
 from ..models.process_spec import ProcessSpec
 from ..models.secret import SecretValue
 from ..secret_stores.secret_store import SecretStore
@@ -12,6 +13,7 @@ from .runtime import Runtime
 
 
 RUNTIME_TYPE = 'docker'
+HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
 
 
 class Settings(BaseModel):
@@ -59,6 +61,7 @@ class DockerRuntime(Runtime):
             ports={str(p.container_port): (host_ip, p.host_port) for p in container_spec.ports},
             environment=container_env,
             command=container_spec.command,
+            labels={HYDROPLANE_PROCESS_LABEL: process_spec.process_name},
             auto_remove=True,
             detach=True,
         )
@@ -72,3 +75,35 @@ class DockerRuntime(Runtime):
             raise HTTPException(status_code=404, detail=f"Process '{process_name} not found'")
 
         container.kill()
+
+    def list_processes(self) -> List[ProcessInfo]:
+        client = docker.from_env()
+
+        containers = client.containers.list(filters={
+            'status': 'running',
+            'label': HYDROPLANE_PROCESS_LABEL
+        })
+
+        process_infos = []
+
+        for container in containers:
+            socket_addresses = []
+
+            for _, host_ifaces in container.attrs['NetworkSettings']['Ports'].items():
+                for host_iface in host_ifaces:
+                    socket_addresses.append(
+                        SocketAddress(
+                            host=host_iface['HostIp'],
+                            port=int(host_iface['HostPort']),
+                            is_public=(host_iface['HostIp'] == '0.0.0.0')
+                        )
+                    )
+
+            process_infos.append(
+                ProcessInfo(
+                    process_name=container.name,
+                    socket_addresses=socket_addresses
+                )
+            )
+
+        return process_infos

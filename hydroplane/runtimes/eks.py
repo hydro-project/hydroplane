@@ -1,8 +1,9 @@
 import base64
+from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 import tempfile
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
 from fastapi import HTTPException
@@ -10,6 +11,7 @@ import kubernetes
 from pydantic import BaseModel, Field
 
 from ..models.aws import AWSCredentials
+from ..models.process_info import ProcessInfo, SocketAddress
 from ..models.process_spec import ProcessSpec
 from .runtime import Runtime
 from ..secret_stores.secret_store import SecretStore
@@ -158,22 +160,21 @@ class EKSRuntime(Runtime):
             else:
                 raise k8s_api_exception_to_http_exception(e)
 
-        if process_spec.has_public_ip:
-            service_manifest = process_spec_to_service_manifest(process_spec)
+        service_manifest = process_spec_to_service_manifest(process_spec)
 
-            try:
-                k8s_client.create_namespaced_service(
-                    body=service_manifest,
-                    namespace=self.settings.namespace
+        try:
+            k8s_client.create_namespaced_service(
+                body=service_manifest,
+                namespace=self.settings.namespace
+            )
+        except kubernetes.client.exceptions.ApiException as e:
+            if e.status == 409 and e.reason == 'Conflict':
+                raise HTTPException(
+                    status_code=409,
+                    detail=f'A service named "{process_spec.process_name}" already exists'
                 )
-            except kubernetes.client.exceptions.ApiException as e:
-                if e.status == 409 and e.reason == 'Conflict':
-                    raise HTTPException(
-                        status_code=409,
-                        detail=f'A service named "{process_spec.process_name}" already exists'
-                    )
-                else:
-                    raise k8s_api_exception_to_http_exception(e)
+            else:
+                raise k8s_api_exception_to_http_exception(e)
 
     def stop_process(self, process_name: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
@@ -183,7 +184,6 @@ class EKSRuntime(Runtime):
             namespace=self.settings.namespace
         )
 
-        # Check if there's a service associated with this process
         service_list = k8s_client.list_namespaced_service(
             label_selector=f'{HYDROPLANE_PROCESS_LABEL}={process_name}',
             namespace=self.settings.namespace
@@ -196,3 +196,57 @@ class EKSRuntime(Runtime):
                 name=service_name,
                 namespace=self.settings.namespace
             )
+
+    def list_processes(self) -> List[ProcessInfo]:
+        k8s_client = self._get_k8s_client(self.settings.cluster_name)
+
+        nodes = k8s_client.list_node()
+
+        node_ip_addresses = []
+
+        for node in nodes.items:
+            for address in node.status.addresses:
+                if address.type == 'ExternalIP':
+                    node_ip_addresses.append(address.address)
+
+        services = k8s_client.list_namespaced_service(
+            label_selector=HYDROPLANE_PROCESS_LABEL,
+            namespace=self.settings.namespace
+        )
+
+        process_infos = []
+
+        for service in services.items:
+            process_name = service.metadata.labels[HYDROPLANE_PROCESS_LABEL]
+            service_type = service.spec.type
+            service_cluster_ip = service.spec.cluster_ip
+
+            socket_addresses = []
+
+            for port_spec in service.spec.ports:
+                # For public services, node_port will be specified and will be the same on each
+                # port. For private services, it will be None and port will be specified instead.
+                port = port_spec.node_port or port_spec.port
+
+                if service_type == 'NodePort':
+                    socket_ips = node_ip_addresses
+                    is_public = True
+                else:
+                    socket_ips = [service_cluster_ip]
+                    is_public = False
+
+                socket_addresses.extend(
+                    SocketAddress(
+                        host=socket_ip,
+                        port=port,
+                        is_public=is_public
+                    )
+                    for socket_ip in socket_ips
+                )
+
+            process_infos.append(ProcessInfo(
+                process_name=process_name,
+                socket_addresses=socket_addresses
+            ))
+
+        return process_infos

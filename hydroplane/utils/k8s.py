@@ -144,7 +144,7 @@ def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
             }
         },
         'spec': {
-            'type': 'NodePort',
+            'type': 'NodePort' if process_spec.has_public_ip else 'ClusterIP',
             'selector': {
                 HYDROPLANE_PROCESS_LABEL: process_spec.process_name
             },

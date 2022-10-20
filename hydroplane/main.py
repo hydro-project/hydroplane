@@ -37,3 +37,12 @@ async def terminate(process_name: str):
     runtime = get_runtime(secret_store, settings)
 
     runtime.stop_process(process_name)
+
+
+@app.get('/list')
+async def list():
+    settings = get_settings()
+    secret_store = get_secret_store()
+    runtime = get_runtime(secret_store, settings)
+
+    return runtime.list_processes()
