@@ -1,5 +1,4 @@
 import base64
-from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 import tempfile
@@ -43,10 +42,26 @@ class EKSRuntime(Runtime):
         self.settings = settings
         self.secret_store = secret_store
 
+        self._k8s_client = None
+        self._k8s_client_expiration_time: datetime = None
+
         # We need to store certs on the filesystem for the k8s client to be able to read them.
         self.cert_storage_dir = Path(tempfile.mkdtemp())
 
+    def _k8s_client_expired(self) -> bool:
+        # We'll give ourselves a one minute grace period before the token expires so we don't run
+        # into problems if we process a request _right_ before it expires.
+        return self._k8s_client_expiration_time <= datetime.now() - timedelta(minutes=1)
+
     def _get_k8s_client(self, cluster_name: str):
+        if self._k8s_client is None or self._k8s_client_expired():
+            self._k8s_client = self._create_new_k8s_client(cluster_name)
+            self._k8s_client_expiration_time = (datetime.now() +
+                                                timedelta(minutes=TOKEN_EXPIRATION_MINS))
+
+        return self._k8s_client
+
+    def _create_new_k8s_client(self, cluster_name: str):
         """Configure and return an Kubernetes client that can be used to modify the EKS cluster.
 
         Programmatically configuring a k8s client without access to a local kube_config is a bit
