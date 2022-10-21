@@ -11,4 +11,3 @@ def test_process_spec_demarshaling_basic():
 
     assert spec.process_name == 'test'
     assert spec.container.image_uri == 'foo/baz'
-    assert spec.orchestrator_config == {}
