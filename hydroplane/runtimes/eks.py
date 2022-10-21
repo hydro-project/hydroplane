@@ -3,7 +3,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 import tempfile
-from typing import List, Literal, Optional
+from typing import Dict, List, Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
 from fastapi import HTTPException
@@ -200,19 +200,43 @@ class EKSRuntime(Runtime):
     def list_processes(self) -> List[ProcessInfo]:
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
+        # Pods will tell us the internal IP addresses of the nodes they're running on, but
+        # not what the external IP addresses of those nodes are (or if they have them at all). We
+        # need this information to tell the caller which node to talk to, so we'll list the
+        # cluster's nodes and establish a map from internal to external IPs from that.
         nodes = k8s_client.list_node()
 
-        node_ip_addresses = []
+        node_private_to_public_ip: Dict[str, Optional[str]] = {}
 
         for node in nodes.items:
+            external_ip = None
+            internal_ip = None
+            hostname = None
+
             for address in node.status.addresses:
                 if address.type == 'ExternalIP':
-                    node_ip_addresses.append(address.address)
+                    external_ip = address.address
+                elif address.type == 'InternalIP':
+                    internal_ip = address.address
+                elif address.type == 'Hostname':
+                    hostname = address.address
+
+            if internal_ip is None:
+                raise RuntimeError(f'Unable to determine internal IP for node {hostname}')
+
+            node_private_to_public_ip[internal_ip] = external_ip
 
         services = k8s_client.list_namespaced_service(
             label_selector=HYDROPLANE_PROCESS_LABEL,
             namespace=self.settings.namespace
         )
+
+        pods = k8s_client.list_namespaced_pod(
+            label_selector=HYDROPLANE_PROCESS_LABEL,
+            namespace=self.settings.namespace
+        )
+
+        pods_by_name = {pod.metadata.labels[HYDROPLANE_PROCESS_LABEL]: pod for pod in pods.items}
 
         process_infos = []
 
@@ -229,19 +253,27 @@ class EKSRuntime(Runtime):
                 port = port_spec.node_port or port_spec.port
 
                 if service_type == 'NodePort':
-                    socket_ips = node_ip_addresses
+                    pod_private_ip = pods_by_name[process_name].status.host_ip
+                    socket_ip = node_private_to_public_ip[pod_private_ip]
+
+                    if socket_ip is None:
+                        raise RuntimeError(
+                            f"We expected the public process {process_name} to be running on a "
+                            "node with an external IP address, but the node it's running on "
+                            f"({pod_private_ip}) doesn't have one."
+                        )
+
                     is_public = True
                 else:
-                    socket_ips = [service_cluster_ip]
+                    socket_ip = service_cluster_ip
                     is_public = False
 
-                socket_addresses.extend(
+                socket_addresses.append(
                     SocketAddress(
                         host=socket_ip,
                         port=port,
                         is_public=is_public
                     )
-                    for socket_ip in socket_ips
                 )
 
             process_infos.append(ProcessInfo(
