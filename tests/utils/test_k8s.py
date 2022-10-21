@@ -23,8 +23,7 @@ def test_process_spec_to_pod_manifest_basic():
         'metadata': {
             'name': 'basic',
             'labels': {
-                'managed-by': 'hydroplane',
-                'hydroplane-process-id': 'basic'
+                'hydroplane/process-id': 'basic'
             }
         },
         'spec': {
