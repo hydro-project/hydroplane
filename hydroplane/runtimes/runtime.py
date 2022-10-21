@@ -17,3 +17,7 @@ class Runtime(ABC):
     @abstractmethod
     def list_processes(self) -> List[ProcessInfo]:
         pass
+
+    @abstractmethod
+    def refresh_api_clients(self):
+        pass

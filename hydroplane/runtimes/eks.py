@@ -1,5 +1,6 @@
 import base64
 from datetime import datetime, timedelta
+import logging
 from pathlib import Path
 import tempfile
 from typing import Dict, List, Literal, Optional
@@ -21,11 +22,13 @@ from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
                          process_spec_to_pod_manifest,
                          process_spec_to_service_manifest)
 
-RUNTIME_TYPE = 'eks'
+RUNTIME_TYPE = 'eks_runtime'
 
 TOKEN_EXPIRATION_MINS = 14
 
 K8S_AWS_ID_HEADER = 'x-k8s-aws-id'
+
+logger = logging.getLogger('eks')
 
 
 class Settings(BaseModel):
@@ -58,6 +61,7 @@ class EKSRuntime(Runtime):
             self._k8s_client = self._create_new_k8s_client(cluster_name)
             self._k8s_client_expiration_time = (datetime.now() +
                                                 timedelta(minutes=TOKEN_EXPIRATION_MINS))
+            logger.debug(f'k8s client expires {self._k8s_client_expiration_time}')
 
         return self._k8s_client
 
@@ -68,6 +72,8 @@ class EKSRuntime(Runtime):
         challenging. Luckily, someone else figured out how to do it already; their experience is
         documented here: https://www.analogous.dev/blog/using-the-kubernetes-python-client-with-aws/
         """
+
+        logger.debug('Creating a new k8s client')
 
         # First, retrieve information about the EKS cluster from AWS via boto3
         eks_client = boto3_client_from_creds(
@@ -297,3 +303,6 @@ class EKSRuntime(Runtime):
             ))
 
         return process_infos
+
+    def refresh_api_clients(self):
+        self._get_k8s_client(self.settings.cluster_name)

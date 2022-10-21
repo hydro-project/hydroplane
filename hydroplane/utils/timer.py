@@ -30,4 +30,4 @@ class Timer:
     def __exit__(self, exception_type, exception_value, exception_traceback):
         self.stop_time = time.monotonic_ns()
 
-        logger.debug(f'{self.name}: {(self.stop_time - self.start_time) / 1000.0} us')
+        logger.info(f'{self.name}: {(self.stop_time - self.start_time) / 1000.0} us')
