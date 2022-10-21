@@ -22,13 +22,13 @@ from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
                          process_spec_to_pod_manifest,
                          process_spec_to_service_manifest)
 
-RUNTIME_TYPE = 'eks_runtime'
+RUNTIME_TYPE = 'eks'
 
 TOKEN_EXPIRATION_MINS = 14
 
 K8S_AWS_ID_HEADER = 'x-k8s-aws-id'
 
-logger = logging.getLogger('eks')
+logger = logging.getLogger('eks_runtime')
 
 
 class Settings(BaseModel):
