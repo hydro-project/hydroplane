@@ -54,7 +54,8 @@ class EKSRuntime(Runtime):
     def _k8s_client_expired(self) -> bool:
         # We'll give ourselves a one minute grace period before the token expires so we don't run
         # into problems if we process a request _right_ before it expires.
-        return self._k8s_client_expiration_time <= datetime.now() - timedelta(minutes=1)
+
+        return self._k8s_client_expiration_time <= datetime.now() + timedelta(minutes=1)
 
     def _get_k8s_client(self, cluster_name: str):
         if self._k8s_client is None or self._k8s_client_expired():
