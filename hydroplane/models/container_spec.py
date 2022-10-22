@@ -7,9 +7,21 @@ from .secret import SecretValue
 
 
 class PortMapping(BaseModel):
-    container_port: conint(ge=1, le=65535)
-    host_port: Optional[conint(ge=1, le=65535)]
-    name: Optional[str] = Field(None)
+    """
+    A port inside the container that will be exposed to the outside world.
+    """
+    container_port: conint(ge=1, le=65535) = Field(
+        description='the port that the container will be listening on'
+    )
+
+    host_port: Optional[conint(ge=1, le=65535)] = Field(
+        description='the port that the host will expose. Some runtimes may not honor this setting.'
+    )
+
+    name: Optional[str] = Field(
+        None,
+        description='the name of the port binding; passed to some runtimes'
+    )
 
     @validator('host_port', pre=True, always=True)
     def default_host_port(cls, v, *, values, **kwargs):
@@ -18,26 +30,68 @@ class PortMapping(BaseModel):
 
 
 class EnvironmentVariable(BaseModel):
-    name: str
-    value: Union[SecretValue, str]
+    """
+    An environment variable that will be provided to the process's runtime environment.
+    """
+    name: str = Field(description='the name of the environment variable')
+    value: Union[SecretValue, str] = Field(
+        description="the environment variable's value; "
+        "can be a literal, or a reference to a secret"
+    )
 
 
 class ResourceSpec(BaseModel):
-    cpu_vcpu: Optional[condecimal(ge=Decimal("0.001"))] = Field(None)
-    memory_mib: Optional[conint(ge=0)] = Field(None)
+    """
+    Encapsulates either a request or limit on the physical resources allocated to a process by
+    the runtime.
+    """
+    cpu_vcpu: Optional[condecimal(ge=Decimal("0.001"))] = Field(
+        None,
+        description='the number of abstract vCPUs'
+    )
+    memory_mib: Optional[conint(ge=0)] = Field(
+        None,
+        description='the number of MiB of memory'
+    )
 
 
 class ContainerSpec(BaseModel):
-    image_uri: str
-    username: Optional[Union[str, SecretValue]] = Field(None)
-    password: Optional[SecretValue] = Field(None)
+    image_uri: str = Field(
+        description='the URI of a Docker image that the process will run. Can be a '
+        'fully-qualified URI, or as a shorthand (e.g. "python" or "nginxdemos/hello" )'
+    )
+    username: Optional[Union[str, SecretValue]] = Field(
+        None,
+        description='the username used to authenticate with the container registry'
+    )
+    password: Optional[SecretValue] = Field(
+        None,
+        description='the password used to authenticate with the container registry'
+    )
 
-    ports: List[PortMapping] = Field(default_factory=lambda: [])
-    env: List[EnvironmentVariable] = Field(default_factory=lambda: [])
-    command: Optional[List[str]] = Field(None)
+    ports: List[PortMapping] = Field(
+        default_factory=lambda: [],
+        description='a list of ports that the container should expose'
+    )
+    env: List[EnvironmentVariable] = Field(
+        default_factory=lambda: [],
+        description="a list of environment variables that should be given to "
+        "the container's runtime"
+    )
+    command: Optional[List[str]] = Field(
+        None,
+        description='the command that the container should run'
+    )
 
-    resource_request: Optional[ResourceSpec] = Field(None)
-    resource_limit: Optional[ResourceSpec] = Field(None)
+    resource_request: Optional[ResourceSpec] = Field(
+        None,
+        description='a request for physical resources that should be allocated to the container'
+    )
+    resource_limit: Optional[ResourceSpec] = Field(
+        None,
+        description='a limit on the amount of physical resources that the container is '
+        'allowed to consume'
+    )
 
     @validator('resource_limit')
     def requests_cannot_exceed_limits(cls, v, *, values, **kwargs):
