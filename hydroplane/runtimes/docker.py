@@ -108,6 +108,6 @@ class DockerRuntime(Runtime):
 
         return process_infos
 
-    def refresh_api_clients():
+    def refresh_api_clients(self):
         # Local Docker is fast enough that we don't really need to keep clients refreshed
         pass
