@@ -84,6 +84,16 @@ class DockerRuntime(Runtime):
 
         container.kill()
 
+    def stop_group(self, group: str):
+        client = docker.from_env()
+
+        containers = client.containers.list(filters={
+            'label': f'{HYDROPLANE_GROUP_LABEL}={group}'
+        })
+
+        for container in containers:
+            container.kill()
+
     def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         client = docker.from_env()
 

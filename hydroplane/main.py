@@ -44,10 +44,15 @@ async def launch(
 
 
 @app.post('/terminate/process/{process_name}')
-async def terminate(
+async def terminate_process(
         process_name: str
 ):
     app.state.runtime.stop_process(process_name)
+
+
+@app.post('/terminate/group/{group}')
+async def terminate_group(group: str):
+    app.state.runtime.stop_group(group)
 
 
 @app.get('/list')

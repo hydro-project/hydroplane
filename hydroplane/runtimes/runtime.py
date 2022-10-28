@@ -15,6 +15,10 @@ class Runtime(ABC):
         pass
 
     @abstractmethod
+    def stop_group(self, group: str):
+        pass
+
+    @abstractmethod
     def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         pass
 

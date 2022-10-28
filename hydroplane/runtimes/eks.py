@@ -213,10 +213,33 @@ class EKSRuntime(Runtime):
         )
 
         for service in service_list.items:
-            service_name = service.metadata.name
-
             k8s_client.delete_namespaced_service(
-                name=service_name,
+                name=service.metadata.name,
+                namespace=self.settings.namespace
+            )
+
+    def stop_group(self, group: str):
+        k8s_client = self._get_k8s_client(self.settings.cluster_name)
+
+        pods = k8s_client.list_namespaced_pod(
+            label_selector=f'{HYDROPLANE_GROUP_LABEL}={group}',
+            namespace=self.settings.namespace
+        )
+
+        services = k8s_client.list_namespaced_service(
+            label_selector=f'{HYDROPLANE_GROUP_LABEL}={group}',
+            namespace=self.settings.namespace
+        )
+
+        for pod in pods.items:
+            k8s_client.delete_namespaced_pod(
+                name=pod.metadata.name,
+                namespace=self.settings.namespace
+            )
+
+        for service in services.items:
+            k8s_client.delete_namespaced_service(
+                name=service.metadata.name,
                 namespace=self.settings.namespace
             )
 
