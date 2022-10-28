@@ -36,27 +36,27 @@ async def on_startup():
     app.state.runtime = runtime
 
 
-@app.post('/launch')
+@app.post('/process', status_code=201)
 async def launch(
         process_spec: ProcessSpec
 ):
     app.state.runtime.start_process(process_spec)
 
 
-@app.post('/terminate/process/{process_name}')
+@app.delete('/process/{process_name}')
 async def terminate_process(
         process_name: str
 ):
     app.state.runtime.stop_process(process_name)
 
 
-@app.post('/terminate/group/{group}')
+@app.delete('/group/{group}')
 async def terminate_group(group: str):
     app.state.runtime.stop_group(group)
 
 
-@app.get('/list')
-async def list(group: str = None):
+@app.get('/process')
+async def list_processes(group: str = None):
     return app.state.runtime.list_processes(group)
 
 
