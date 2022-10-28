@@ -51,7 +51,7 @@ class LocalSecretStore(SecretStore):
     """
 
     def __init__(self, settings: Settings):
-        self.store_location = settings.store_location
+        self.store_location = settings.store_location.expanduser()
         self.password = settings.password
 
     def _get_fernet(self, validate_sentinel: bool = True) -> Fernet:
