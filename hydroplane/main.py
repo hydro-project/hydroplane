@@ -1,12 +1,15 @@
+from getpass import getpass
 import logging
 import os
 
 from fastapi import FastAPI
 from fastapi_utils.tasks import repeat_every
+from pydantic import SecretStr
 import uvicorn
+import yaml
 
 from .models.process_spec import ProcessSpec
-from .config import get_settings
+from .config import Settings
 from .runtimes.factory import get_runtime
 from .secret_stores.factory import get_secret_store
 
@@ -25,11 +28,18 @@ async def refresh_api_clients():
 
 @app.on_event('startup')
 async def on_startup():
-    # Make sure settings are warmed up before we start, so we can prompt for any secret settings
-    # before we fully come online in dev mode.
-    settings = get_settings()
+    # Load settings from the YAML file pointed to by the CONF environment variable
+    with open(os.getenv('CONF'), 'r') as fp:
+        settings = Settings.parse_obj(yaml.load(fp.read(), Loader=yaml.FullLoader))
 
-    secret_store = get_secret_store()
+    if settings.secret_store.secret_store_type == 'local':
+        settings.secret_store.password = SecretStr(
+            getpass('Enter local secret store password: ').strip()
+        )
+        if len(settings.secret_store.password) == 0:
+            raise ValueError('Must provide a password for local secret stores')
+
+    secret_store = get_secret_store(settings)
     runtime = get_runtime(secret_store, settings)
     runtime.refresh_api_clients()
 
