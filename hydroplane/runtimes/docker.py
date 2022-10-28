@@ -1,5 +1,5 @@
 import json
-from typing import Literal, List
+from typing import Literal, List, Optional
 
 import docker
 from fastapi import HTTPException
@@ -14,6 +14,7 @@ from .runtime import Runtime
 
 RUNTIME_TYPE = 'docker'
 HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
+HYDROPLANE_GROUP_LABEL = 'hydroplane/group-id'
 
 
 class Settings(BaseModel):
@@ -55,13 +56,20 @@ class DockerRuntime(Runtime):
         else:
             host_ip = '127.0.0.1'
 
+        labels = {
+            HYDROPLANE_PROCESS_LABEL: process_spec.process_name
+        }
+
+        if process_spec.group is not None:
+            labels[HYDROPLANE_GROUP_LABEL] = process_spec.group
+
         client.containers.run(
             image=container_spec.image_uri,
             name=process_spec.process_name,
             ports={str(p.container_port): (host_ip, p.host_port) for p in container_spec.ports},
             environment=container_env,
             command=container_spec.command,
-            labels={HYDROPLANE_PROCESS_LABEL: process_spec.process_name},
+            labels=labels,
             auto_remove=True,
             detach=True,
         )
@@ -76,12 +84,13 @@ class DockerRuntime(Runtime):
 
         container.kill()
 
-    def list_processes(self) -> List[ProcessInfo]:
+    def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         client = docker.from_env()
 
         containers = client.containers.list(filters={
             'status': 'running',
-            'label': HYDROPLANE_PROCESS_LABEL
+            'label': (f"{HYDROPLANE_GROUP_LABEL}={group}" if group is not None
+                      else HYDROPLANE_PROCESS_LABEL)
         })
 
         process_infos = []
@@ -102,6 +111,7 @@ class DockerRuntime(Runtime):
             process_infos.append(
                 ProcessInfo(
                     process_name=container.name,
+                    group=container.labels.get(HYDROPLANE_GROUP_LABEL),
                     socket_addresses=socket_addresses
                 )
             )

@@ -51,8 +51,8 @@ async def terminate(
 
 
 @app.get('/list')
-async def list():
-    return app.state.runtime.list_processes()
+async def list(group: str = None):
+    return app.state.runtime.list_processes(group)
 
 
 if __name__ == '__main__':

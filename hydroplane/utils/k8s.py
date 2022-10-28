@@ -10,6 +10,7 @@ from ..models.secret import SecretValue, SecretSource
 
 
 HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
+HYDROPLANE_GROUP_LABEL = 'hydroplane/group-id'
 
 
 def discover_k8s_api_version():
@@ -108,14 +109,19 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
             container_spec.resource_limit
         )
 
+    labels = {
+        HYDROPLANE_PROCESS_LABEL: process_spec.process_name,
+    }
+
+    if process_spec.group is not None:
+        labels[HYDROPLANE_GROUP_LABEL] = process_spec.group
+
     pod_manifest = {
         'apiVersion': 'v1',
         'kind': 'Pod',
         'metadata': {
             'name': process_spec.process_name,
-            'labels': {
-                HYDROPLANE_PROCESS_LABEL: process_spec.process_name,
-            }
+            'labels': labels
         },
         'spec': {
             'containers': [main_container_manifest],
@@ -134,14 +140,19 @@ def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
 
     container_spec = process_spec.container
 
+    labels = {
+        HYDROPLANE_PROCESS_LABEL: process_spec.process_name
+    }
+
+    if process_spec.group is not None:
+        labels[HYDROPLANE_GROUP_LABEL] = process_spec.group
+
     service_manifest = {
         'apiVersion': 'v1',
         'kind': 'Service',
         'metadata': {
             'name': process_spec.process_name,
-            'labels': {
-                HYDROPLANE_PROCESS_LABEL: process_spec.process_name
-            }
+            'labels': labels
         },
         'spec': {
             'type': 'NodePort' if process_spec.has_public_ip else 'ClusterIP',

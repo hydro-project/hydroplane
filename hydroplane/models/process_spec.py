@@ -11,6 +11,8 @@ class ProcessSpec(BaseModel):
     """
 
     process_name: str = Field(description='the name of the process to launch')
+    group: Optional[str] = Field(None, description='the name of the group to which the '
+                                 'process belongs, if any')
 
     container: ContainerSpec
 

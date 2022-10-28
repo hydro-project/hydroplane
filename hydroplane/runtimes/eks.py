@@ -17,6 +17,7 @@ from .runtime import Runtime
 from ..secret_stores.secret_store import SecretStore
 from ..utils.aws import boto3_client_from_creds
 from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
+                         HYDROPLANE_GROUP_LABEL,
                          discover_k8s_api_version,
                          k8s_api_exception_to_http_exception,
                          process_spec_to_pod_manifest,
@@ -219,7 +220,7 @@ class EKSRuntime(Runtime):
                 namespace=self.settings.namespace
             )
 
-    def list_processes(self) -> List[ProcessInfo]:
+    def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
         # Pods will tell us the internal IP addresses of the nodes they're running on, but
@@ -248,13 +249,18 @@ class EKSRuntime(Runtime):
 
             node_private_to_public_ip[internal_ip] = external_ip
 
+        if group is not None:
+            label_selector = f"{HYDROPLANE_GROUP_LABEL}={group}"
+        else:
+            label_selector = HYDROPLANE_PROCESS_LABEL
+
         services = k8s_client.list_namespaced_service(
-            label_selector=HYDROPLANE_PROCESS_LABEL,
+            label_selector=label_selector,
             namespace=self.settings.namespace
         )
 
         pods = k8s_client.list_namespaced_pod(
-            label_selector=HYDROPLANE_PROCESS_LABEL,
+            label_selector=label_selector,
             namespace=self.settings.namespace
         )
 
@@ -300,6 +306,7 @@ class EKSRuntime(Runtime):
 
             process_infos.append(ProcessInfo(
                 process_name=process_name,
+                group=group,
                 socket_addresses=socket_addresses
             ))
 

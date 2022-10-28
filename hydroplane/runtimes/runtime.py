@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from ..models.process_info import ProcessInfo
 from ..models.process_spec import ProcessSpec
@@ -15,7 +15,7 @@ class Runtime(ABC):
         pass
 
     @abstractmethod
-    def list_processes(self) -> List[ProcessInfo]:
+    def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         pass
 
     @abstractmethod

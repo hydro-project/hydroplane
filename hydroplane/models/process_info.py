@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, Field, IPvAnyAddress, conint
 
@@ -14,6 +14,7 @@ class ProcessInfo(BaseModel):
     Information about a running process.
     """
     process_name: str = Field(description="the name of the process")
+    group: Optional[str] = Field(None, description="the group to which the process belongs, if any")
 
     # A list of host/port pairs that the process exposes
     socket_addresses: List[SocketAddress] = Field(
