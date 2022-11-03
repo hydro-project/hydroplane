@@ -30,3 +30,4 @@ html_static_path = ['_static']
 
 # Don't show the JSON schema for models by default
 autodoc_pydantic_model_show_json = False
+autodoc_pydantic_model_member_order = 'bysource'
