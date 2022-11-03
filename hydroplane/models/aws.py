@@ -2,15 +2,15 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, conint
 
-from .secret import SecretValue
+from .secret import HydroplaneSecret
 
 
 class AWSAccessKey(BaseModel):
     """
     An AWS access key/secret key pair, used to authenticate with AWS.
     """
-    access_key_id: SecretValue
-    secret_access_key: SecretValue
+    access_key_id: HydroplaneSecret
+    secret_access_key: HydroplaneSecret
 
 
 class AWSAssumeRole(BaseModel):
@@ -20,7 +20,7 @@ class AWSAssumeRole(BaseModel):
     """
     role_arn: str = Field(description='the fully-qualified ARN of the role to assume')
 
-    external_id: Optional[SecretValue] = Field(
+    external_id: Optional[HydroplaneSecret] = Field(
         description='if needed, the external ID used to validate access to the role')
 
     session_name: Optional[str] = Field(

@@ -3,7 +3,7 @@ from typing import Optional, List, Union
 
 from pydantic import BaseModel, Field, conint, condecimal, validator
 
-from .secret import SecretValue
+from .secret import ProcessSecret
 
 
 class PortMapping(BaseModel):
@@ -34,7 +34,7 @@ class EnvironmentVariable(BaseModel):
     An environment variable that will be provided to the process's runtime environment.
     """
     name: str = Field(description='the name of the environment variable')
-    value: Union[SecretValue, str] = Field(
+    value: Union[ProcessSecret, str] = Field(
         description="the environment variable's value; "
         "can be a literal, or a reference to a secret"
     )
@@ -60,11 +60,11 @@ class ContainerSpec(BaseModel):
         description='the URI of a Docker image that the process will run. Can be a '
         'fully-qualified URI, or as a shorthand (e.g. "python" or "nginxdemos/hello" )'
     )
-    username: Optional[Union[str, SecretValue]] = Field(
+    username: Optional[Union[str, ProcessSecret]] = Field(
         None,
         description='the username used to authenticate with the container registry'
     )
-    password: Optional[SecretValue] = Field(
+    password: Optional[ProcessSecret] = Field(
         None,
         description='the password used to authenticate with the container registry'
     )

@@ -6,7 +6,7 @@ from kubernetes.client.exceptions import ApiException
 
 from ..models.container_spec import ResourceSpec
 from ..models.process_spec import ProcessSpec
-from ..models.secret import SecretValue, SecretSource
+from ..models.secret import ProcessSecret
 
 
 HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
@@ -50,25 +50,22 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
     env = []
 
     for e in container_spec.env:
-        if isinstance(e.value, SecretValue):
+        if isinstance(e.value, ProcessSecret):
             secret_value = e.value
 
-            if secret_value.source == SecretSource.K8S_SECRET:
-                secret_ref = {
-                    'name': secret_value.secret_name
+            secret_ref = {
+                'name': secret_value.secret_name
+            }
+
+            if e.value.key is not None:
+                secret_ref['key'] = secret_value.key
+
+            env.append({
+                'name': e.name,
+                'valueFrom': {
+                    'secretRef': secret_ref
                 }
-
-                if e.value.key is not None:
-                    secret_ref['key'] = secret_value.key
-
-                env.append({
-                    'name': e.name,
-                    'valueFrom': {
-                        'secretRef': secret_ref
-                    }
-                })
-            else:
-                raise ValueError(f"Secret values with source {e.source} currently unsupported")
+            })
         else:
             env.append({'name': e.name, 'value': e.value})
 

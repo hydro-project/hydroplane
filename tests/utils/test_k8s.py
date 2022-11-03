@@ -3,7 +3,7 @@ from decimal import Decimal
 from hydroplane.models.container_spec import (ContainerSpec, EnvironmentVariable, PortMapping,
                                               ResourceSpec)
 from hydroplane.models.process_spec import ProcessSpec
-from hydroplane.models.secret import SecretValue, SecretSource
+from hydroplane.models.secret import ProcessSecret
 from hydroplane.utils.k8s import process_spec_to_pod_manifest, resource_spec_to_manifest
 
 
@@ -52,17 +52,15 @@ def test_process_spec_to_pod_manifest_env_vars():
                 ),
                 EnvironmentVariable(
                     name='SECRET',
-                    value=SecretValue(
-                        secret_name='my_secret_name',
-                        source=SecretSource.K8S_SECRET
+                    value=ProcessSecret(
+                        secret_name='my_secret_name'
                     )
                 ),
                 EnvironmentVariable(
                     name='NESTED_SECRET',
-                    value=SecretValue(
+                    value=ProcessSecret(
                         secret_name='nested_secret',
-                        key='my_key',
-                        source=SecretSource.K8S_SECRET
+                        key='my_key'
                     )
                 )
             ]

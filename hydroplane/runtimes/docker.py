@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from ..models.process_info import ProcessInfo, SocketAddress
 from ..models.process_spec import ProcessSpec
-from ..models.secret import SecretValue
+from ..models.secret import HydroplaneSecret
 from ..secret_stores.secret_store import SecretStore
 from .runtime import Runtime
 
@@ -39,7 +39,7 @@ class DockerRuntime(Runtime):
         container_env = {}
 
         for env_var in container_spec.env:
-            if type(env_var.value) is SecretValue:
+            if type(env_var.value) is HydroplaneSecret:
                 secret_info = env_var.value
 
                 env_value = self.secret_store.get_secret(secret_info.secret_name)
