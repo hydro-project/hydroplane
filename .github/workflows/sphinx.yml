@@ -31,9 +31,10 @@ jobs:
           pip install --user -r requirements.txt
       - name: Build and commit
         uses: sphinx-notes/pages@v2
+        with:
+          documentation_path: docs/
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          documentation_path: docs/
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
