@@ -60,14 +60,19 @@ async def terminate_process(
     app.state.runtime.stop_process(process_name)
 
 
+@app.get('/group/{group}')
+async def list_processes_in_group(group: str):
+    return app.state.runtime.list_processes(group)
+
+
 @app.delete('/group/{group}')
 async def terminate_group(group: str):
     app.state.runtime.stop_group(group)
 
 
 @app.get('/process')
-async def list_processes(group: str = None):
-    return app.state.runtime.list_processes(group)
+async def list_processes():
+    return app.state.runtime.list_processes(group=None)
 
 
 if __name__ == '__main__':
