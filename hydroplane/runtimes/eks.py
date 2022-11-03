@@ -35,10 +35,19 @@ logger = logging.getLogger('eks_runtime')
 class Settings(BaseModel):
     runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
 
-    credentials: AWSCredentials
-    cluster_name: str
-    region: str
-    namespace: Optional[str] = Field('default')
+    credentials: AWSCredentials = Field(
+        description='the credentials that will be used to authenticate with EKS'
+    )
+    cluster_name: str = Field(
+        description='the name of the EKS cluster'
+    )
+    region: str = Field(
+        description='the AWS region where the cluster is running (e.g. us-west-2)'
+    )
+    namespace: Optional[str] = Field(
+        'default',
+        description='the Kubernetes namespace that Hydroplane will create pods and services within'
+    )
 
 
 class EKSRuntime(Runtime):

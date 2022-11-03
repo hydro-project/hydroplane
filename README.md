@@ -1,7 +1,18 @@
 # hydroplane
-A low-level service for launching processes on cloud infrastructure.
+A service for launching containerized processes on cloud infrastructure.
 
-## Development
+## Concepts
+
+Hydroplane is meant to act as a simple, unified API for starting and stopping processes (deployed as Docker containers) on multiple different _backend runtimes_ in a way that abstracts as much of the complexity from connecting to and interacting with those runtimes as possible.
+
+Hydroplane currently supports the following runtimes:
+
+* Docker (single-node)
+* Amazon EKS
+
+## Getting Started
+
+### Setting Up Your Development Environment
 
 Hydroplane uses [poetry][poetry] to manage its dependencies. To get a development virtualenv set up:
 
@@ -10,11 +21,5 @@ pip install poetry
 poetry shell
 poetry install
 ```
-
-### Managing Secrets Locally
-
-Hydroplane needs some kind of secret store to store the credentials that it uses to communicate with workload management runtimes. We have a local secret store that stores secrets on the local filesystem, symmetrically-encrypted with a password. It's not meant for production use, but it should be enough for local development and experimentation.
-
-Use the script `bin/local-secret-store` to manipulate the local secret store. For details on its usage, run `bin/local-secret-store --help`.
 
 [poetry]: https://python-poetry.org/

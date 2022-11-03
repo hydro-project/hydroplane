@@ -47,7 +47,7 @@ async def on_startup():
 
 
 @app.post('/process', status_code=201)
-async def launch(
+async def launch_process(
         process_spec: ProcessSpec
 ):
     app.state.runtime.start_process(process_spec)

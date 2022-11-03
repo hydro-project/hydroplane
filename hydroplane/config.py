@@ -15,6 +15,3 @@ class Settings(BaseModel):
 
     runtime: Union[DockerRuntimeSettings, EKSRuntimeSettings] = \
         Field(..., discriminator='runtime_type')
-
-    class Config:
-        case_sensitive = False

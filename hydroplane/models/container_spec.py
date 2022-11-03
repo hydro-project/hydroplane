@@ -25,7 +25,7 @@ class PortMapping(BaseModel):
 
     @validator('host_port', pre=True, always=True)
     def default_host_port(cls, v, *, values, **kwargs):
-        # If host port isn't provided, set it to container port
+        """If the host port isn't specified, set it to the container port."""
         return v or values.get('container_port')
 
 
@@ -95,6 +95,11 @@ class ContainerSpec(BaseModel):
 
     @validator('resource_limit')
     def requests_cannot_exceed_limits(cls, v, *, values, **kwargs):
+        """
+        If both resource requests and resource limits are specified, ensure that the resource
+        request doesn't exceed the resource limit.
+        """
+
         if (
                 v is not None and
                 'resource_request' in values
