@@ -7,3 +7,5 @@ Hydroplane Documentation
 
    settings
    runtimes
+   processes
+   secrets

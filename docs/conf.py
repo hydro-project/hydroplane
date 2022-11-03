@@ -25,3 +25,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+# autodoc_pydantic configuration
+
+# Don't show the JSON schema for models by default
+autodoc_pydantic_model_show_json = False

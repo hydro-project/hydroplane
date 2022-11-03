@@ -3,6 +3,8 @@ Settings
 
 Hydroplane is configured by providing a path to a YAML file in the `CONF` environment variable in the server's environment.
 
+There are two things that need to be configured in settings: Hydroplane's :doc:`runtime<runtimes>` and its :doc:`secret store<secrets>`.
+
 Here's a basic example of a configuration file that uses the ``local`` secret store and the ``docker`` runtime:
 
 .. code-block:: yaml
@@ -38,22 +40,4 @@ and another example that uses the ``local`` secret store and the ``eks`` runtime
           key: SecretAccessKey
 
 
-.. autopydantic_model:: hydroplane.config.Settings
-
-``docker`` Runtime Settings
----------------------------
-
-.. autopydantic_model:: hydroplane.runtimes.docker.Settings
-
-
-``eks`` Runtime Settings
-------------------------
-
-.. autopydantic_model:: hydroplane.runtimes.eks.Settings
-
-
-AWS-Specific Settings
----------------------
-
-.. automodule:: hydroplane.models.aws
-   :members:
+Each runtime has its own specific configuration that's documented in the :doc:`runtimes` section of this documentation.
