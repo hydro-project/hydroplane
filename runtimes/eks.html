@@ -82,6 +82,149 @@
 <h1><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS<a class="headerlink" href="#eks-amazon-eks" title="Permalink to this heading"></a></h1>
 <div class="section" id="settings">
 <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.runtimes.eks.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.runtimes.eks.Settings" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#hydroplane.runtimes.eks.Settings.cluster_name" title="hydroplane.runtimes.eks.Settings.cluster_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_name</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.runtimes.eks.Settings.credentials" title="hydroplane.runtimes.eks.Settings.credentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">credentials</span> <span class="pre">(hydroplane.models.aws.AWSCredentials)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.runtimes.eks.Settings.namespace" title="hydroplane.runtimes.eks.Settings.namespace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">namespace</span> <span class="pre">(Optional[str])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.runtimes.eks.Settings.region" title="hydroplane.runtimes.eks.Settings.region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">region</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.runtimes.eks.Settings.runtime_type" title="hydroplane.runtimes.eks.Settings.runtime_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runtime_type</span> <span class="pre">(Literal['eks'])</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings.runtime_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runtime_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'eks'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'eks'</span></em><a class="headerlink" href="#hydroplane.runtimes.eks.Settings.runtime_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings.credentials">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">credentials</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hydroplane.models.aws.AWSCredentials" title="hydroplane.models.aws.AWSCredentials"><span class="pre">AWSCredentials</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.runtimes.eks.Settings.credentials" title="Permalink to this definition"></a></dt>
+<dd><p>the credentials that will be used to authenticate with EKS</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings.cluster_name">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cluster_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.runtimes.eks.Settings.cluster_name" title="Permalink to this definition"></a></dt>
+<dd><p>the name of the EKS cluster</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings.region">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">region</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.runtimes.eks.Settings.region" title="Permalink to this definition"></a></dt>
+<dd><p>the AWS region where the cluster is running (e.g. us-west-2)</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings.namespace">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">namespace</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></em><a class="headerlink" href="#hydroplane.runtimes.eks.Settings.namespace" title="Permalink to this definition"></a></dt>
+<dd><p>the Kubernetes namespace that Hydroplane will create pods and services within</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-hydroplane.models.aws"></span><dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAccessKey">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.aws.</span></span><span class="sig-name descname"><span class="pre">AWSAccessKey</span></span><a class="headerlink" href="#hydroplane.models.aws.AWSAccessKey" title="Permalink to this definition"></a></dt>
+<dd><p>An AWS access key/secret key pair, used to authenticate with AWS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAccessKey.access_key_id" title="hydroplane.models.aws.AWSAccessKey.access_key_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">access_key_id</span> <span class="pre">(hydroplane.models.secret.HydroplaneSecret)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAccessKey.secret_access_key" title="hydroplane.models.aws.AWSAccessKey.secret_access_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secret_access_key</span> <span class="pre">(hydroplane.models.secret.HydroplaneSecret)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAccessKey.access_key_id">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">access_key_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../secrets.html#hydroplane.models.secret.HydroplaneSecret" title="hydroplane.models.secret.HydroplaneSecret"><span class="pre">HydroplaneSecret</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAccessKey.access_key_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAccessKey.secret_access_key">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">secret_access_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../secrets.html#hydroplane.models.secret.HydroplaneSecret" title="hydroplane.models.secret.HydroplaneSecret"><span class="pre">HydroplaneSecret</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAccessKey.secret_access_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAssumeRole">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.aws.</span></span><span class="sig-name descname"><span class="pre">AWSAssumeRole</span></span><a class="headerlink" href="#hydroplane.models.aws.AWSAssumeRole" title="Permalink to this definition"></a></dt>
+<dd><p>Information necessary for an AWS principal to temporarily assume a role (with associated
+temporary credentials).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAssumeRole.external_id" title="hydroplane.models.aws.AWSAssumeRole.external_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">external_id</span> <span class="pre">(Optional[hydroplane.models.secret.HydroplaneSecret])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAssumeRole.role_arn" title="hydroplane.models.aws.AWSAssumeRole.role_arn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">role_arn</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAssumeRole.session_duration_seconds" title="hydroplane.models.aws.AWSAssumeRole.session_duration_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session_duration_seconds</span> <span class="pre">(Optional[hydroplane.models.aws.ConstrainedIntValue])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSAssumeRole.session_name" title="hydroplane.models.aws.AWSAssumeRole.session_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session_name</span> <span class="pre">(Optional[str])</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAssumeRole.role_arn">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">role_arn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAssumeRole.role_arn" title="Permalink to this definition"></a></dt>
+<dd><p>the fully-qualified ARN of the role to assume</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAssumeRole.external_id">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">external_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../secrets.html#hydroplane.models.secret.HydroplaneSecret" title="hydroplane.models.secret.HydroplaneSecret"><span class="pre">HydroplaneSecret</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAssumeRole.external_id" title="Permalink to this definition"></a></dt>
+<dd><p>if needed, the external ID used to validate access to the role</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAssumeRole.session_name">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">session_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAssumeRole.session_name" title="Permalink to this definition"></a></dt>
+<dd><p>the name of the temporary session created by the role assumption</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSAssumeRole.session_duration_seconds">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">session_duration_seconds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ConstrainedIntValue</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">900</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSAssumeRole.session_duration_seconds" title="Permalink to this definition"></a></dt>
+<dd><p>the duration of the temporary session, in seconds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minimum</strong> = 900</p></li>
+<li><p><strong>maximum</strong> = 43200</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSCredentials">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.aws.</span></span><span class="sig-name descname"><span class="pre">AWSCredentials</span></span><a class="headerlink" href="#hydroplane.models.aws.AWSCredentials" title="Permalink to this definition"></a></dt>
+<dd><p>Credentials used to authenticate with AWS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSCredentials.access_key" title="hydroplane.models.aws.AWSCredentials.access_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">access_key</span> <span class="pre">(hydroplane.models.aws.AWSAccessKey)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.aws.AWSCredentials.assume_role" title="hydroplane.models.aws.AWSCredentials.assume_role"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assume_role</span> <span class="pre">(Optional[hydroplane.models.aws.AWSAssumeRole])</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSCredentials.access_key">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">access_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hydroplane.models.aws.AWSAccessKey" title="hydroplane.models.aws.AWSAccessKey"><span class="pre">AWSAccessKey</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSCredentials.access_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.aws.AWSCredentials.assume_role">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assume_role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#hydroplane.models.aws.AWSAssumeRole" title="hydroplane.models.aws.AWSAssumeRole"><span class="pre">AWSAssumeRole</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.aws.AWSCredentials.assume_role" title="Permalink to this definition"></a></dt>
+<dd><p>the role that Hydroplane will assume when communicating with AWS</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
