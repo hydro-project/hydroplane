@@ -27,12 +27,16 @@ def boto3_client_from_creds(
             aws_secret_access_key=secret_key
         )
 
-        assume_role_response = sts_client.assume_role(
-            RoleArn=creds.assume_role.role_arn,
-            ExternalId=creds.assume_role.external_id,
-            RoleSessionName=creds.assume_role.session_name or f'hydroplane-launch-{uuid4()}',
-            DurationSeconds=creds.assume_role.session_duration_seconds
-        )
+        assume_role_params = {
+            'RoleArn': creds.assume_role.role_arn,
+            'RoleSessionName': creds.assume_role.session_name or f'hydroplane-launch-{uuid4()}',
+            'DurationSeconds': creds.assume_role.session_duration_seconds
+        }
+
+        if creds.assume_role.external_id is not None:
+            assume_role_params['ExternalId'] = creds.assume_role.external_id
+
+        assume_role_response = sts_client.assume_role(**assume_role_params)
 
         access_key = assume_role_response['Credentials']['AccessKeyId']
         secret_key = assume_role_response['Credentials']['SecretAccessKey']

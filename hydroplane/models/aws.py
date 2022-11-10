@@ -21,7 +21,9 @@ class AWSAssumeRole(BaseModel):
     role_arn: str = Field(description='the fully-qualified ARN of the role to assume')
 
     external_id: Optional[HydroplaneSecret] = Field(
-        description='if needed, the external ID used to validate access to the role')
+        None,
+        description='if needed, the external ID used to validate access to the role'
+    )
 
     session_name: Optional[str] = Field(
         None,
