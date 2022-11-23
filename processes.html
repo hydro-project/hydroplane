@@ -261,6 +261,7 @@ request doesn’t exceed the resource limit.</p>
 <li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.container_port" title="hydroplane.models.container_spec.PortMapping.container_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">container_port</span> <span class="pre">(hydroplane.models.container_spec.ConstrainedIntValue)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.host_port" title="hydroplane.models.container_spec.PortMapping.host_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">host_port</span> <span class="pre">(Optional[hydroplane.models.container_spec.ConstrainedIntValue])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.name" title="hydroplane.models.container_spec.PortMapping.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span> <span class="pre">(Optional[str])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.protocol" title="hydroplane.models.container_spec.PortMapping.protocol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">protocol</span> <span class="pre">(Optional[hydroplane.models.container_spec.PortProtocol])</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Validators</dt>
@@ -303,6 +304,12 @@ request doesn’t exceed the resource limit.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.container_spec.PortMapping.protocol">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">protocol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#hydroplane.models.container_spec.PortProtocol" title="hydroplane.models.container_spec.PortProtocol"><span class="pre">PortProtocol</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PortProtocol.TCP</span></em><a class="headerlink" href="#hydroplane.models.container_spec.PortMapping.protocol" title="Permalink to this definition"></a></dt>
+<dd><p>the protocol spoken by the bound port</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.PortMapping.name">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.container_spec.PortMapping.name" title="Permalink to this definition"></a></dt>
 <dd><p>the name of the port binding; passed to some runtimes</p>
@@ -314,6 +321,12 @@ request doesn’t exceed the resource limit.</p>
 <dd><p>If the host port isn’t specified, set it to the container port.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hydroplane.models.container_spec.PortProtocol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.container_spec.</span></span><span class="sig-name descname"><span class="pre">PortProtocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hydroplane.models.container_spec.PortProtocol" title="Permalink to this definition"></a></dt>
+<dd><p>An enumeration.</p>
 </dd></dl>
 
 <dl class="py class pydantic_model">
