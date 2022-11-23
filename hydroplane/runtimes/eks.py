@@ -15,7 +15,7 @@ from ..models.process_info import ProcessInfo, SocketAddress
 from ..models.process_spec import ProcessSpec
 from .runtime import Runtime
 from ..secret_stores.secret_store import SecretStore
-from ..utils.aws import boto3_client_from_creds
+from ..utils.aws import boto3_session_from_creds
 from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
                          HYDROPLANE_GROUP_LABEL,
                          discover_k8s_api_version,
@@ -55,6 +55,8 @@ class EKSRuntime(Runtime):
         self.settings = settings
         self.secret_store = secret_store
 
+        self._boto3_session = None
+
         self._k8s_client = None
         self._k8s_client_expiration_time: datetime = None
 
@@ -66,6 +68,15 @@ class EKSRuntime(Runtime):
         # into problems if we process a request _right_ before it expires.
 
         return self._k8s_client_expiration_time <= datetime.now() + timedelta(minutes=1)
+
+    @property
+    def boto3_session(self):
+        if self._boto3_session is None:
+            self._boto3_session = boto3_session_from_creds(
+                self.settings.credentials, self.secret_store
+            )
+
+        return self._boto3_session
 
     def _get_k8s_client(self, cluster_name: str):
         if self._k8s_client is None or self._k8s_client_expired():
@@ -87,9 +98,7 @@ class EKSRuntime(Runtime):
         logger.debug('Creating a new k8s client')
 
         # First, retrieve information about the EKS cluster from AWS via boto3
-        eks_client = boto3_client_from_creds(
-            'eks', self.settings.region, self.settings.credentials, self.secret_store
-        )
+        eks_client = self.boto3_session.client('eks', region_name=self.settings.region)
 
         cluster_data = eks_client.describe_cluster(name=cluster_name)['cluster']
 
@@ -128,9 +137,7 @@ class EKSRuntime(Runtime):
     def _generate_bearer_token(self, cluster_name: str) -> dict:
         # We're borrowing the technique that the AWS CLI uses to retrieve a bearer token
         # (https://github.com/aws/aws-cli/blob/develop/awscli/customizations/eks/get_token.py#L128)
-        sts_client = boto3_client_from_creds(
-            'sts', self.settings.region, self.settings.credentials, self.secret_store
-        )
+        sts_client = self.boto3_session.client('sts', region_name=self.settings.region)
 
         # This is mimicking what `aws sts get-caller-identity` does. Best as I can tell, it's
         # turning a parameter to get-caller-identity into an HTTP header by hooking into a couple of
