@@ -1,9 +1,15 @@
 from decimal import Decimal
+from enum import Enum
 from typing import Optional, List, Union
 
 from pydantic import BaseModel, Field, conint, condecimal, validator
 
 from .secret import ProcessSecret
+
+
+class PortProtocol(str, Enum):
+    TCP = 'tcp',
+    UDP = 'udp'
 
 
 class PortMapping(BaseModel):
@@ -16,6 +22,11 @@ class PortMapping(BaseModel):
 
     host_port: Optional[conint(ge=1, le=65535)] = Field(
         description='the port that the host will expose. Some runtimes may not honor this setting.'
+    )
+
+    protocol: Optional[PortProtocol] = Field(
+        default=PortProtocol.TCP,
+        description='the protocol spoken by the bound port'
     )
 
     name: Optional[str] = Field(

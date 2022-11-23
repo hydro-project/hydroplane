@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from hydroplane.models.container_spec import (ContainerSpec, EnvironmentVariable, PortMapping,
-                                              ResourceSpec)
+                                              PortProtocol, ResourceSpec)
 from hydroplane.models.process_spec import ProcessSpec
 from hydroplane.models.secret import ProcessSecret
 from hydroplane.utils.k8s import process_spec_to_pod_manifest, resource_spec_to_manifest
@@ -109,7 +109,8 @@ def test_process_spec_to_pod_manifest_ports():
                 ),
                 PortMapping(
                     container_port=53,
-                    name='dns'
+                    name='dns',
+                    protocol=PortProtocol.UDP
                 )
             ]
         )
@@ -119,14 +120,17 @@ def test_process_spec_to_pod_manifest_ports():
 
     assert manifest['spec']['containers'][0]['ports'] == [
         {
-            'containerPort': 7080
+            'containerPort': 7080,
+            'protocol': 'TCP'
         },
         {
-            'containerPort': 9090
+            'containerPort': 9090,
+            'protocol': 'TCP'
         },
         {
             'containerPort': 53,
-            'name': 'dns'
+            'name': 'dns',
+            'protocol': 'UDP'
         }
     ]
 

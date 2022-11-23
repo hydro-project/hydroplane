@@ -75,7 +75,8 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
         # Ignoring the port mapping's host port here, since k8s will handle binding container ports
         # to host ports for us
         container_port = {
-            'containerPort': p.container_port
+            'containerPort': p.container_port,
+            'protocol': p.protocol.value.upper()
         }
 
         if p.name is not None:
