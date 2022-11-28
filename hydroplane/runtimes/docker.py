@@ -81,20 +81,29 @@ class DockerRuntime(Runtime):
         if process_spec.group is not None:
             labels[HYDROPLANE_GROUP_LABEL] = process_spec.group
 
-        client.containers.run(
-            image=container_spec.image_uri,
-            name=process_spec.process_name,
-            ports={
-                f'{p.container_port}/{p.protocol}': (host_ip, p.host_port)
-                for p in container_spec.ports
-            },
-            environment=container_env,
-            command=container_spec.command,
-            labels=labels,
-            auto_remove=True,
-            network=HYDROPLANE_BRIDGE_NETWORK_NAME,
-            detach=True,
-        )
+        try:
+            client.containers.run(
+                image=container_spec.image_uri,
+                name=process_spec.process_name,
+                ports={
+                    f'{p.container_port}/{p.protocol}': (host_ip, p.host_port)
+                    for p in container_spec.ports
+                },
+                environment=container_env,
+                command=container_spec.command,
+                labels=labels,
+                auto_remove=True,
+                network=HYDROPLANE_BRIDGE_NETWORK_NAME,
+                detach=True,
+            )
+        except docker.errors.APIError as e:
+            if e.response.status_code == 409:
+                raise HTTPException(
+                    status_code=409,
+                    detail=f"A container named '{process_spec.process_name}' already exists"
+                )
+            else:
+                raise e
 
     def stop_process(self, process_name: str):
         client = docker.from_env()
