@@ -201,6 +201,8 @@ if __name__ == '__main__':
     add_secret_parser.add_argument('secret_name', help='the name of the new secret')
     add_secret_parser.add_argument('--overwrite', default=False, action='store_true',
                                    help='overwrite the secret if it already exists')
+    add_secret_parser.add_argument('--filename', '-f', help='a file from which to read the '
+                                   'contents of the secret (default: secret is entered manually)')
     add_secret_parser.set_defaults(func='add')
 
     get_secret_parser = subparsers.add_parser('get', help='read a secret from the secret store')
@@ -234,7 +236,14 @@ if __name__ == '__main__':
             store = LocalSecretStore(Settings(store_location=store_location, password=password))
 
             if func == 'add':
-                secret_data = getpass.getpass('Enter the contents of the secret: ')
+                if args.filename is not None:
+                    if not os.path.exists(args.filename):
+                        raise ValueError(f"Cannot find {args.filename}")
+
+                    with open(args.filename, 'r') as fp:
+                        secret_data = fp.read()
+                else:
+                    secret_data = getpass.getpass('Enter the contents of the secret: ')
 
                 store.add_secret(args.secret_name, secret_data)
             elif func == 'remove':
