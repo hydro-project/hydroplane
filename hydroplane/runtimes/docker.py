@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import Literal, List, Optional
 
 import docker
@@ -16,6 +17,11 @@ RUNTIME_TYPE = 'docker'
 HYDROPLANE_PROCESS_LABEL = 'hydroplane/process-id'
 HYDROPLANE_GROUP_LABEL = 'hydroplane/group-id'
 
+# TODO docs
+HYDROPLANE_BRIDGE_NETWORK_NAME = 'hydroplane'
+
+logger = logging.getLogger('docker_runtime')
+
 
 class Settings(BaseModel):
     runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
@@ -27,6 +33,18 @@ class DockerRuntime(Runtime):
 
     def start_process(self, process_spec: ProcessSpec):
         client = docker.from_env()
+
+        # Create a hydroplane bridge network if it doesn't already exist
+        try:
+            client.networks.create(
+                HYDROPLANE_BRIDGE_NETWORK_NAME,
+                driver='bridge',
+                check_duplicate=True
+            )
+            logger.debug(f"Created bridge network '{HYDROPLANE_BRIDGE_NETWORK_NAME}'")
+        except docker.errors.APIError:
+            logger.debug(f"Bridge network '{HYDROPLANE_BRIDGE_NETWORK_NAME}' has already "
+                         'been created; skipping')
 
         container_spec = process_spec.container
 
@@ -74,6 +92,7 @@ class DockerRuntime(Runtime):
             command=container_spec.command,
             labels=labels,
             auto_remove=True,
+            network=HYDROPLANE_BRIDGE_NETWORK_NAME,
             detach=True,
         )
 
