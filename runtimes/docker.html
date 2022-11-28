@@ -80,6 +80,7 @@
 <h1><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime<a class="headerlink" href="#docker-docker-single-node-runtime" title="Permalink to this heading"></a></h1>
 <p>The single-node <a class="reference external" href="https://www.docker.com/">Docker</a> runtime is meant to be a simple way to run containers without having to set up a bunch of infrastructure.</p>
 <p>Its configuration needs are pretty minimal; you just need a local Docker daemon running.</p>
+<p>Containers started by Hydroplane will run in the <code class="docutils literal notranslate"><span class="pre">hydroplane</span></code> <a class="reference external" href="https://docs.docker.com/network/bridge/">bridge network</a>, which allows them to use DNS names to refer to one another.</p>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.runtimes.docker.Settings">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.runtimes.docker.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.runtimes.docker.Settings" title="Permalink to this definition"></a></dt>
