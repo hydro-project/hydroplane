@@ -45,6 +45,13 @@
 <li class="toctree-l2"><a class="reference internal" href="docker.html"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authenticating-with-aws">Authenticating with AWS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#authenticating-with-iam-credentials">Authenticating with IAM Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#authenticating-with-role-assumption">Authenticating with Role Assumption</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#a-note-on-iam-user-permissions">A Note on IAM User Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hydroplane.models.aws">AWS Authentication Settings</a></li>
 </ul>
 </li>
 </ul>
@@ -81,6 +88,7 @@
              
   <div class="section" id="eks-amazon-eks">
 <h1><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS<a class="headerlink" href="#eks-amazon-eks" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime integrates with EKS, AWS’s managed Kubernetes offering.</p>
 <div class="section" id="settings">
 <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">
@@ -117,7 +125,61 @@
 
 </dd></dl>
 
-<span class="target" id="module-hydroplane.models.aws"></span><dl class="py class pydantic_model">
+</div>
+<div class="section" id="authenticating-with-aws">
+<h2>Authenticating with AWS<a class="headerlink" href="#authenticating-with-aws" title="Permalink to this heading"></a></h2>
+<p>In order for Hydroplane to launch processes on an EKS cluster, it must be able to authenticate with that cluster. To authenticate, you’ll need an AWS <a class="reference external" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">access key ID and corresponding secret access key</a>. These credentials will need to be stored in Hydroplane’s <a class="reference internal" href="../secrets.html"><span class="doc">secret store</span></a>.</p>
+<div class="section" id="authenticating-with-iam-credentials">
+<span id="eks-secret-example"></span><h3>Authenticating with IAM Credentials<a class="headerlink" href="#authenticating-with-iam-credentials" title="Permalink to this heading"></a></h3>
+<p>Here’s an example configuration that uses a secret stored in Hydroplane’s secret store to authenticate with EKS. This config uses a secret named <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> that’s stored in the secret store as a JSON object like so:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXXXX&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXX&quot;</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>These related credentials are referenced individually using the <code class="docutils literal notranslate"><span class="pre">key</span></code> field.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span><span class="w"></span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
+<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
+<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="authenticating-with-role-assumption">
+<h3>Authenticating with Role Assumption<a class="headerlink" href="#authenticating-with-role-assumption" title="Permalink to this heading"></a></h3>
+<p>While nothing stops you from authenticating directly with an access key and secret, it’s generally considered a best practice to authenticate using <a class="reference external" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli">temporary IAM credentials</a>. These credentials are associated with a given IAM role, and expire after a certain period of time. Hydroplane will attempt to automatically renew these temporary credentials periodically.</p>
+<p>Here’s an example of using the <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> secret from above to authenticate and then assume the role <code class="docutils literal notranslate"><span class="pre">EKSAdmin</span></code>. Most of this configuration will look familiar if you’ve looked at the configuration in the last section, but we’ve added an <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> block to define the role assumption.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span><span class="w"></span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
+<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
+<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
+<span class="w">      </span><span class="w w-Error"> </span><span class="nt">assume_role</span><span class="p">:</span><span class="w"></span>
+<span class="w">         </span><span class="nt">role_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:iam::123456789012:role/EKSAdmin&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="a-note-on-iam-user-permissions">
+<h2>A Note on IAM User Permissions<a class="headerlink" href="#a-note-on-iam-user-permissions" title="Permalink to this heading"></a></h2>
+<p>The authenticating IAM user must have enough permissions on the EKS cluster to create and destroy pods and services. If you’ve set up your cluster with <a class="reference external" href="https://github.com/hydro-project/eks-setup">hydro-project/eks-setup</a>, then any user you add using that script will have the appropriate privileges.</p>
+</div>
+<div class="section" id="module-hydroplane.models.aws">
+<span id="aws-authentication-settings"></span><h2>AWS Authentication Settings<a class="headerlink" href="#module-hydroplane.models.aws" title="Permalink to this heading"></a></h2>
+<dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.models.aws.AWSAccessKey">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.aws.</span></span><span class="sig-name descname"><span class="pre">AWSAccessKey</span></span><a class="headerlink" href="#hydroplane.models.aws.AWSAccessKey" title="Permalink to this definition"></a></dt>
 <dd><p>An AWS access key/secret key pair, used to authenticate with AWS.</p>

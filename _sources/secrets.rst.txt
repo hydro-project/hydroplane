@@ -10,6 +10,13 @@ Hydroplane secrets are stored in a **secret store**. Hydroplane needs access to 
 
 .. autopydantic_model:: hydroplane.models.secret.HydroplaneSecret
 
+Secrets can contain any string, even one that contains newlines or other special characters.
+
+Grouping Related Secrets Together
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It's sometimes convenient to group related credentials together in a single secret; for example, you might want to store a username and password for a service together in a single secret instead of storing them in two separate secrets. To store related credentials together in the same secret, create a secret whose content is a JSON object and use ``HydroplaneSecret``'s optional ``key`` field to refer to different keys within the object. See :ref:`the EKS runtime's authentication setup<eks-secret-example>` for an example of this in action.
+
 .. toctree::
    :maxdepth: 1
    :caption: Available Secret Stores
@@ -19,6 +26,31 @@ Hydroplane secrets are stored in a **secret store**. Hydroplane needs access to 
 Process Secrets
 ---------------
 
-Process secrets are either stored by the runtime itself, or by a companion secret storage system.
+Process secrets are stored by the runtime itself. You can use process secrets to pass secret values to a process's environment variables or to provide the process with authentication information to a container registry without having to pass those secrets around in cleartext.
+
+Here's an example of using a process secret to retrieve a secret value for an environment variable:
+
+.. code-block:: json
+
+    {
+      "process_name": "my-process",
+      "container": {
+        "image_uri": "foo/bar",
+        "ports": [
+          {
+            "container_port": "80"
+          }
+        ],
+        "env": [
+          {
+            "name": "ULTRA_SECRET_THINGY",
+            "value": {
+              "secret_name": "ultra-secret"
+            }
+          }
+        ]
+      }
+    }
+
 
 .. autopydantic_model:: hydroplane.models.secret.ProcessSecret
