@@ -2,6 +2,7 @@ import json
 import logging
 from typing import Literal, List, Optional
 
+from dateutil.parser import isoparse
 import docker
 from fastapi import HTTPException
 from pydantic import BaseModel
@@ -153,7 +154,8 @@ class DockerRuntime(Runtime):
                 ProcessInfo(
                     process_name=container.name,
                     group=container.labels.get(HYDROPLANE_GROUP_LABEL),
-                    socket_addresses=socket_addresses
+                    socket_addresses=socket_addresses,
+                    created=isoparse(container.attrs['Created'])
                 )
             )
 

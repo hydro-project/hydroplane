@@ -348,7 +348,8 @@ class EKSRuntime(Runtime):
             process_infos.append(ProcessInfo(
                 process_name=process_name,
                 group=group,
-                socket_addresses=socket_addresses
+                socket_addresses=socket_addresses,
+                created=service.metadata.creation_timestamp
             ))
 
         return process_infos

@@ -1,4 +1,5 @@
-from typing import List, Optional, Tuple
+from datetime import datetime
+from typing import List, Optional
 
 from pydantic import BaseModel, Field, IPvAnyAddress, conint
 
@@ -20,3 +21,5 @@ class ProcessInfo(BaseModel):
     socket_addresses: List[SocketAddress] = Field(
         description='a list of socket addresses that the process is exposing'
     )
+
+    created: datetime = Field(description='the date and time when the process was launched')
