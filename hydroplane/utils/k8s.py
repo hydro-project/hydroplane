@@ -107,6 +107,9 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
             container_spec.resource_limit
         )
 
+    if container_spec.command is not None:
+        main_container_manifest['command'] = container_spec.command
+
     labels = {
         HYDROPLANE_PROCESS_LABEL: process_spec.process_name,
     }
@@ -123,7 +126,7 @@ def process_spec_to_pod_manifest(process_spec: ProcessSpec) -> dict:
         },
         'spec': {
             'containers': [main_container_manifest],
-            'restartPolicy': 'Never'
+            'restartPolicy': 'Always'
         }
     }
 

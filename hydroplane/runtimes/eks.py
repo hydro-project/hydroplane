@@ -309,8 +309,9 @@ class EKSRuntime(Runtime):
 
         for service in services.items:
             process_name = service.metadata.labels[HYDROPLANE_PROCESS_LABEL]
+            pod = pods_by_name[process_name]
+
             service_type = service.spec.type
-            service_cluster_ip = service.spec.cluster_ip
 
             socket_addresses = []
 
@@ -319,8 +320,9 @@ class EKSRuntime(Runtime):
                 # port. For private services, it will be None and port will be specified instead.
                 port = port_spec.node_port or port_spec.port
 
+                pod_private_ip = pod.status.host_ip
+
                 if service_type == 'NodePort':
-                    pod_private_ip = pods_by_name[process_name].status.host_ip
                     socket_ip = node_private_to_public_ip[pod_private_ip]
 
                     if socket_ip is None:
@@ -332,7 +334,7 @@ class EKSRuntime(Runtime):
 
                     is_public = True
                 else:
-                    socket_ip = service_cluster_ip
+                    socket_ip = pod_private_ip
                     is_public = False
 
                 socket_addresses.append(
