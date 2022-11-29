@@ -13,7 +13,7 @@ import uuid
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel, Field, SecretStr
 
 from .secret_store import SecretStore
 from ..models.secret import HydroplaneSecret
@@ -30,11 +30,15 @@ SECRET_STORE_TYPE = 'local'
 class Settings(BaseModel):
     secret_store_type: Literal[SECRET_STORE_TYPE] = SECRET_STORE_TYPE
 
-    store_location: Path
+    store_location: Path = Field(
+        description='the location of the secret store'
+    )
 
     # This field is marked optional so that we can add it in at runtime by prompting the user at
     # startup without the settings parser complaining
-    password: Optional[SecretStr]
+    password: Optional[SecretStr] = Field(
+        description='DO NOT EDIT - overwritten at runtime once a password is prompted from the user'
+    )
 
 
 class LocalSecretStore(SecretStore):
