@@ -42,7 +42,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../runtimes.html">Runtimes</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></li>
 </ul>
 </li>
@@ -81,23 +84,25 @@
 <p>The single-node <a class="reference external" href="https://www.docker.com/">Docker</a> runtime is meant to be a simple way to run containers without having to set up a bunch of infrastructure.</p>
 <p>Its configuration needs are pretty minimal; you just need a local Docker daemon running.</p>
 <p>Containers started by Hydroplane will run in the <code class="docutils literal notranslate"><span class="pre">hydroplane</span></code> <a class="reference external" href="https://docs.docker.com/network/bridge/">bridge network</a>, which allows them to use DNS names to refer to one another.</p>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.runtimes.docker.Settings">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.runtimes.docker.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.runtimes.docker.Settings" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.runtimes.docker.Settings.runtime_type" title="hydroplane.runtimes.docker.Settings.runtime_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runtime_type</span> <span class="pre">(Literal['docker'])</span></code></a></p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute pydantic_field">
+<dd><dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="hydroplane.runtimes.docker.Settings.runtime_type">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runtime_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'docker'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'docker'</span></em><a class="headerlink" href="#hydroplane.runtimes.docker.Settings.runtime_type" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
+<p>The <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime doesn’t have any substantive settings, but you still need to specify it as your runtime for Hydroplane to use it.</p>
+<p>Here’s an example configuration that you might find in your <a class="reference internal" href="../settings.html"><span class="doc">settings file</span></a>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

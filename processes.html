@@ -104,16 +104,6 @@
 <dt class="sig sig-object py" id="hydroplane.models.process_spec.ProcessSpec">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.process_spec.</span></span><span class="sig-name descname"><span class="pre">ProcessSpec</span></span><a class="headerlink" href="#hydroplane.models.process_spec.ProcessSpec" title="Permalink to this definition"></a></dt>
 <dd><p>Provides all the details of the processs that you’d like to launch.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.models.process_spec.ProcessSpec.container" title="hydroplane.models.process_spec.ProcessSpec.container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">container</span> <span class="pre">(hydroplane.models.container_spec.ContainerSpec)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.process_spec.ProcessSpec.group" title="hydroplane.models.process_spec.ProcessSpec.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span> <span class="pre">(Optional[str])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.process_spec.ProcessSpec.has_public_ip" title="hydroplane.models.process_spec.ProcessSpec.has_public_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_public_ip</span> <span class="pre">(bool)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.process_spec.ProcessSpec.process_name" title="hydroplane.models.process_spec.ProcessSpec.process_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_name</span> <span class="pre">(str)</span></code></a></p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="hydroplane.models.process_spec.ProcessSpec.process_name">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">process_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.process_spec.ProcessSpec.process_name" title="Permalink to this definition"></a></dt>
@@ -143,20 +133,8 @@
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.ContainerSpec">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.container_spec.</span></span><span class="sig-name descname"><span class="pre">ContainerSpec</span></span><a class="headerlink" href="#hydroplane.models.container_spec.ContainerSpec" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
+<dt class="field-odd">Validators</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.command" title="hydroplane.models.container_spec.ContainerSpec.command"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command</span> <span class="pre">(Optional[List[str]])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.env" title="hydroplane.models.container_spec.ContainerSpec.env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env</span> <span class="pre">(List[hydroplane.models.container_spec.EnvironmentVariable])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.image_uri" title="hydroplane.models.container_spec.ContainerSpec.image_uri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_uri</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.password" title="hydroplane.models.container_spec.ContainerSpec.password"><code class="xref py py-obj docutils literal notranslate"><span class="pre">password</span> <span class="pre">(Optional[hydroplane.models.secret.ProcessSecret])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.ports" title="hydroplane.models.container_spec.ContainerSpec.ports"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ports</span> <span class="pre">(List[hydroplane.models.container_spec.PortMapping])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.resource_limit" title="hydroplane.models.container_spec.ContainerSpec.resource_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resource_limit</span> <span class="pre">(Optional[hydroplane.models.container_spec.ResourceSpec])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.resource_request" title="hydroplane.models.container_spec.ContainerSpec.resource_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resource_request</span> <span class="pre">(Optional[hydroplane.models.container_spec.ResourceSpec])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.username" title="hydroplane.models.container_spec.ContainerSpec.username"><code class="xref py py-obj docutils literal notranslate"><span class="pre">username</span> <span class="pre">(Optional[Union[str,</span> <span class="pre">hydroplane.models.secret.ProcessSecret]])</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Validators</dt>
-<dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.requests_cannot_exceed_limits" title="hydroplane.models.container_spec.ContainerSpec.requests_cannot_exceed_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requests_cannot_exceed_limits</span></code></a> » <a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.resource_limit" title="hydroplane.models.container_spec.ContainerSpec.resource_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resource_limit</span></code></a></p></li>
 </ul>
 </dd>
@@ -229,14 +207,6 @@ request doesn’t exceed the resource limit.</p>
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.EnvironmentVariable">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.container_spec.</span></span><span class="sig-name descname"><span class="pre">EnvironmentVariable</span></span><a class="headerlink" href="#hydroplane.models.container_spec.EnvironmentVariable" title="Permalink to this definition"></a></dt>
 <dd><p>An environment variable that will be provided to the process’s runtime environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.EnvironmentVariable.name" title="hydroplane.models.container_spec.EnvironmentVariable.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.EnvironmentVariable.value" title="hydroplane.models.container_spec.EnvironmentVariable.value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">value</span> <span class="pre">(Union[hydroplane.models.secret.ProcessSecret,</span> <span class="pre">str])</span></code></a></p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.EnvironmentVariable.name">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.models.container_spec.EnvironmentVariable.name" title="Permalink to this definition"></a></dt>
@@ -256,16 +226,8 @@ request doesn’t exceed the resource limit.</p>
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.container_spec.</span></span><span class="sig-name descname"><span class="pre">PortMapping</span></span><a class="headerlink" href="#hydroplane.models.container_spec.PortMapping" title="Permalink to this definition"></a></dt>
 <dd><p>A port inside the container that will be exposed to the outside world.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
+<dt class="field-odd">Validators</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.container_port" title="hydroplane.models.container_spec.PortMapping.container_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">container_port</span> <span class="pre">(hydroplane.models.container_spec.ConstrainedIntValue)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.host_port" title="hydroplane.models.container_spec.PortMapping.host_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">host_port</span> <span class="pre">(Optional[hydroplane.models.container_spec.ConstrainedIntValue])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.name" title="hydroplane.models.container_spec.PortMapping.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span> <span class="pre">(Optional[str])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.protocol" title="hydroplane.models.container_spec.PortMapping.protocol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">protocol</span> <span class="pre">(Optional[hydroplane.models.container_spec.PortProtocol])</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Validators</dt>
-<dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.default_host_port" title="hydroplane.models.container_spec.PortMapping.default_host_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_host_port</span></code></a> » <a class="reference internal" href="#hydroplane.models.container_spec.PortMapping.host_port" title="hydroplane.models.container_spec.PortMapping.host_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">host_port</span></code></a></p></li>
 </ul>
 </dd>
@@ -334,14 +296,6 @@ request doesn’t exceed the resource limit.</p>
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.container_spec.</span></span><span class="sig-name descname"><span class="pre">ResourceSpec</span></span><a class="headerlink" href="#hydroplane.models.container_spec.ResourceSpec" title="Permalink to this definition"></a></dt>
 <dd><p>Encapsulates either a request or limit on the physical resources allocated to a process by
 the runtime.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Fields</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ResourceSpec.cpu_vcpu" title="hydroplane.models.container_spec.ResourceSpec.cpu_vcpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu_vcpu</span> <span class="pre">(Optional[hydroplane.models.container_spec.ConstrainedDecimalValue])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#hydroplane.models.container_spec.ResourceSpec.memory_mib" title="hydroplane.models.container_spec.ResourceSpec.memory_mib"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memory_mib</span> <span class="pre">(Optional[hydroplane.models.container_spec.ConstrainedIntValue])</span></code></a></p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.ResourceSpec.cpu_vcpu">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cpu_vcpu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ConstrainedDecimalValue</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.container_spec.ResourceSpec.cpu_vcpu" title="Permalink to this definition"></a></dt>
