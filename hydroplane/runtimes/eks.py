@@ -218,10 +218,19 @@ class EKSRuntime(Runtime):
     def stop_process(self, process_name: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
-        k8s_client.delete_namespaced_pod(
-            name=process_name,
-            namespace=self.settings.namespace
-        )
+        try:
+            k8s_client.delete_namespaced_pod(
+                name=process_name,
+                namespace=self.settings.namespace
+            )
+        except kubernetes.client.exceptions.ApiException as e:
+            if e.status == 404:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Process '{process_name}' not found"
+                )
+            else:
+                raise k8s_api_exception_to_http_exception(e)
 
         service_list = k8s_client.list_namespaced_service(
             label_selector=f'{HYDROPLANE_PROCESS_LABEL}={process_name}',
