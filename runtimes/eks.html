@@ -44,6 +44,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../runtimes.html">Runtimes</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="docker.html"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#authenticating-with-aws">Authenticating with AWS</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#authenticating-with-iam-credentials">Authenticating with IAM Credentials</a></li>
@@ -89,6 +90,10 @@
   <div class="section" id="eks-amazon-eks">
 <h1><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS<a class="headerlink" href="#eks-amazon-eks" title="Permalink to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime integrates with EKS, AWS’s managed Kubernetes offering.</p>
+<div class="section" id="how-the-eks-runtime-creates-processes">
+<h2>How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes<a class="headerlink" href="#how-the-eks-runtime-creates-processes" title="Permalink to this heading"></a></h2>
+<p>Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> services. Public services, on the other hand, need to be routable from outside the cluster. In a typical Kubernetes service (where you have one service backing an auto-scaling collection of pods), you’d use a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service. This would be wasteful if we did it for each process, however, since <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> services create associated load balancers, and load balancers in AWS are really expensive. Instead, we create a <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service for each process, which exposes the service on every node in the cluster at a certain high-numbered port. This means that a client could technically talk to the service by communicating with any cluster node, but that doesn’t quite mesh with Hydroplane’s process abstraction. To maintain the illusion that the process is only accessible via a single IP address, the runtime only returns the public IP address of the node on which the process’s associated pod is running when listing processes.</p>
+</div>
 <div class="section" id="settings">
 <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">

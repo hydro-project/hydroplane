@@ -3,7 +3,7 @@ Settings
 
 Hydroplane is configured by providing a path to a YAML file in the `CONF` environment variable in the server's environment.
 
-There are two things that need to be configured in settings: Hydroplane's :doc:`runtime<runtimes>` and its :doc:`secret store<secrets>`.
+There are two things that need to be configured in settings: Hydroplane's :doc:`runtime<runtimes>` and its :doc:`secret store<secrets>`. Optionally, you can also configure the :ref:`process culler<process culler>`.
 
 Here's a basic example of a configuration file that uses the ``local`` secret store and the ``docker`` runtime:
 

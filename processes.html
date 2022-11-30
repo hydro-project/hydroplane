@@ -45,8 +45,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Processes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#creating-processes">Creating Processes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#process-groups">Process Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#public-and-private-processes">Public and Private Processes</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#listing-processes">Listing Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#process-culling">Process Culling</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
@@ -91,7 +94,8 @@
 <span class="w">    </span><span class="nt">&quot;ports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">      </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="nt">&quot;container_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;host_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9090</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;host_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9090</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;protocol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="w">  </span><span class="p">}</span><span class="w"></span>
@@ -326,8 +330,42 @@ the runtime.</p>
 
 <div class="section" id="process-groups">
 <h3>Process Groups<a class="headerlink" href="#process-groups" title="Permalink to this heading"></a></h3>
-<p>A process can optionally be made part of a process <strong>group</strong> when it’s created. Hydroplane knows how to list the processes that are part of a group, as well as how to destroy a group of processes all at once.</p>
+<p>A process can optionally be made part of a process <strong>group</strong> when it’s created by setting the <code class="docutils literal notranslate"><span class="pre">group</span></code> field of the process spec. Hydroplane knows how to list the processes that are part of a group, as well as how to destroy a group of processes all at once.</p>
 </div>
+<div class="section" id="public-and-private-processes">
+<h3>Public and Private Processes<a class="headerlink" href="#public-and-private-processes" title="Permalink to this heading"></a></h3>
+<p>By default, processes are private. This means that processes can communicate with one another (and, for some runtimes, other services running in that runtime), but cannot communicate with the outside world.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">has_public_ip</span></code> field of the process spec controls whether a process is public or private. If it’s set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the service will be publicly routable, and its public IP address will be provided instead of its private one(s) when it’s listed.</p>
+</div>
+</div>
+<div class="section" id="listing-processes">
+<h2>Listing Processes<a class="headerlink" href="#listing-processes" title="Permalink to this heading"></a></h2>
+<p>The Hydroplane server itself is stateless, but the server can interrogate its runtime to list processes. The way that the runtime is interrogated varies, but usually Hydroplane annotates the resources it manages with tags, and uses those tags to find those processes later.</p>
+</div>
+<div class="section" id="process-culling">
+<span id="process-culler"></span><h2>Process Culling<a class="headerlink" href="#process-culling" title="Permalink to this heading"></a></h2>
+<p>If you’re running experiments in the cloud, running processes cost money, so you want to make sure you don’t leave processes sitting around accidentally. Hydroplane has a <strong>process culler</strong> that automatically stops any processes that are older than a certain age (specified in minutes).</p>
+<p>The process culler’s settings are described below. Here’s an example process culler configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="hydroplane.utils.process_culler.Settings">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.utils.process_culler.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.utils.process_culler.Settings" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.utils.process_culler.Settings.max_age_minutes">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_age_minutes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#hydroplane.utils.process_culler.Settings.max_age_minutes" title="Permalink to this definition"></a></dt>
+<dd><p>the maximum number of minutes that a process should be allowed to run</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.utils.process_culler.Settings.culling_interval_minutes">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">culling_interval_minutes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hydroplane.utils.process_culler.Settings.culling_interval_minutes" title="Permalink to this definition"></a></dt>
+<dd><p>the frequency, in minutes, with which the process culler runs</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
