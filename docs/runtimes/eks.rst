@@ -3,6 +3,11 @@
 
 The ``eks`` runtime integrates with EKS, AWS's managed Kubernetes offering.
 
+How the ``eks`` Runtime Creates Processes
+-----------------------------------------
+
+Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are ``ClusterIP`` services. Public services, on the other hand, need to be routable from outside the cluster. In a typical Kubernetes service (where you have one service backing an auto-scaling collection of pods), you'd use a ``LoadBalancer`` service. This would be wasteful if we did it for each process, however, since ``LoadBalancer`` services create associated load balancers, and load balancers in AWS are really expensive. Instead, we create a ``NodePort`` service for each process, which exposes the service on every node in the cluster at a certain high-numbered port. This means that a client could technically talk to the service by communicating with any cluster node, but that doesn't quite mesh with Hydroplane's process abstraction. To maintain the illusion that the process is only accessible via a single IP address, the runtime only returns the public IP address of the node on which the process's associated pod is running when listing processes.
+
 Settings
 --------
 
