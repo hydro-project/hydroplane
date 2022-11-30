@@ -161,7 +161,8 @@ def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
                 HYDROPLANE_PROCESS_LABEL: process_spec.process_name
             },
             'ports': [
-                {'port': p.container_port} for p in container_spec.ports
+                {'port': p.container_port, 'protocol': p.protocol.name}
+                for p in container_spec.ports
             ]
         }
     }

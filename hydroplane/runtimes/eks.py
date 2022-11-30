@@ -332,6 +332,7 @@ class EKSRuntime(Runtime):
                 pod_private_ip = pod.status.host_ip
 
                 if service_type == 'NodePort':
+                    # We're exposing a NodePort service, so this process is public
                     socket_ip = node_private_to_public_ip[pod_private_ip]
 
                     if socket_ip is None:
@@ -343,7 +344,8 @@ class EKSRuntime(Runtime):
 
                     is_public = True
                 else:
-                    socket_ip = pod_private_ip
+                    # We're exposing a ClusterIP service, so this process is private
+                    socket_ip = service.spec.cluster_ip
                     is_public = False
 
                 socket_addresses.append(
