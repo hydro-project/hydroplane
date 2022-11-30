@@ -12,10 +12,18 @@ from .models.process_spec import ProcessSpec
 from .config import Settings
 from .runtimes.factory import get_runtime
 from .secret_stores.factory import get_secret_store
+from .utils.process_culler import ProcessCuller
 
 logger = logging.getLogger('main')
 
 app = FastAPI()
+
+
+@app.on_event('startup')
+@repeat_every(seconds=60, raise_exceptions=True)
+async def cull_old_processes():
+    if hasattr(app.state, 'process_culler'):
+        app.state.process_culler.cull_old_processes()
 
 
 @app.on_event('startup')
@@ -42,6 +50,16 @@ async def on_startup():
     secret_store = get_secret_store(settings)
     runtime = get_runtime(secret_store, settings)
     runtime.refresh_api_clients()
+
+    if settings.process_culling is not None:
+        app.state.process_culler = ProcessCuller(
+            runtime=runtime,
+            **settings.process_culling.dict()
+        )
+
+        logger.info(f'Process culling is enabled: {app.state.process_culler.info()}')
+    else:
+        logger.info('Process culling is disabled')
 
     app.state.runtime = runtime
 

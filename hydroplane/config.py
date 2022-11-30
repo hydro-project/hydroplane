@@ -1,10 +1,11 @@
-from typing import Union
+from typing import Union, Optional
 
 from pydantic import BaseModel, Field
 
 from .secret_stores.local import Settings as LocalSecretStoreSettings
 from .runtimes.docker import Settings as DockerRuntimeSettings
 from .runtimes.eks import Settings as EKSRuntimeSettings
+from .utils.process_culler import Settings as ProcessCullerSettings
 
 
 class Settings(BaseModel):
@@ -15,3 +16,5 @@ class Settings(BaseModel):
 
     runtime: Union[DockerRuntimeSettings, EKSRuntimeSettings] = \
         Field(..., discriminator='runtime_type')
+
+    process_culling: Optional[ProcessCullerSettings]
