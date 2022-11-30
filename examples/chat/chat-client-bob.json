@@ -1,0 +1,19 @@
+{
+  "process_name": "chat-client-bob",
+  "group": "chat-clients",
+  "container": {
+    "image_uri": "ghcr.io/hydro-project/hydroflow-examples:latest",
+    "ports": [
+      {
+        "container_port": 6100,
+        "host_port": 6100,
+        "protocol": "udp"
+      }
+    ],
+    "command": [
+      "/bin/bash", "-c",
+      "/usr/src/myapp/example_utils/chat_driver.py -w /usr/src/myapp/example_utils/web2a | /usr/src/myapp/chat --name bob --role client --port 6100 --addr chat-client-bob --server-port 12347 --server-addr chat-server"
+    ]
+  },
+  "has_public_ip": false
+}

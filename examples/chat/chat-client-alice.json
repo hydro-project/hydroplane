@@ -1,0 +1,19 @@
+{
+  "process_name": "chat-client-alice",
+  "group": "chat-clients",
+  "container": {
+    "image_uri": "ghcr.io/hydro-project/hydroflow-examples:latest",
+    "ports": [
+      {
+        "container_port": 6000,
+        "host_port": 6000,
+        "protocol": "udp"
+      }
+    ],
+    "command": [
+      "/bin/bash", "-c",
+      "/usr/src/myapp/example_utils/chat_driver.py -w /usr/src/myapp/example_utils/web2a | /usr/src/myapp/chat --name alice --role client --port 6000 --addr chat-client-alice --server-port 12347 --server-addr chat-server"
+    ]
+  },
+  "has_public_ip": false
+}
