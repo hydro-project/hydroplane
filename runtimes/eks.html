@@ -70,7 +70,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../processes.html">Defining Processes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../secrets.html">Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 </ul>
 
@@ -251,7 +251,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hydroplane -c eks.yml
 </pre></div>
 </div>
-<p>In a separate terminal, let’s make sure we can list processes:</p>
+<p>In a separate terminal, from the root of the <code class="docutils literal notranslate"><span class="pre">hydroplane</span></code> repo, let’s make sure we can list processes:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
 </pre></div>
 </div>
@@ -278,7 +278,11 @@
 </pre></div>
 </div>
 <p>Note that the process is exposing a single public port. In this example, it’s <code class="docutils literal notranslate"><span class="pre">34.217.208.197:31491</span></code>, but your host and port will be different.</p>
-<p>Once you’ve found that host and port, open the host and port in a web browser. You should see an nginx “hello world” page.</p>
+<p>Once you’ve found that host and port, open the host and port in a web browser. You should see an <a class="reference external" href="https://www.nginx.com/">nginx</a> “hello world” page.</p>
+<p>Let’s stop the process now that we’ve verified that everything is working:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop nginx
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="implementation-and-configuration-details">

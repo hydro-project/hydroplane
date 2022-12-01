@@ -14,6 +14,7 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
    using-hydroplane
    settings
    runtimes
+   secret_stores
    processes
    secrets
    examples

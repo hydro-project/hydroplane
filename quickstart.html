@@ -45,7 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
@@ -98,11 +98,11 @@ poetry install
 <span class="c1"># (uses the checked-in `basic-config.yml` config file by default)</span>
 bin/hydroplane
 
-<span class="c1"># In a separate terminal:</span>
+<span class="c1"># In a separate terminal, from the root of the hydroplane repo, list processes.</span>
+<span class="c1"># This should print &#39;[]&#39;, since no processes are running at first.</span>
 bin/hpctl list
 
-<span class="c1"># This should print &#39;[]&#39;, since no processes are running at first.</span>
-
+<span class="c1"># Let&#39;s start a simple example process</span>
 bin/hpctl start examples/nginx.yml
 
 <span class="c1"># Load localhost:8080 in a browser; you should see an nginx &quot;hello world&quot; page</span>
