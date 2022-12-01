@@ -87,7 +87,7 @@ class DockerRuntime(Runtime):
                 image=container_spec.image_uri,
                 name=process_spec.process_name,
                 ports={
-                    f'{p.container_port}/{p.protocol}': (host_ip, p.host_port)
+                    f'{p.container_port}/{p.protocol.name.lower()}': (host_ip, p.host_port)
                     for p in container_spec.ports
                 },
                 environment=container_env,
