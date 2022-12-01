@@ -8,6 +8,14 @@ from typing import Optional
 import requests
 
 
+def handle_error(response):
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        print(json.dumps(response.json(), indent=2))
+        raise e
+
+
 def start_process(process_spec_path: str, server: str):
     process_file = Path(process_spec_path)
     if not process_file.exists():
@@ -17,7 +25,7 @@ def start_process(process_spec_path: str, server: str):
         process_spec = json.load(fp)
 
     response = requests.post(f'http://{server}/process', json=process_spec)
-    response.raise_for_status()
+    handle_error(response)
 
 
 def stop_process_or_group(process_or_group_name: str, group: bool, server: str):
@@ -29,12 +37,12 @@ def stop_process_or_group(process_or_group_name: str, group: bool, server: str):
 
 def stop_process(process_name: str, server: str):
     response = requests.delete(f'http://{server}/process/{process_name}')
-    response.raise_for_status()
+    handle_error(response)
 
 
 def stop_group(group_name: str, server: str):
     response = requests.delete(f'http://{server}/group/{group_name}')
-    response.raise_for_status()
+    handle_error(response)
 
 
 def list_processes(group_name: Optional[str], server: str):
@@ -44,7 +52,7 @@ def list_processes(group_name: Optional[str], server: str):
         request_uri = f'http://{server}/process'
 
     response = requests.get(request_uri)
-    response.raise_for_status()
+    handle_error(response)
 
     print(json.dumps(response.json(), indent=2))
 
