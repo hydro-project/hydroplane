@@ -122,7 +122,7 @@ class DockerRuntime(Runtime):
         try:
             container = client.containers.get(process_name)
         except docker.errors.NotFound:
-            raise HTTPException(status_code=404, detail=f"Process '{process_name} not found'")
+            raise HTTPException(status_code=404, detail=f"Process '{process_name}' not found")
 
         container.kill()
 
