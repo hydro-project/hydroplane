@@ -7,7 +7,7 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :caption: Contents:
 
    settings
