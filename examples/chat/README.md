@@ -5,22 +5,39 @@ The JSON files in this directory describe three processes: a **server** and two 
 ## How to Launch the Processes
 
 ```bash
-# Launch the server
-curl -s -X POST -H "Content-Type: application/json" -d @server.json http://<hydroplane instance address>/process
+# Launch the server (from the root of this repo)
+bin/hpctl start examples/chat/chat-server.json
 
 # Give the server some time to warm up
 sleep 5
 
 # Start the clients
-curl -s -X POST -H "Content-Type: application/json" -d @chat-client-alice.json http://<hydroplane instance address>/process
-curl -s -X POST -H "Content-Type: application/json" -d @chat-client-bob.json http://<hydroplane instance address>/process
+bin/hpctl start examples/chat/chat-client-alice.json
+bin/hpctl start examples/chat/chat-client-bob.json
 ```
 
+## Checking If It Worked
+
+In the ``docker`` runtime:
+
+```
+docker ps
+docker logs chat-server
+docker logs chat-client-alice
+docker logs chat-client-bob
+```
+
+In the ``eks`` runtime:
+
+```
+kubectl logs pod/chat-server
+kubectl logs pod/chat-client-alice
+kubectl logs pod/chat-client-bob
+```
 
 ## How to Destroy the Processes
 
 ```bash
-curl -s -X DELETE http://localhost:8000/process/chat-server
-curl -s -X DELETE http://localhost:8000/process/chat-client-alice
-curl -s -X DELETE http://localhost:8000/process/chat-client-bob
+bin/hpctl stop -g chat-clients
+bin/hpctl stop chat-server
 ```
