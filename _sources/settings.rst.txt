@@ -3,6 +3,12 @@ Configuration
 
 Hydroplane is configured by passing a configuration YAML file to it with the ``-c/--conf`` flag. By default, Hydroplane will read its configuration from ``basic-config.yml``.
 
+To provide your own configuration file to Hydroplane, write your configuration YAML to a file (e.g. ``conf.yml``) and run Hydroplane like so:
+
+.. code-block:: bash
+
+    bin/hydroplane -c conf.yml
+
 There are two things that need to be configured in settings: Hydroplane's :doc:`runtime<runtimes>` and its :doc:`secret store<secrets>`. Optionally, you can also configure the :ref:`process culler<process culler>`.
 
 Example Configurations

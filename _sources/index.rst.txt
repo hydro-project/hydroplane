@@ -13,8 +13,8 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
    quickstart
    using-hydroplane
    settings
-   runtimes
-   secret_stores
    processes
+   runtimes
    secrets
+   secret_stores
    examples

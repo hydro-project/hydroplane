@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Runtimes" href="runtimes.html" />
+    <link rel="next" title="Defining Processes" href="processes.html" />
     <link rel="prev" title="How to Use Hydroplane" href="using-hydroplane.html" /> 
 </head>
 
@@ -46,8 +46,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#example-configurations">Example Configurations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
@@ -79,6 +79,10 @@
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h1>
 <p>Hydroplane is configured by passing a configuration YAML file to it with the <code class="docutils literal notranslate"><span class="pre">-c/--conf</span></code> flag. By default, Hydroplane will read its configuration from <code class="docutils literal notranslate"><span class="pre">basic-config.yml</span></code>.</p>
+<p>To provide your own configuration file to Hydroplane, write your configuration YAML to a file (e.g. <code class="docutils literal notranslate"><span class="pre">conf.yml</span></code>) and run Hydroplane like so:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hydroplane -c conf.yml
+</pre></div>
+</div>
 <p>There are two things that need to be configured in settings: Hydroplane’s <a class="reference internal" href="runtimes.html"><span class="doc">runtime</span></a> and its <a class="reference internal" href="secrets.html"><span class="doc">secret store</span></a>. Optionally, you can also configure the <a class="reference internal" href="processes.html#process-culler"><span class="std std-ref">process culler</span></a>.</p>
 <div class="section" id="example-configurations">
 <h2>Example Configurations<a class="headerlink" href="#example-configurations" title="Permalink to this heading"></a></h2>
@@ -137,7 +141,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="using-hydroplane.html" class="btn btn-neutral float-left" title="How to Use Hydroplane" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="runtimes.html" class="btn btn-neutral float-right" title="Runtimes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="processes.html" class="btn btn-neutral float-right" title="Defining Processes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
