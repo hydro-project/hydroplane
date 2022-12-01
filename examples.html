@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Hydroplane API &mdash; Hydroplane  documentation</title>
+  <title>Examples &mdash; Hydroplane  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
@@ -19,7 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Examples" href="examples.html" /> 
+    <link rel="next" title="The Hydroplane API" href="api.html" />
+    <link rel="prev" title="local Secret Store" href="secret_stores/local.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,8 +44,11 @@
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">The Hydroplane API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#chat">Chat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -61,9 +65,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>The Hydroplane API</li>
+      <li>Examples</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -71,26 +75,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="the-hydroplane-api">
-<h1>The Hydroplane API<a class="headerlink" href="#the-hydroplane-api" title="Permalink to this heading"></a></h1>
-<p>Hydroplane automatically generates detailed API documentation that it serves at</p>
-<p><code class="docutils literal notranslate"><span class="pre">http://&lt;host</span> <span class="pre">and</span> <span class="pre">port</span> <span class="pre">of</span> <span class="pre">Hydroplane</span> <span class="pre">server&gt;/docs</span></code></p>
-<p>You should refer to that documentation for the most up-to-date representation of the Hydroplane API.</p>
-<p>This is a rough outline of the API’s methods:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/process</span></code> - creates a process. The request body should be a JSON-serialized <a class="reference internal" href="processes.html"><span class="doc">process spec</span></a></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/process</span></code> - retrieves a list of all running processes</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/group/&lt;group</span> <span class="pre">name&gt;</span></code> - retrieves a list of all processes in a particular group</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/process/&lt;name</span> <span class="pre">of</span> <span class="pre">process&gt;</span></code> - destroys a process, given the process’s name</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/group/&lt;group</span> <span class="pre">name&gt;</span></code> - destroys all processes in a group</p></li>
-</ul>
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<div class="section" id="chat">
+<h2>Chat<a class="headerlink" href="#chat" title="Permalink to this heading"></a></h2>
+<p>An example that deploys a chat server and multiple chat clients can be found <a class="reference external" href="https://github.com/hydro-project/hydroplane/tree/main/examples/chat">in the hydroplane repo</a>.</p>
+</div>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="secret_stores/local.html" class="btn btn-neutral float-left" title="local Secret Store" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="The Hydroplane API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
