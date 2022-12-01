@@ -105,7 +105,7 @@ def main(args):
     uvicorn.run(
         app=app,
         host=args.host,
-        port=8000,
+        port=args.port,
         log_config={
             'version': 1,
             'disable_existing_loggers': False,
@@ -140,9 +140,11 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', '-c', help='path to a Hydroplane config file '
-                        '(default: %(default)s)', default='conf.yml')
+                        '(default: %(default)s)', default='basic-config.yml')
     parser.add_argument('--host', '-H', help='hostname or IP on which to bind '
                         '(default: %(default)s)', default='127.0.0.1')
+    parser.add_argument('--port', '-p', help='port on which to bind (default: %(default)s)',
+                        type=int, default=8000)
     args = parser.parse_args()
 
     main(args)
