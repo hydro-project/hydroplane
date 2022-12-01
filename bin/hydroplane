@@ -1,3 +1,7 @@
 #!/bin/bash
 
-python -m hydroplane.main
+if [[ -z "${HYDROPLANE_RUNNING_IN_CONTAINER}" ]]; then
+  poetry run python -m hydroplane.main $@
+else
+  python -m hydroplane.main $@
+fi

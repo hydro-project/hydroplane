@@ -18,5 +18,6 @@ COPY hydroplane/ /home/hydroplane/hydroplane/
 COPY bin/ /home/hydroplane/bin/
 
 ENV PATH="${PATH}:/home/hydroplane/.local/bin"
+ENV HYDROPLANE_RUNNING_IN_CONTAINER="yes"
 
 ENTRYPOINT ["/home/hydroplane/bin/hydroplane"]

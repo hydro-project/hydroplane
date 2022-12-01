@@ -1,6 +1,8 @@
+import argparse
 from getpass import getpass
 import logging
 import os
+import sys
 
 from fastapi import FastAPI
 from fastapi_utils.tasks import repeat_every
@@ -36,8 +38,8 @@ async def refresh_api_clients():
 
 @app.on_event('startup')
 async def on_startup():
-    # Load settings from the YAML file pointed to by the CONF environment variable
-    with open(os.getenv('CONF'), 'r') as fp:
+    # Load settings from the YAML file pointed to by the HYDROPLANE_CONF environment variable
+    with open(os.getenv('HYDROPLANE_CONF'), 'r') as fp:
         settings = Settings.parse_obj(yaml.load(fp.read(), Loader=yaml.FullLoader))
 
     if settings.secret_store.secret_store_type == 'local':
@@ -93,9 +95,16 @@ async def list_processes():
     return app.state.runtime.list_processes(group=None)
 
 
-if __name__ == '__main__':
+def main(args):
+    if not os.path.exists(args.conf):
+        sys.exit(f'Cannot find config file "{args.conf}" - did you specify the '
+                 'right file with --conf?')
+
+    os.environ['HYDROPLANE_CONF'] = args.conf
+
     uvicorn.run(
         app=app,
+        host=args.host,
         port=8000,
         log_config={
             'version': 1,
@@ -126,3 +135,14 @@ if __name__ == '__main__':
             }
         }
     )
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--conf', '-c', help='path to a Hydroplane config file '
+                        '(default: %(default)s)', default='conf.yml')
+    parser.add_argument('--host', '-H', help='hostname or IP on which to bind '
+                        '(default: %(default)s)', default='127.0.0.1')
+    args = parser.parse_args()
+
+    main(args)
