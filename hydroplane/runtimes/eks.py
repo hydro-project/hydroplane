@@ -318,6 +318,8 @@ class EKSRuntime(Runtime):
 
         for service in services.items:
             process_name = service.metadata.labels[HYDROPLANE_PROCESS_LABEL]
+            process_group = service.metadata.labels.get(HYDROPLANE_GROUP_LABEL)
+
             pod = pods_by_name[process_name]
 
             service_type = service.spec.type
@@ -358,7 +360,7 @@ class EKSRuntime(Runtime):
 
             process_infos.append(ProcessInfo(
                 process_name=process_name,
-                group=group,
+                group=process_group,
                 socket_addresses=socket_addresses,
                 created=service.metadata.creation_timestamp
             ))
