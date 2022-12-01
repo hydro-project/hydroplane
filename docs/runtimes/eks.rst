@@ -3,15 +3,162 @@
 
 The ``eks`` runtime integrates with EKS, AWS's managed Kubernetes offering.
 
-How the ``eks`` Runtime Creates Processes
------------------------------------------
-
-Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are ``ClusterIP`` services. Public services, on the other hand, need to be routable from outside the cluster. In a typical Kubernetes service (where you have one service backing an auto-scaling collection of pods), you'd use a ``LoadBalancer`` service. This would be wasteful if we did it for each process, however, since ``LoadBalancer`` services create associated load balancers, and load balancers in AWS are really expensive. Instead, we create a ``NodePort`` service for each process, which exposes the service on every node in the cluster at a certain high-numbered port. This means that a client could technically talk to the service by communicating with any cluster node, but that doesn't quite mesh with Hydroplane's process abstraction. To maintain the illusion that the process is only accessible via a single IP address, the runtime only returns the public IP address of the node on which the process's associated pod is running when listing processes.
+.. contents::
 
 Settings
 --------
 
 .. autopydantic_model:: hydroplane.runtimes.eks.Settings
+
+Example Configuration
+---------------------
+
+Here's an example of a configuration file that uses the ``eks`` runtime and the ``local`` secret store. This configuration sets up Hydroplane to talk to an EKS cluster named ``my-cool-cluster`` in the ``us-west-2`` AWS region:
+
+.. code-block:: yaml
+
+    ---
+    secret_store:
+      secret_store_type: local
+      store_location: ~/.hydro_secrets
+
+    runtime:
+      runtime_type: eks
+      cluster_name: my-cool-cluster
+      region: us-west-2
+      credentials:
+        access_key:
+          access_key_id:
+            secret_name: aws-credentials
+            key: AccessKeyId
+          secret_access_key:
+            secret_name: aws-credentials
+            key: SecretAccessKey
+
+
+Quickstart
+==========
+
+Step 1: Create an EKS cluster and IAM user
+------------------------------------------
+
+In order to use the ``eks`` runtime, you first have to have an EKS cluster. We'll use `` `hydro-project/eks-setup<https://github.com/hydro-project/eks-setup>`_ `` to do that. Follow the instructions in the "Quickstart" section of that repo's README.
+
+When you're done with those instructions, you should have two things:
+
+* An EKS cluster (we'll assume that the cluster's name is ``hydro-eks`` and that it was created in ``us-west-2`` in subsequent steps for brevity)
+* The access key and secret key for a user in the cluster's ``cluster-admins`` group (if you added a user using ``eks-setup user add``, that user is in the ``cluster-admins`` group)
+
+
+Step 2: Configure Hydroplane
+----------------------------
+
+Create a file named ``eks.yml`` with the following contents:
+
+.. code-block:: yaml
+
+    ---
+    secret_store:
+      secret_store_type: local
+      store_location: ~/.hydro_secrets
+
+    runtime:
+      runtime_type: eks
+      cluster_name: hydro-eks
+      region: us-west-2
+      credentials:
+        access_key:
+          access_key_id:
+            secret_name: aws-credentials
+            key: AccessKeyId
+          secret_access_key:
+            secret_name: aws-credentials
+            key: SecretAccessKey
+
+
+If you haven't already, initialize your local secret store:
+
+.. code-block:: bash
+
+    bin/local-secret-store init
+
+
+Make a note of the password you used when configuring the store; you'll need it when Hydroplane starts.
+
+Now, create a file called ``creds.json`` that looks like this:
+
+.. code-block:: json
+
+    {"AccessKeyId":"<put your user's access key ID here>","SecretAccessKey":"<put your user's secret access key here>"}
+
+Add that file to the secret store:
+
+.. code-block:: bash
+
+    bin/local-secret-store add -f creds.json aws-credentials
+
+
+and delete the plaintext original afterwards:
+
+.. code-block:: bash
+
+    rm creds.json
+
+
+Step 3: Run Hydroplane
+----------------------
+
+Now you've (finally) got an EKS cluster and the ability to authenticate to it! Let's launch Hydroplane:
+
+.. code-block:: bash
+
+    bin/hydroplane -c eks.yml
+
+In a separate terminal, let's make sure we can list processes:
+
+.. code-block:: bash
+
+   bin/hpctl list
+
+You should get back an empty list, because we haven't launched any processes yet.
+
+Let's try a simple example to make sure we can start something and access it remotely:
+
+.. code-block:: bash
+
+   bin/hpctl start examples/nginx.json
+
+If you list processes with ``bin/hpctl list`` now, you should see something like this:
+
+.. code-block:: json
+
+    [
+      {
+        "process_name": "nginx",
+        "group": null,
+        "socket_addresses": [
+          {
+            "host": "34.217.208.197",
+            "port": 31491,
+            "is_public": true
+          }
+        ],
+        "created": "2022-12-01T22:40:33+00:00"
+      }
+    ]
+
+Note that the process is exposing a single public port. In this example, it's ``34.217.208.197:31491``, but your host and port will be different.
+
+Once you've found that host and port, open the host and port in a web browser. You should see an nginx "hello world" page.
+
+Implementation and Configuration Details
+========================================
+
+How the ``eks`` Runtime Creates Processes
+-----------------------------------------
+
+Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are ``ClusterIP`` services. Public services, on the other hand, need to be routable from outside the cluster. In a typical Kubernetes service (where you have one service backing an auto-scaling collection of pods), you'd use a ``LoadBalancer`` service. This would be wasteful if we did it for each process, however, since ``LoadBalancer`` services create associated load balancers, and load balancers in AWS are really expensive. Instead, we create a ``NodePort`` service for each process, which exposes the service on every node in the cluster at a certain high-numbered port. This means that a client could technically talk to the service by communicating with any cluster node, but that doesn't quite mesh with Hydroplane's process abstraction. To maintain the illusion that the process is only accessible via a single IP address, the runtime only returns the public IP address of the node on which the process's associated pod is running when listing processes.
+
 
 Authenticating with AWS
 -----------------------
@@ -76,8 +223,8 @@ A Note on IAM User Permissions
 
 The authenticating IAM user must have enough permissions on the EKS cluster to create and destroy pods and services. If you've set up your cluster with `hydro-project/eks-setup <https://github.com/hydro-project/eks-setup>`_, then any user you add using that script will have the appropriate privileges.
 
-AWS Authentication Settings
----------------------------
+AWS Authentication Configuration Reference
+------------------------------------------
 
 .. automodule:: hydroplane.models.aws
   :members:

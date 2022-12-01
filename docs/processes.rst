@@ -62,9 +62,23 @@ Process Culling
 
 If you're running experiments in the cloud, running processes cost money, so you want to make sure you don't leave processes sitting around accidentally. Hydroplane has a **process culler** that automatically stops any processes that are older than a certain age (specified in minutes).
 
-The process culler's settings are described below. Here's an example process culler configuration:
+The process culler's settings are described below. Here's an example configuration file showing process culler configuration:
 
 .. code-block:: yaml
+
+    ---
+    secret_store:
+      secret_store_type: none
+
+    runtime:
+      runtime_type: docker
+
+    process_culling:
+      # Cull all processes older than two hours
+      max_age_minutes: 120
+
+      # Cull processes every 5 minutes
+      culling_interval_minutes: 5
 
 
 .. autopydantic_model:: hydroplane.utils.process_culler.Settings

@@ -1,9 +1,12 @@
-Settings
-========
+Configuration
+=============
 
-Hydroplane is configured by providing a path to a YAML file in the `CONF` environment variable in the server's environment.
+Hydroplane is configured by passing a configuration YAML file to it with the ``-c/--conf`` flag. By default, Hydroplane will read its configuration from ``basic-config.yml``.
 
 There are two things that need to be configured in settings: Hydroplane's :doc:`runtime<runtimes>` and its :doc:`secret store<secrets>`. Optionally, you can also configure the :ref:`process culler<process culler>`.
+
+Example Configurations
+----------------------
 
 Here's a basic example of a configuration file that uses the ``local`` secret store and the ``docker`` runtime:
 
@@ -38,6 +41,25 @@ and another example that uses the ``local`` secret store and the ``eks`` runtime
         secret_access_key:
           secret_name: aws-credentials
           key: SecretAccessKey
+
+
+Here's an example that configures process culling (see :ref:`the process culler documentation<process culler>` for more information on how to configure it):
+
+.. code-block:: yaml
+
+    ---
+    secret_store:
+      secret_store_type: none
+
+    runtime:
+      runtime_type: docker
+
+    process_culling:
+      # Cull all processes older than two hours
+      max_age_minutes: 120
+
+      # Cull processes every 5 minutes
+      culling_interval_minutes: 5
 
 
 Each runtime has its own specific configuration that's documented in the :doc:`runtimes` section of this documentation.

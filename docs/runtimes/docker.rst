@@ -14,9 +14,20 @@ Settings
 
 The ``docker`` runtime doesn't have any substantive settings, but you still need to specify it as your runtime for Hydroplane to use it.
 
-Here's an example configuration that you might find in your :doc:`settings file</settings>`:
+Example Configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+Here's an example of a configuration file that uses the ``docker`` runtime. Since the ``docker`` runtime doesn't need a secret store, this configuration uses the :doc:`"none" secret store</secret_stores/none>`.
 
 .. code-block:: yaml
+    ---
+    secret_store:
+      secret_store_type: none
 
     runtime:
       runtime_type: docker
+
+Quickstart
+----------
+
+Follow the :doc:`quickstart guide</quickstart>` to get Hydroplane set up to use the ``docker`` runtime.

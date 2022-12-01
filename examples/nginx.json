@@ -1,0 +1,14 @@
+{
+  "process_name": "nginx",
+  "container": {
+    "image_uri": "nginxdemos/hello",
+    "ports": [
+      {
+        "container_port": 80,
+        "host_port": 8080,
+        "protocol": "tcp"
+      }
+    ]
+  },
+  "has_public_ip": true
+}

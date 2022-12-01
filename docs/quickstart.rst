@@ -8,8 +8,9 @@ This quickstart guide will get you from zero to a running Hydroplane server as q
     # Download and install Docker Desktop
     open "https://www.docker.com/products/docker-desktop/"
 
-    # Clone the hydroplane repo
+    # Clone the hydroplane repo and enter it
     git clone git@github.com:hydro-project/hydroplane.git
+    cd hydroplane
 
     # Make sure you're running Python 3.10 or later
     python3 --version

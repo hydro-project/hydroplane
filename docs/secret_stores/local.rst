@@ -1,26 +1,28 @@
 ``local`` Secret Store
 ======================
 
-Hydroplane needs some form of secret store to safely keep credentials that it uses to communicate
-with the backend runtime. We have a local secret store that stores secrets on the local filesystem,
-symetrically encrypted with a password. It's not meant for production use, but it should be good
-enough for local development and experimentation.
+The ``local`` secret store stores secrets on the local filesystem, symetrically encrypted with
+a password. It's not meant for production use, but it should be good enough for local development
+and experimentation.
 
 .. contents::
 
-Settings
---------
+Configuration
+-------------
 
 .. autopydantic_model:: hydroplane.secret_stores.local.Settings
 
 
-Here's an example configuration that you might see inside of your :doc:`settings file</settings>`:
+Example Configuration Snippet
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here's an example configuration snippet for the ``local`` secret store:
 
 .. code-block:: yaml
 
     secret_store:
       secret_store_type: local
-      store_location: /Users/alexras/.hydro_secrets
+      store_location: ~/.hydro_secrets
 
 
 Initializing a Local Secret Store
