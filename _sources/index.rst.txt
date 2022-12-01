@@ -10,6 +10,8 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
    :maxdepth: 4
    :caption: Contents:
 
+   quickstart
+   using-hydroplane
    settings
    runtimes
    processes

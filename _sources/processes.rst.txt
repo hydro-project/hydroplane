@@ -1,10 +1,10 @@
-Processes
-=========
+Defining Processes
+==================
 
-Hydroplane is responsible for creating and destroying **processes**. In Hydroplane's case, a process is anything that runs inside a single container.
+Hydroplane is responsible for creating and destroying **processes**. Hydroplane defines a process as anything that runs inside a single container.
 
-Creating Processes
-------------------
+Process Specifications
+----------------------
 
 When launching a process, you have to provide a **process specification**, or **process spec** for short. A process spec describes the process: it gives the process a name and specifies the location of the process's container image and how the container should be configured.
 

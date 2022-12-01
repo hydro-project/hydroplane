@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Runtimes &mdash; Hydroplane  documentation</title>
+  <title>Quickstart Guide &mdash; Hydroplane  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="docker - Docker (Single-Node) Runtime" href="runtimes/docker.html" />
-    <link rel="prev" title="Settings" href="settings.html" /> 
+    <link rel="next" title="How to Use Hydroplane" href="using-hydroplane.html" />
+    <link rel="prev" title="Hydroplane" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,14 +40,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Runtimes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="runtimes/docker.html"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
@@ -68,9 +64,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Runtimes</li>
+      <li>Quickstart Guide</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/runtimes.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -78,15 +74,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="runtimes">
-<h1>Runtimes<a class="headerlink" href="#runtimes" title="Permalink to this heading"></a></h1>
-<p>Hydroplane doesn’t run containers by itself. Instead, it communicates with a pre-existing container <strong>runtime</strong> that runs those containers on its behalf. In this way, Hydroplane acts as a common interface to a variety of different container runtimes.</p>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Available Runtimes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="runtimes/docker.html"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a></li>
-<li class="toctree-l1"><a class="reference internal" href="runtimes/eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></li>
-</ul>
+  <div class="section" id="quickstart-guide">
+<h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permalink to this heading"></a></h1>
+<p>This quickstart guide will get you from zero to a running Hydroplane server as quickly as possible. This guide has been tested on macOS 12 (Monterey), but should work with minimal modification on recent versions of macOS and Linux.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and install Docker Desktop</span>
+open <span class="s2">&quot;https://www.docker.com/products/docker-desktop/&quot;</span>
+
+<span class="c1"># Clone the hydroplane repo</span>
+git clone git@github.com:hydro-project/hydroplane.git
+
+<span class="c1"># Make sure you&#39;re running Python 3.10 or later</span>
+python3 --version
+
+<span class="c1"># Install poetry if you haven&#39;t already</span>
+<span class="c1"># (see https://python-poetry.org/docs/ for more info)</span>
+curl -sSL https://install.python-poetry.org <span class="p">|</span> python3 -
+
+<span class="c1"># Use poetry to initialize Hydroplane&#39;s virtualenv and install its dependencies</span>
+poetry shell
+poetry install
+
+<span class="c1"># Start the Hydroplane server</span>
+<span class="c1"># (uses the checked-in `basic-config.yml` config file by default)</span>
+bin/hydroplane
+
+<span class="c1"># In a separate terminal:</span>
+bin/hpctl list
+
+<span class="c1"># This should print &#39;[]&#39;, since no processes are running at first.</span>
+
+bin/hpctl start examples/nginx.yml
+
+<span class="c1"># Load localhost:8080 in a browser; you should see an nginx &quot;hello world&quot; page</span>
+open <span class="s2">&quot;http://localhost:8080/&quot;</span>
+</pre></div>
 </div>
 </div>
 
@@ -94,8 +115,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="settings.html" class="btn btn-neutral float-left" title="Settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="runtimes/docker.html" class="btn btn-neutral float-right" title="docker - Docker (Single-Node) Runtime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Hydroplane" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="using-hydroplane.html" class="btn btn-neutral float-right" title="How to Use Hydroplane" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
