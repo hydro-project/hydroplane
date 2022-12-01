@@ -6,7 +6,7 @@ Both Hydroplane and the processes it creates need access to secret values. Some 
 Hydroplane Secrets
 ------------------
 
-Hydroplane secrets are stored in a **secret store**. Hydroplane needs access to this secret store in order to retrieve enough credentials to authenticate with the runtime.
+Hydroplane secrets are stored in a **secret store**. Most of Hydroplane's runtimes need access to this secret store in order to retrieve enough credentials to authenticate with the runtime. For runtimes like ``docker`` that don't require any secrets, the ``none`` secret store can be used.
 
 .. autopydantic_model:: hydroplane.models.secret.HydroplaneSecret
 
@@ -17,11 +17,14 @@ Grouping Related Secrets Together
 
 It's sometimes convenient to group related credentials together in a single secret; for example, you might want to store a username and password for a service together in a single secret instead of storing them in two separate secrets. To store related credentials together in the same secret, create a secret whose content is a JSON object and use ``HydroplaneSecret``'s optional ``key`` field to refer to different keys within the object. See :ref:`the EKS runtime's authentication setup<eks-secret-example>` for an example of this in action.
 
+Available Secret Stores
+^^^^^^^^^^^^^^^^^^^^^^^
+
 .. toctree::
    :maxdepth: 1
-   :caption: Available Secret Stores
 
    secret_stores/local
+   secret_stores/none
 
 Process Secrets
 ---------------
