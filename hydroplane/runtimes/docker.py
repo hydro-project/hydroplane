@@ -32,8 +32,18 @@ class DockerRuntime(Runtime):
     def __init__(self, settings: Settings, secret_store: SecretStore):
         self.secret_store = secret_store
 
+    def _get_docker_client(self):
+        try:
+            return docker.from_env()
+        except docker.errors.DockerException as e:
+            raise HTTPException(
+                status_code=500,
+                detail="Error opening connection to Docker daemon; this usually "
+                f"means the daemon isn't running. {e}"
+            )
+
     def start_process(self, process_spec: ProcessSpec):
-        client = docker.from_env()
+        client = self._get_docker_client()
 
         # Create a hydroplane bridge network if it doesn't already exist
         try:
@@ -107,7 +117,7 @@ class DockerRuntime(Runtime):
                 raise e
 
     def stop_process(self, process_name: str):
-        client = docker.from_env()
+        client = self._get_docker_client()
 
         try:
             container = client.containers.get(process_name)
@@ -117,7 +127,7 @@ class DockerRuntime(Runtime):
         container.kill()
 
     def stop_group(self, group: str):
-        client = docker.from_env()
+        client = self._get_docker_client()
 
         containers = client.containers.list(filters={
             'label': f'{HYDROPLANE_GROUP_LABEL}={group}'
@@ -127,7 +137,7 @@ class DockerRuntime(Runtime):
             container.kill()
 
     def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
-        client = docker.from_env()
+        client = self._get_docker_client()
 
         containers = client.containers.list(filters={
             'status': 'running',
