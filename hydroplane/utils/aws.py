@@ -5,6 +5,7 @@ from uuid import uuid4
 import boto3
 from botocore.credentials import RefreshableCredentials
 from botocore.session import get_session
+import pytz
 
 from ..models.aws import AWSCredentials
 from ..secret_stores.secret_store import SecretStore
@@ -24,7 +25,9 @@ def boto3_session_from_creds(
         access_key = secret_store.get_secret(creds.access_key.access_key_id)
         secret_key = secret_store.get_secret(creds.access_key.secret_access_key)
         session_token = None
-        expiry_time = datetime.fromtimestamp(time() + DEFAULT_SESSION_TTL_SECONDS).isoformat()
+        expiry_time = pytz.utc.localize(
+            datetime.utcfromtimestamp(time() + DEFAULT_SESSION_TTL_SECONDS)
+        ).isoformat()
 
         if creds.assume_role is not None:
             # If we should be assuming a role instead, use those base creds to assume that role
