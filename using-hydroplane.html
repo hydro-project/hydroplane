@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Settings" href="settings.html" />
+    <link rel="next" title="Configuration" href="settings.html" />
     <link rel="prev" title="Quickstart Guide" href="quickstart.html" /> 
 </head>
 
@@ -42,15 +42,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to Use Hydroplane</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#running-hydroplane">Running Hydroplane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-hydroplane-api">The Hydroplane API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -79,8 +79,49 @@
              
   <div class="section" id="how-to-use-hydroplane">
 <h1>How to Use Hydroplane<a class="headerlink" href="#how-to-use-hydroplane" title="Permalink to this heading"></a></h1>
-<div class="section" id="running-hydroplane">
-<h2>Running Hydroplane<a class="headerlink" href="#running-hydroplane" title="Permalink to this heading"></a></h2>
+<p>To get Hydroplane running the first time, follow the <a class="reference internal" href="quickstart.html"><span class="doc">quickstart guide</span></a>.</p>
+<div class="section" id="the-hydroplane-api">
+<h2>The Hydroplane API<a class="headerlink" href="#the-hydroplane-api" title="Permalink to this heading"></a></h2>
+<p>Hydroplane exposes a REST API over HTTP.</p>
+<p>Hydroplane automatically generates detailed API documentation that it serves at</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://&lt;host</span> <span class="pre">and</span> <span class="pre">port</span> <span class="pre">of</span> <span class="pre">Hydroplane</span> <span class="pre">server&gt;/docs</span></code></p>
+<p>You should refer to that documentation for the most up-to-date representation of the Hydroplane API.</p>
+<p>This is a rough outline of the API’s methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/process</span></code> - creates a process. The request body should be a JSON-serialized <a class="reference internal" href="processes.html"><span class="doc">process spec</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/process</span></code> - retrieves a list of all running processes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/group/&lt;group</span> <span class="pre">name&gt;</span></code> - retrieves a list of all processes in a particular group</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/process/&lt;name</span> <span class="pre">of</span> <span class="pre">process&gt;</span></code> - destroys a process, given the process’s name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/group/&lt;group</span> <span class="pre">name&gt;</span></code> - destroys all processes in a group</p></li>
+</ul>
+</div>
+<div class="section" id="command-line-tool-hpctl">
+<h2>Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)<a class="headerlink" href="#command-line-tool-hpctl" title="Permalink to this heading"></a></h2>
+<p>The REST API is useful for programmatically interacting with Hydroplane, but it can be kind of a hassle to use directly. <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> is a wrapper script that hides those calls behind a simple CLI.</p>
+<p><code class="docutils literal notranslate"><span class="pre">hpctl</span></code> looks for the address of the Hydroplane server in the <code class="docutils literal notranslate"><span class="pre">HYDROPLANE_SERVER</span></code> environment variable. If that environment variable isn’t defined, it falls back to Hydroplane’s default host and port (<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code>). You can also specify the server’s address explicitly with the <code class="docutils literal notranslate"><span class="pre">-s/--server</span></code> flag to <code class="docutils literal notranslate"><span class="pre">hpctl</span></code>, e.g.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl -s hydroserver:4040 list
+</pre></div>
+</div>
+<p>To list the processes that are currently running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
+</pre></div>
+</div>
+<p>To list only those processes in the group <code class="docutils literal notranslate"><span class="pre">my-group</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list -g my-group
+</pre></div>
+</div>
+<p>To start a process using a process spec defined in <code class="docutils literal notranslate"><span class="pre">foo.json</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl start foo.json
+</pre></div>
+</div>
+<p>To stop a process named <code class="docutils literal notranslate"><span class="pre">foo</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop foo
+</pre></div>
+</div>
+<p>To stop all processes in the group <code class="docutils literal notranslate"><span class="pre">my-group</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop -g my-group
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -89,7 +130,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="settings.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

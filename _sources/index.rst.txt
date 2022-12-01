@@ -17,4 +17,3 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
    processes
    secrets
    examples
-   api

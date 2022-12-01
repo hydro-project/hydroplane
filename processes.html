@@ -42,7 +42,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
-<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Defining Processes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#process-specifications">Process Specifications</a><ul>
@@ -56,7 +56,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -348,8 +347,20 @@ the runtime.</p>
 <div class="section" id="process-culling">
 <span id="process-culler"></span><h2>Process Culling<a class="headerlink" href="#process-culling" title="Permalink to this heading"></a></h2>
 <p>If you’re running experiments in the cloud, running processes cost money, so you want to make sure you don’t leave processes sitting around accidentally. Hydroplane has a <strong>process culler</strong> that automatically stops any processes that are older than a certain age (specified in minutes).</p>
-<p>The process culler’s settings are described below. Here’s an example process culler configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+<p>The process culler’s settings are described below. Here’s an example configuration file showing process culler configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w"></span>
+
+<span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span><span class="w"></span>
+
+<span class="nt">process_culling</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Cull all processes older than two hours</span><span class="w"></span>
+<span class="w">  </span><span class="nt">max_age_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1"># Cull processes every 5 minutes</span><span class="w"></span>
+<span class="w">  </span><span class="nt">culling_interval_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
 </pre></div>
 </div>
 <dl class="py class pydantic_model">

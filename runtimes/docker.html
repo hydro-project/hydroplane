@@ -42,19 +42,24 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../using-hydroplane.html">How to Use Hydroplane</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../runtimes.html">Runtimes</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quickstart">Quickstart</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eks.html#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eks.html#implementation-and-configuration-details">Implementation and Configuration Details</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -100,11 +105,14 @@
 </dd></dl>
 
 <p>The <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime doesn’t have any substantive settings, but you still need to specify it as your runtime for Hydroplane to use it.</p>
-<p>Here’s an example configuration that you might find in your <a class="reference internal" href="../settings.html"><span class="doc">settings file</span></a>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span><span class="w"></span>
-</pre></div>
+<div class="section" id="example-configuration">
+<h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Permalink to this heading"></a></h3>
+<p>Here’s an example of a configuration file that uses the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime. Since the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime doesn’t need a secret store, this configuration uses the <a class="reference internal" href="../secret_stores/none.html"><span class="doc">“none” secret store</span></a>.</p>
 </div>
+</div>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h2>
+<p>Follow the <a class="reference internal" href="../quickstart.html"><span class="doc">quickstart guide</span></a> to get Hydroplane set up to use the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime.</p>
 </div>
 </div>
 

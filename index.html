@@ -41,12 +41,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
-<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -82,25 +81,43 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#running-hydroplane">Running Hydroplane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#the-hydroplane-api">The Hydroplane API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#example-configurations">Example Configurations</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="runtimes/docker.html"><code class="docutils literal notranslate"><span class="pre">docker</span></code> - Docker (Single-Node) Runtime</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/docker.html#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/docker.html#settings">Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/docker.html#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/docker.html#quickstart">Quickstart</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-1-create-an-eks-cluster-and-iam-user">Step 1: Create an EKS cluster and IAM user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-2-configure-hydroplane">Step 2: Configure Hydroplane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-3-run-hydroplane">Step 3: Run Hydroplane</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html#implementation-and-configuration-details">Implementation and Configuration Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#authenticating-with-aws">Authenticating with AWS</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-iam-credentials">Authenticating with IAM Credentials</a></li>
 <li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-role-assumption">Authenticating with Role Assumption</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#a-note-on-iam-user-permissions">A Note on IAM User Permissions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#module-hydroplane.models.aws">AWS Authentication Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#module-hydroplane.models.aws">AWS Authentication Configuration Reference</a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +149,6 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#chat">Chat</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 </div>
 </div>

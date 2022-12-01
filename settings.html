@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Settings &mdash; Hydroplane  documentation</title>
+  <title>Configuration &mdash; Hydroplane  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
@@ -42,12 +42,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Settings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-configurations">Example Configurations</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -64,7 +66,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Settings</li>
+      <li>Configuration</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/settings.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,10 +76,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="settings">
-<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this heading"></a></h1>
-<p>Hydroplane is configured by providing a path to a YAML file in the <cite>CONF</cite> environment variable in the server’s environment.</p>
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h1>
+<p>Hydroplane is configured by passing a configuration YAML file to it with the <code class="docutils literal notranslate"><span class="pre">-c/--conf</span></code> flag. By default, Hydroplane will read its configuration from <code class="docutils literal notranslate"><span class="pre">basic-config.yml</span></code>.</p>
 <p>There are two things that need to be configured in settings: Hydroplane’s <a class="reference internal" href="runtimes.html"><span class="doc">runtime</span></a> and its <a class="reference internal" href="secrets.html"><span class="doc">secret store</span></a>. Optionally, you can also configure the <a class="reference internal" href="processes.html#process-culler"><span class="std std-ref">process culler</span></a>.</p>
+<div class="section" id="example-configurations">
+<h2>Example Configurations<a class="headerlink" href="#example-configurations" title="Permalink to this heading"></a></h2>
 <p>Here’s a basic example of a configuration file that uses the <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store and the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
 <span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
@@ -108,7 +112,24 @@
 <span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Here’s an example that configures process culling (see <a class="reference internal" href="processes.html#process-culler"><span class="std std-ref">the process culler documentation</span></a> for more information on how to configure it):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w"></span>
+
+<span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span><span class="w"></span>
+
+<span class="nt">process_culling</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Cull all processes older than two hours</span><span class="w"></span>
+<span class="w">  </span><span class="nt">max_age_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1"># Cull processes every 5 minutes</span><span class="w"></span>
+<span class="w">  </span><span class="nt">culling_interval_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+</pre></div>
+</div>
 <p>Each runtime has its own specific configuration that’s documented in the <a class="reference internal" href="runtimes.html"><span class="doc">Runtimes</span></a> section of this documentation.</p>
+</div>
 </div>
 
 

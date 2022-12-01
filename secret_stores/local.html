@@ -42,7 +42,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../using-hydroplane.html">How to Use Hydroplane</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../processes.html">Defining Processes</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../secrets.html">Secrets</a><ul class="current">
@@ -59,7 +59,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">The Hydroplane API</a></li>
 </ul>
 
         </div>
@@ -89,26 +88,29 @@
              
   <div class="section" id="local-secret-store">
 <h1><a class="toc-backref" href="#id1"><code class="docutils literal notranslate"><span class="pre">local</span></code> Secret Store</a><a class="headerlink" href="#local-secret-store" title="Permalink to this heading"></a></h1>
-<p>Hydroplane needs some form of secret store to safely keep credentials that it uses to communicate
-with the backend runtime. We have a local secret store that stores secrets on the local filesystem,
-symetrically encrypted with a password. It’s not meant for production use, but it should be good
-enough for local development and experimentation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store stores secrets on the local filesystem, symetrically encrypted with
+a password. It’s not meant for production use, but it should be good enough for local development
+and experimentation.</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#local-secret-store" id="id1"><code class="docutils literal notranslate"><span class="pre">local</span></code> Secret Store</a></p>
 <ul>
-<li><p><a class="reference internal" href="#settings" id="id2">Settings</a></p></li>
-<li><p><a class="reference internal" href="#initializing-a-local-secret-store" id="id3">Initializing a Local Secret Store</a></p></li>
-<li><p><a class="reference internal" href="#adding-a-simple-secret-to-the-secret-store" id="id4">Adding a Simple Secret to the Secret Store</a></p></li>
-<li><p><a class="reference internal" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" id="id5">Adding Longer or More Complex Secrets to the Secret Store</a></p></li>
-<li><p><a class="reference internal" href="#removing-a-secret-from-the-secret-store" id="id6">Removing a Secret from the Secret Store</a></p></li>
+<li><p><a class="reference internal" href="#configuration" id="id2">Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#example-configuration-snippet" id="id3">Example Configuration Snippet</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#initializing-a-local-secret-store" id="id4">Initializing a Local Secret Store</a></p></li>
+<li><p><a class="reference internal" href="#adding-a-simple-secret-to-the-secret-store" id="id5">Adding a Simple Secret to the Secret Store</a></p></li>
+<li><p><a class="reference internal" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" id="id6">Adding Longer or More Complex Secrets to the Secret Store</a></p></li>
+<li><p><a class="reference internal" href="#removing-a-secret-from-the-secret-store" id="id7">Removing a Secret from the Secret Store</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="settings">
-<h2><a class="toc-backref" href="#id2">Settings</a><a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id2">Configuration</a><a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.secret_stores.local.Settings">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.secret_stores.local.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.secret_stores.local.Settings" title="Permalink to this definition"></a></dt>
@@ -140,15 +142,18 @@ enough for local development and experimentation.</p>
 
 </dd></dl>
 
-<p>Here’s an example configuration that you might see inside of your <a class="reference internal" href="../settings.html"><span class="doc">settings file</span></a>:</p>
+<div class="section" id="example-configuration-snippet">
+<h3><a class="toc-backref" href="#id3">Example Configuration Snippet</a><a class="headerlink" href="#example-configuration-snippet" title="Permalink to this heading"></a></h3>
+<p>Here’s an example configuration snippet for the <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span><span class="w"></span>
-<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/Users/alexras/.hydro_secrets</span><span class="w"></span>
+<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="initializing-a-local-secret-store">
-<h2><a class="toc-backref" href="#id3">Initializing a Local Secret Store</a><a class="headerlink" href="#initializing-a-local-secret-store" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4">Initializing a Local Secret Store</a><a class="headerlink" href="#initializing-a-local-secret-store" title="Permalink to this heading"></a></h2>
 <p>To initialize your local secret store:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run bin/local-secret-store init
 </pre></div>
@@ -156,7 +161,7 @@ enough for local development and experimentation.</p>
 <p>You’ll be prompted to enter a password for the secret store. By default, it will be initialized in <code class="docutils literal notranslate"><span class="pre">~/.hydro_secrets</span></code> but you can change its location by adding the <code class="docutils literal notranslate"><span class="pre">--store-location</span></code> flag to the above command.</p>
 </div>
 <div class="section" id="adding-a-simple-secret-to-the-secret-store">
-<h2><a class="toc-backref" href="#id4">Adding a Simple Secret to the Secret Store</a><a class="headerlink" href="#adding-a-simple-secret-to-the-secret-store" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5">Adding a Simple Secret to the Secret Store</a><a class="headerlink" href="#adding-a-simple-secret-to-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>To add a secret to the secret store:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run bin/local-secret-store add &lt;secret name&gt;
 </pre></div>
@@ -164,7 +169,7 @@ enough for local development and experimentation.</p>
 <p>You’ll be prompted to enter the password for the secret store, and then prompted to enter the contents of the secret itself.</p>
 </div>
 <div class="section" id="adding-longer-or-more-complex-secrets-to-the-secret-store">
-<h2><a class="toc-backref" href="#id5">Adding Longer or More Complex Secrets to the Secret Store</a><a class="headerlink" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6">Adding Longer or More Complex Secrets to the Secret Store</a><a class="headerlink" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>Entering a secret from a prompt is useful for secrets like passwords and authentication tokens that aren’t very long or complicated. Some secrets are longer or more complex, like a certificate or a private key, and don’t lend themselves well to being typed or pasted in at a prompt.</p>
 <p>To add the contents of a file as a secret:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run bin/local-secret-store add -f &lt;input filename&gt; &lt;secret name&gt;
@@ -173,7 +178,7 @@ enough for local development and experimentation.</p>
 <p>You’ll be prompted to enter the password for the secret store, and the provided input file’s contents will be stored in the secret.</p>
 </div>
 <div class="section" id="removing-a-secret-from-the-secret-store">
-<h2><a class="toc-backref" href="#id6">Removing a Secret from the Secret Store</a><a class="headerlink" href="#removing-a-secret-from-the-secret-store" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7">Removing a Secret from the Secret Store</a><a class="headerlink" href="#removing-a-secret-from-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>To remove a secret from the secret store:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run bin/local-secret-store remove &lt;secret name&gt;
 </pre></div>
