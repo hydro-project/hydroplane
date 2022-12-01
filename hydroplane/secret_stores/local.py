@@ -228,6 +228,10 @@ if __name__ == '__main__':
             password_1 = getpass.getpass('Enter the password for the new secret store: ')
             password_2 = getpass.getpass('Enter the same password again: ')
 
+            if len(password_1) == 0:
+                logging.fatal("Password must be at least one character long")
+                sys.exit(1)
+
             if password_1 != password_2:
                 logging.fatal("Provided passwords don't match")
                 sys.exit(1)
