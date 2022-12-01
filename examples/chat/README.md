@@ -6,7 +6,7 @@ The JSON files in this directory describe three processes: a **server** and two 
 
 ```bash
 # Launch the server
-curl -s -X POST -H "Content-Type: application/json" -d @chat-client-server.json http://<hydroplane instance address>/process
+curl -s -X POST -H "Content-Type: application/json" -d @chat-server.json http://<hydroplane instance address>/process
 
 # Give the server some time to warm up
 sleep 5
