@@ -114,7 +114,7 @@ Now you've (finally) got an EKS cluster and the ability to authenticate to it! L
 
     bin/hydroplane -c eks.yml
 
-In a separate terminal, let's make sure we can list processes:
+In a separate terminal, from the root of the ``hydroplane`` repo, let's make sure we can list processes:
 
 .. code-block:: bash
 
@@ -149,7 +149,14 @@ If you list processes with ``bin/hpctl list`` now, you should see something like
 
 Note that the process is exposing a single public port. In this example, it's ``34.217.208.197:31491``, but your host and port will be different.
 
-Once you've found that host and port, open the host and port in a web browser. You should see an nginx "hello world" page.
+Once you've found that host and port, open the host and port in a web browser. You should see an `nginx <https://www.nginx.com/>`_ "hello world" page.
+
+Let's stop the process now that we've verified that everything is working:
+
+.. code-block:: bash
+
+    bin/hpctl stop nginx
+
 
 Implementation and Configuration Details
 ========================================

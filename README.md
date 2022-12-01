@@ -9,7 +9,7 @@ Hydroplane is meant to act as a simple, unified API for starting and stopping pr
 
 ### Setting Up Your Development Environment
 
-Hydroplane uses [poetry][poetry] to manage its dependencies. To get a development virtualenv set up:
+Hydroplane uses [poetry][poetry], an alternative to `pipenv`, `virtualenvwrapper`, `conda`, etc., to manage its dependencies and its virtualenv. To get a development virtualenv set up:
 
 ```
 pip install poetry

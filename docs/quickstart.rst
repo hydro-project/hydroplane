@@ -27,11 +27,11 @@ This quickstart guide will get you from zero to a running Hydroplane server as q
     # (uses the checked-in `basic-config.yml` config file by default)
     bin/hydroplane
 
-    # In a separate terminal:
+    # In a separate terminal, from the root of the hydroplane repo, list processes.
+    # This should print '[]', since no processes are running at first.
     bin/hpctl list
 
-    # This should print '[]', since no processes are running at first.
-
+    # Let's start a simple example process
     bin/hpctl start examples/nginx.yml
 
     # Load localhost:8080 in a browser; you should see an nginx "hello world" page
