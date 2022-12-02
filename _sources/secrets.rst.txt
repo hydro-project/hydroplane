@@ -8,7 +8,7 @@ Hydroplane Secrets
 
 Hydroplane secrets are stored in a **secret store**. Most of Hydroplane's runtimes need access to this secret store in order to retrieve enough credentials to authenticate with the runtime. For runtimes like ``docker`` that don't require any secrets, the ``none`` secret store can be used.
 
-See :doc:`</secret_stores>` for a list of available secret stores and their settings.
+See :doc:`Secret Stores </secret_stores>` for a list of available secret stores and their settings.
 
 .. autopydantic_model:: hydroplane.models.secret.HydroplaneSecret
 

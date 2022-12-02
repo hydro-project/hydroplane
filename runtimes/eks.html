@@ -67,7 +67,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../secrets.html">Defining Secrets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Example Process Specs</a></li>
 </ul>
 
         </div>
@@ -96,41 +96,41 @@
            <div itemprop="articleBody">
              
   <div class="section" id="eks-amazon-eks">
-<h1><a class="toc-backref" href="#id1"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><a class="headerlink" href="#eks-amazon-eks" title="Permalink to this heading"></a></h1>
+<h1><a class="toc-backref" href="#id2"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><a class="headerlink" href="#eks-amazon-eks" title="Permalink to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime integrates with EKS, AWS’s managed Kubernetes offering.</p>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#eks-amazon-eks" id="id1"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></p>
+<li><p><a class="reference internal" href="#eks-amazon-eks" id="id2"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></p>
 <ul>
-<li><p><a class="reference internal" href="#settings" id="id2">Settings</a></p></li>
-<li><p><a class="reference internal" href="#example-configuration" id="id3">Example Configuration</a></p></li>
-<li><p><a class="reference internal" href="#quickstart" id="id4">Quickstart</a></p>
+<li><p><a class="reference internal" href="#settings" id="id3">Settings</a></p></li>
+<li><p><a class="reference internal" href="#example-configuration" id="id4">Example Configuration</a></p></li>
+<li><p><a class="reference internal" href="#quickstart" id="id5">Quickstart</a></p>
 <ul>
-<li><p><a class="reference internal" href="#step-1-create-an-eks-cluster-and-iam-user" id="id5">Step 1: Create an EKS cluster and IAM user</a></p></li>
-<li><p><a class="reference internal" href="#step-2-configure-hydroplane" id="id6">Step 2: Configure Hydroplane</a></p></li>
-<li><p><a class="reference internal" href="#step-3-run-hydroplane" id="id7">Step 3: Run Hydroplane</a></p></li>
+<li><p><a class="reference internal" href="#step-1-create-an-eks-cluster-and-iam-user" id="id6">Step 1: Create an EKS cluster and IAM user</a></p></li>
+<li><p><a class="reference internal" href="#step-2-configure-hydroplane" id="id7">Step 2: Configure Hydroplane</a></p></li>
+<li><p><a class="reference internal" href="#step-3-run-hydroplane" id="id8">Step 3: Run Hydroplane</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#implementation-and-configuration-details" id="id8">Implementation and Configuration Details</a></p>
+<li><p><a class="reference internal" href="#implementation-and-configuration-details" id="id9">Implementation and Configuration Details</a></p>
 <ul>
-<li><p><a class="reference internal" href="#how-the-eks-runtime-creates-processes" id="id9">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></p></li>
-<li><p><a class="reference internal" href="#authenticating-with-aws" id="id10">Authenticating with AWS</a></p>
+<li><p><a class="reference internal" href="#how-the-eks-runtime-creates-processes" id="id10">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></p></li>
+<li><p><a class="reference internal" href="#authenticating-with-aws" id="id11">Authenticating with AWS</a></p>
 <ul>
-<li><p><a class="reference internal" href="#authenticating-with-iam-credentials" id="id11">Authenticating with IAM Credentials</a></p></li>
-<li><p><a class="reference internal" href="#authenticating-with-role-assumption" id="id12">Authenticating with Role Assumption</a></p></li>
+<li><p><a class="reference internal" href="#authenticating-with-iam-credentials" id="id12">Authenticating with IAM Credentials</a></p></li>
+<li><p><a class="reference internal" href="#authenticating-with-role-assumption" id="id13">Authenticating with Role Assumption</a></p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#a-note-on-iam-user-permissions" id="id13">A Note on IAM User Permissions</a></p></li>
-<li><p><a class="reference internal" href="#module-hydroplane.models.aws" id="id14">AWS Authentication Configuration Reference</a></p></li>
+<li><p><a class="reference internal" href="#a-note-on-iam-user-permissions" id="id14">A Note on IAM User Permissions</a></p></li>
+<li><p><a class="reference internal" href="#module-hydroplane.models.aws" id="id15">AWS Authentication Configuration Reference</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="settings">
-<h2><a class="toc-backref" href="#id2">Settings</a><a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3">Settings</a><a class="headerlink" href="#settings" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.runtimes.eks.Settings">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.runtimes.eks.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><a class="headerlink" href="#hydroplane.runtimes.eks.Settings" title="Permalink to this definition"></a></dt>
@@ -167,7 +167,7 @@
 
 </div>
 <div class="section" id="example-configuration">
-<h2><a class="toc-backref" href="#id3">Example Configuration</a><a class="headerlink" href="#example-configuration" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4">Example Configuration</a><a class="headerlink" href="#example-configuration" title="Permalink to this heading"></a></h2>
 <p>Here’s an example of a configuration file that uses the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime and the <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store. This configuration sets up Hydroplane to talk to an EKS cluster named <code class="docutils literal notranslate"><span class="pre">my-cool-cluster</span></code> in the <code class="docutils literal notranslate"><span class="pre">us-west-2</span></code> AWS region:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
 <span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
@@ -190,10 +190,10 @@
 </div>
 </div>
 <div class="section" id="quickstart">
-<h2><a class="toc-backref" href="#id4">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h2>
 <div class="section" id="step-1-create-an-eks-cluster-and-iam-user">
-<h3><a class="toc-backref" href="#id5">Step 1: Create an EKS cluster and IAM user</a><a class="headerlink" href="#step-1-create-an-eks-cluster-and-iam-user" title="Permalink to this heading"></a></h3>
-<p>In order to use the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime, you first have to have an EKS cluster. We’ll use `` <a href="#id15"><span class="problematic" id="id16">`hydro-project/eks-setup&lt;https://github.com/hydro-project/eks-setup&gt;`_</span></a> `` to do that. Follow the instructions in the “Quickstart” section of that repo’s README.</p>
+<h3><a class="toc-backref" href="#id6">Step 1: Create an EKS cluster and IAM user</a><a class="headerlink" href="#step-1-create-an-eks-cluster-and-iam-user" title="Permalink to this heading"></a></h3>
+<p>In order to use the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime, you first have to have an EKS cluster. We’ll use <a class="reference external" href="https://github.com/hydro-project/eks-setup">hydro-project/eks-setup</a> to do that. Follow the instructions in the “Quickstart” section of that repo’s README and then come back here.</p>
 <p>When you’re done with those instructions, you should have two things:</p>
 <ul class="simple">
 <li><p>An EKS cluster (we’ll assume that the cluster’s name is <code class="docutils literal notranslate"><span class="pre">hydro-eks</span></code> and that it was created in <code class="docutils literal notranslate"><span class="pre">us-west-2</span></code> in subsequent steps for brevity)</p></li>
@@ -201,7 +201,7 @@
 </ul>
 </div>
 <div class="section" id="step-2-configure-hydroplane">
-<h3><a class="toc-backref" href="#id6">Step 2: Configure Hydroplane</a><a class="headerlink" href="#step-2-configure-hydroplane" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id7">Step 2: Configure Hydroplane</a><a class="headerlink" href="#step-2-configure-hydroplane" title="Permalink to this heading"></a></h3>
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">eks.yml</span></code> with the following contents:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
 <span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
@@ -241,11 +241,12 @@
 </div>
 </div>
 <div class="section" id="step-3-run-hydroplane">
-<h3><a class="toc-backref" href="#id7">Step 3: Run Hydroplane</a><a class="headerlink" href="#step-3-run-hydroplane" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8">Step 3: Run Hydroplane</a><a class="headerlink" href="#step-3-run-hydroplane" title="Permalink to this heading"></a></h3>
 <p>Now you’ve (finally) got an EKS cluster and the ability to authenticate to it! Let’s launch Hydroplane:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hydroplane -c eks.yml
 </pre></div>
 </div>
+<p>You’ll be prompted for the password to your local secret store. Once you enter it, the server should bind and start accepting requests.</p>
 <p>In a separate terminal, from the root of the <code class="docutils literal notranslate"><span class="pre">hydroplane</span></code> repo, let’s make sure we can list processes:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
 </pre></div>
@@ -273,24 +274,30 @@
 </pre></div>
 </div>
 <p>Note that the process is exposing a single public port. In this example, it’s <code class="docutils literal notranslate"><span class="pre">34.217.208.197:31491</span></code>, but your host and port will be different.</p>
-<p>Once you’ve found that host and port, open the host and port in a web browser. You should see an <a class="reference external" href="https://www.nginx.com/">nginx</a> “hello world” page.</p>
-<p>Let’s stop the process now that we’ve verified that everything is working:</p>
+<p>If you have <code class="docutils literal notranslate"><span class="pre">jq</span></code> installed, are on macOS, and want to open that server with a one-liner:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open http://<span class="k">$(</span>bin/hpctl list <span class="p">|</span> jq -r <span class="s2">&quot;(.[0].socket_addresses[0].host + \&quot;:\&quot; + (.[0].socket_addresses[0].port|tostring))&quot;</span><span class="k">)</span>
+</pre></div>
+</div>
+<p>Otherwise, you can copy-paste the host and port into a browser window. Either way, you should see an <a class="reference external" href="https://www.nginx.com/">nginx</a> “hello world” page.</p>
+<p>Now that we’ve verified that everything is working, let’s stop the process:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop nginx
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="implementation-and-configuration-details">
-<h2><a class="toc-backref" href="#id8">Implementation and Configuration Details</a><a class="headerlink" href="#implementation-and-configuration-details" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id9">Implementation and Configuration Details</a><a class="headerlink" href="#implementation-and-configuration-details" title="Permalink to this heading"></a></h2>
 <div class="section" id="how-the-eks-runtime-creates-processes">
-<h3><a class="toc-backref" href="#id9">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a><a class="headerlink" href="#how-the-eks-runtime-creates-processes" title="Permalink to this heading"></a></h3>
-<p>Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> services. Public services, on the other hand, need to be routable from outside the cluster. In a typical Kubernetes service (where you have one service backing an auto-scaling collection of pods), you’d use a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service. This would be wasteful if we did it for each process, however, since <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> services create associated load balancers, and load balancers in AWS are really expensive. Instead, we create a <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service for each process, which exposes the service on every node in the cluster at a certain high-numbered port. This means that a client could technically talk to the service by communicating with any cluster node, but that doesn’t quite mesh with Hydroplane’s process abstraction. To maintain the illusion that the process is only accessible via a single IP address, the runtime only returns the public IP address of the node on which the process’s associated pod is running when listing processes.</p>
+<h3><a class="toc-backref" href="#id10">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a><a class="headerlink" href="#how-the-eks-runtime-creates-processes" title="Permalink to this heading"></a></h3>
+<p>Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> services. Public services need to be routable from outside the cluster, so we have to handle them separately.</p>
+<p>In a typical Kubernetes service where you have one service backing an auto-scaling collection of pods, you’d put a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service in front of the pods that round-robins traffic between them. In our case, we’re expecting something higher-level than us to do things like load balancing, so we want each process to be named and exposed individually. If we were to create a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service per process, we’d also be creating a separate <strong>load balancer</strong> per process, and load balancers in AWS are really expensive. Instead, we create a <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service for each process that routes only to that process’s pod. A <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service exposes a high-numbered port on every node in the cluster, and all traffic to that port on any cluster node is transparently routed to the pod by Kubernetes’ overlay network.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> services does what we want without paying for additional resources, but it also makes it look from the client’s perspective like the process is running on every node in the cluster at once, which is inconsistent from the abstraction presented by other runtimes. To maintain the illusion that the process is only accessible from one node, we do some introspection to determine the cluster node that the pod is actually running on and only list that node’s IP address when providing information about the process in response to list calls.</p>
 </div>
 <div class="section" id="authenticating-with-aws">
-<h3><a class="toc-backref" href="#id10">Authenticating with AWS</a><a class="headerlink" href="#authenticating-with-aws" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id11">Authenticating with AWS</a><a class="headerlink" href="#authenticating-with-aws" title="Permalink to this heading"></a></h3>
 <p>In order for Hydroplane to launch processes on an EKS cluster, it must be able to authenticate with that cluster. To authenticate, you’ll need an AWS <a class="reference external" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">access key ID and corresponding secret access key</a>. These credentials will need to be stored in Hydroplane’s <a class="reference internal" href="../secrets.html"><span class="doc">secret store</span></a>.</p>
 <div class="section" id="authenticating-with-iam-credentials">
-<span id="eks-secret-example"></span><h4><a class="toc-backref" href="#id11">Authenticating with IAM Credentials</a><a class="headerlink" href="#authenticating-with-iam-credentials" title="Permalink to this heading"></a></h4>
+<span id="eks-secret-example"></span><h4><a class="toc-backref" href="#id12">Authenticating with IAM Credentials</a><a class="headerlink" href="#authenticating-with-iam-credentials" title="Permalink to this heading"></a></h4>
 <p>Here’s an example configuration that uses a secret stored in Hydroplane’s secret store to authenticate with EKS. This config uses a secret named <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> that’s stored in the secret store as a JSON object like so:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXXXX&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXX&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
@@ -312,7 +319,7 @@
 </div>
 </div>
 <div class="section" id="authenticating-with-role-assumption">
-<h4><a class="toc-backref" href="#id12">Authenticating with Role Assumption</a><a class="headerlink" href="#authenticating-with-role-assumption" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id13">Authenticating with Role Assumption</a><a class="headerlink" href="#authenticating-with-role-assumption" title="Permalink to this heading"></a></h4>
 <p>While nothing stops you from authenticating directly with an access key and secret, it’s generally considered a best practice to authenticate using <a class="reference external" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli">temporary IAM credentials</a>. These credentials are associated with a given IAM role, and expire after a certain period of time. Hydroplane will attempt to automatically renew these temporary credentials periodically.</p>
 <p>Here’s an example of using the <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> secret from above to authenticate and then assume the role <code class="docutils literal notranslate"><span class="pre">EKSAdmin</span></code>. Most of this configuration will look familiar if you’ve looked at the configuration in the last section, but we’ve added an <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> block to define the role assumption.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
@@ -335,11 +342,11 @@
 </div>
 </div>
 <div class="section" id="a-note-on-iam-user-permissions">
-<h2><a class="toc-backref" href="#id13">A Note on IAM User Permissions</a><a class="headerlink" href="#a-note-on-iam-user-permissions" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id14">A Note on IAM User Permissions</a><a class="headerlink" href="#a-note-on-iam-user-permissions" title="Permalink to this heading"></a></h2>
 <p>The authenticating IAM user must have enough permissions on the EKS cluster to create and destroy pods and services. If you’ve set up your cluster with <a class="reference external" href="https://github.com/hydro-project/eks-setup">hydro-project/eks-setup</a>, then any user you add using that script will have the appropriate privileges.</p>
 </div>
 <div class="section" id="module-hydroplane.models.aws">
-<span id="aws-authentication-configuration-reference"></span><h2><a class="toc-backref" href="#id14">AWS Authentication Configuration Reference</a><a class="headerlink" href="#module-hydroplane.models.aws" title="Permalink to this heading"></a></h2>
+<span id="aws-authentication-configuration-reference"></span><h2><a class="toc-backref" href="#id15">AWS Authentication Configuration Reference</a><a class="headerlink" href="#module-hydroplane.models.aws" title="Permalink to this heading"></a></h2>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.models.aws.AWSAccessKey">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.aws.</span></span><span class="sig-name descname"><span class="pre">AWSAccessKey</span></span><a class="headerlink" href="#hydroplane.models.aws.AWSAccessKey" title="Permalink to this definition"></a></dt>

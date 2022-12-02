@@ -44,7 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../secrets.html">Defining Secrets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Example Process Specs</a></li>
 </ul>
 
         </div>
@@ -170,6 +170,9 @@ hello world
 <h2><a class="toc-backref" href="#id6">Adding Longer or More Complex Secrets to the Secret Store</a><a class="headerlink" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>Entering a secret from a prompt is useful for secrets like passwords and authentication tokens that aren’t very long or complicated. Some secrets are longer or more complex, like a certificate or a private key, and don’t lend themselves well to being typed or pasted in at a prompt.</p>
 <p>To add the contents of a file as a secret:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store add -f &lt;input filename&gt; &lt;secret name&gt;
+</pre></div>
+</div>
 <p>You’ll be prompted to enter the password for the secret store, and the provided input file’s contents will be stored in the secret.</p>
 <p>Here’s an example of what that might look like:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$  <span class="nb">echo</span> <span class="s2">&quot;this is a secret token&quot;</span> &gt; token.txt
@@ -190,6 +193,13 @@ this is a secret token
 <h2><a class="toc-backref" href="#id7">Removing a Secret from the Secret Store</a><a class="headerlink" href="#removing-a-secret-from-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>To remove a secret from the secret store:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store remove &lt;secret name&gt;
+</pre></div>
+</div>
+<p>Here’s an example of what that might look like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bin/local-secret-store remove my-secret-token
+
+Enter the password <span class="k">for</span> the secret store: **********
+INFO:root:Deleting secret my-secret-token
 </pre></div>
 </div>
 </div>

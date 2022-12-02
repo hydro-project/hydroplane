@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examples &mdash; Hydroplane  documentation</title>
+  <title>Example Process Specs &mdash; Hydroplane  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
@@ -45,7 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example Process Specs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#web-server">Web Server</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#launching-the-process">Launching the Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#making-sure-it-worked">Making Sure It Worked</a></li>
@@ -76,7 +76,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Examples</li>
+      <li>Example Process Specs</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,12 +86,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="examples">
-<h1><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+  <div class="section" id="example-process-specs">
+<h1><a class="toc-backref" href="#id2">Example Process Specs</a><a class="headerlink" href="#example-process-specs" title="Permalink to this heading"></a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p>
+<li><p><a class="reference internal" href="#example-process-specs" id="id2">Example Process Specs</a></p>
 <ul>
 <li><p><a class="reference internal" href="#web-server" id="id3">Web Server</a></p>
 <ul>
@@ -113,7 +113,7 @@
 </div>
 <div class="section" id="web-server">
 <h2><a class="toc-backref" href="#id3">Web Server</a><a class="headerlink" href="#web-server" title="Permalink to this heading"></a></h2>
-<p>The file <a class="reference external" href="https://github.com/hydro-project/hydroplane/blob/main/examples/nginx.json">examples/nginx.json</a> is the process spec for a public simple “hello world” <a class="reference external" href="https://www.nginx.com/">nginx</a> webserver.</p>
+<p>The file <a class="reference external" href="https://github.com/hydro-project/hydroplane/blob/main/examples/nginx.json">examples/nginx.json</a> is the process spec for a simple “hello world” <a class="reference external" href="https://www.nginx.com/">nginx</a> webserver.</p>
 <div class="section" id="launching-the-process">
 <h3><a class="toc-backref" href="#id4">Launching the Process</a><a class="headerlink" href="#launching-the-process" title="Permalink to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From the root of the repo</span>
@@ -176,8 +176,9 @@ bin/hpctl start examples/chat/chat-client-bob.json
 </div>
 <div class="section" id="id1">
 <h3><a class="toc-backref" href="#id9">Making Sure It Worked</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>The chat server and clients don’t have any public interfaces, so we’ll to look at their logs to make sure they’re working.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that processes exist</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that processes exist; should see a server container and two client containers</span>
 docker ps
 
 <span class="c1"># Check the server&#39;s logs. It should report that it&#39;s ready.</span>
@@ -189,7 +190,7 @@ docker logs chat-client-bob
 </pre></div>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that pods for each process exist</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that pods for each process exist; should see three of them, one per process</span>
 kubectl get pods
 
 <span class="c1"># Check the server&#39;s logs. It should report that it&#39;s ready.</span>
