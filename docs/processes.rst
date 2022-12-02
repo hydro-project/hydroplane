@@ -6,7 +6,7 @@ Hydroplane is responsible for creating and destroying **processes**. Hydroplane 
 Process Specifications
 ----------------------
 
-When launching a process, you have to provide a **process specification**, or **process spec** for short. A process spec describes the process: it gives the process a name and specifies the location of the process's container image and how the container should be configured.
+When launching a process, you have to provide a **process specification**, or **process spec** for short. A process spec describes the process: it gives the process a name and specifies the location of the process's container image and how the process's container should be configured.
 
 Here's an example of a simple process spec:
 
@@ -26,9 +26,9 @@ Here's an example of a simple process spec:
       }
     }
 
-The process that this process spec describes is named ``test``, and runs the container image `nginxdemos/hello <https://hub.docker.com/r/nginxdemos/hello>`_, which uses ``nginx`` to display a simple webpage.
+This process spec describes a process named ``test`` that runs the container image `nginxdemos/hello <https://hub.docker.com/r/nginxdemos/hello>`_, which uses ``nginx`` to display a simple webpage.
 
-While most of the process spec is optional, it gives you the ability to change a lot of the details of how your process runs. Here's a detailed description of the process spec:
+Most of the process spec is optional, but you have the ability to change a lot of the details of how your process runs by changing its process spec. Here's a detailed description of the process spec's format:
 
 .. automodule:: hydroplane.models.process_spec
   :members:
@@ -43,17 +43,17 @@ Process Groups
 
 A process can optionally be made part of a process **group** when it's created by setting the ``group`` field of the process spec. Hydroplane knows how to list the processes that are part of a group, as well as how to destroy a group of processes all at once.
 
-Public and Private Processes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-By default, processes are private. This means that processes can communicate with one another (and, for some runtimes, other services running in that runtime), but cannot communicate with the outside world.
-
-The ``has_public_ip`` field of the process spec controls whether a process is public or private. If it's set to ``true``, the service will be publicly routable, and its public IP address will be provided instead of its private one(s) when it's listed.
-
 Listing Processes
 -----------------
 
-The Hydroplane server itself is stateless, but the server can interrogate its runtime to list processes. The way that the runtime is interrogated varies, but usually Hydroplane annotates the resources it manages with tags, and uses those tags to find those processes later.
+The Hydroplane server itself is stateless, but it can interrogate its runtime to list running processes. The way that the runtime is interrogated varies, but usually Hydroplane annotates the resources it manages with tags and uses those tags to distinguish processes it manages from other resources in the runtime.
+
+Public and Private Processes
+----------------------------
+
+By default, processes are private, meaning that they can communicate with one another (and often other services running in that runtime) but cannot communicate with the outside world.
+
+The ``has_public_ip`` field of the process spec controls whether a process is public or private. If the field is set to ``true``, the service will be publicly routable, and its public IP address will be provided instead of its private one(s) when it's listed.
 
 .. _process culler:
 

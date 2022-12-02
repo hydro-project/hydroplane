@@ -1,8 +1,9 @@
-How to Use Hydroplane
-=====================
+Interacting with Hydroplane
+===========================
 
 To get Hydroplane running the first time, follow the :doc:`quickstart guide<quickstart>`.
 
+.. contents::
 
 The Hydroplane API
 ------------------
@@ -29,12 +30,6 @@ Command Line Tool (``hpctl``)
 
 The REST API is useful for programmatically interacting with Hydroplane, but it can be kind of a hassle to use directly. ``hpctl`` is a wrapper script that hides those calls behind a simple CLI.
 
-``hpctl`` looks for the address of the Hydroplane server in the ``HYDROPLANE_SERVER`` environment variable. If that environment variable isn't defined, it falls back to Hydroplane's default host and port (``localhost:8000``). You can also specify the server's address explicitly with the ``-s/--server`` flag to ``hpctl``, e.g.:
-
-.. code-block:: bash
-
-   bin/hpctl -s hydroserver:4040 list
-
 To list the processes that are currently running:
 
 .. code-block:: bash
@@ -48,7 +43,7 @@ To list only those processes in the group ``my-group``:
     bin/hpctl list -g my-group
 
 
-To start a process using a process spec defined in ``foo.json``:
+To start a process using a :doc:`process spec<processes>` defined in ``foo.json``:
 
 .. code-block:: bash
 
@@ -65,3 +60,13 @@ To stop all processes in the group ``my-group``
 .. code-block:: bash
 
     bin/hpctl stop -g my-group
+
+
+How does ``hpctl`` know which server to talk to?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``hpctl`` looks for the address of the Hydroplane server in the ``HYDROPLANE_SERVER`` environment variable. If that environment variable isn't defined, it falls back to Hydroplane's default host and port (``localhost:8000``). You can also specify the server's address explicitly with the ``-s/--server`` flag to ``hpctl``, e.g.:
+
+.. code-block:: bash
+
+   bin/hpctl -s hydroserver:4040 list
