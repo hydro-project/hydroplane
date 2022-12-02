@@ -1,12 +1,12 @@
-Examples
-========
+Example Process Specs
+=====================
 
 .. contents::
 
 Web Server
 ----------
 
-The file `examples/nginx.json <https://github.com/hydro-project/hydroplane/blob/main/examples/nginx.json>`_ is the process spec for a public simple "hello world" `nginx <https://www.nginx.com/>`_ webserver.
+The file `examples/nginx.json <https://github.com/hydro-project/hydroplane/blob/main/examples/nginx.json>`_ is the process spec for a simple "hello world" `nginx <https://www.nginx.com/>`_ webserver.
 
 Launching the Process
 ^^^^^^^^^^^^^^^^^^^^^
@@ -82,11 +82,13 @@ Launching the Processes
 Making Sure It Worked
 ^^^^^^^^^^^^^^^^^^^^^
 
+The chat server and clients don't have any public interfaces, so we'll to look at their logs to make sure they're working.
+
 In the ``docker`` runtime:
 
 .. code-block:: bash
 
-    # Check that processes exist
+    # Check that processes exist; should see a server container and two client containers
     docker ps
 
     # Check the server's logs. It should report that it's ready.
@@ -100,7 +102,7 @@ In the ``eks`` runtime:
 
 .. code-block:: bash
 
-    # Check that pods for each process exist
+    # Check that pods for each process exist; should see three of them, one per process
     kubectl get pods
 
     # Check the server's logs. It should report that it's ready.

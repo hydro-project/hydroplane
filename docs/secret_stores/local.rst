@@ -73,6 +73,7 @@ Entering a secret from a prompt is useful for secrets like passwords and authent
 To add the contents of a file as a secret:
 
 .. code-block:: bash
+
     bin/local-secret-store add -f <input filename> <secret name>
 
 You'll be prompted to enter the password for the secret store, and the provided input file's contents will be stored in the secret.
@@ -101,3 +102,13 @@ To remove a secret from the secret store:
 .. code-block:: bash
 
     bin/local-secret-store remove <secret name>
+
+
+Here's an example of what that might look like:
+
+.. code-block:: bash
+
+    $ bin/local-secret-store remove my-secret-token
+
+    Enter the password for the secret store: **********
+    INFO:root:Deleting secret my-secret-token
