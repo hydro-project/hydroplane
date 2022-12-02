@@ -14,14 +14,13 @@ There are two things that need to be configured in settings: Hydroplane's :doc:`
 Example Configurations
 ----------------------
 
-Here's a basic example of a configuration file that uses the ``local`` secret store and the ``docker`` runtime:
+Here's a basic example of a configuration file that uses the ``none`` secret store and the ``docker`` runtime:
 
 .. code-block:: yaml
 
   ---
   secret_store:
-    secret_store_type: local
-    store_location: ~/.hydro_secrets
+    secret_store_type: none
 
   runtime:
     runtime_type: docker
@@ -49,7 +48,7 @@ and another example that uses the ``local`` secret store and the ``eks`` runtime
           key: SecretAccessKey
 
 
-Here's an example that configures process culling (see :ref:`the process culler documentation<process culler>` for more information on how to configure it):
+Here's an example that's using the same runtime and secret store as the Docker example above, but also configures process culling (see :ref:`the process culler documentation<process culler>` for more information on how to configure process culling):
 
 .. code-block:: yaml
 

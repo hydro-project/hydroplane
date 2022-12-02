@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to Use Hydroplane &mdash; Hydroplane  documentation</title>
+  <title>Interacting with Hydroplane &mdash; Hydroplane  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
@@ -41,9 +41,12 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How to Use Hydroplane</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interacting with Hydroplane</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-hydroplane-api">The Hydroplane API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-does-hpctl-know-which-server-to-talk-to">How does <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> know which server to talk to?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
@@ -67,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>How to Use Hydroplane</li>
+      <li>Interacting with Hydroplane</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/using-hydroplane.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -77,11 +80,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="how-to-use-hydroplane">
-<h1>How to Use Hydroplane<a class="headerlink" href="#how-to-use-hydroplane" title="Permalink to this heading"></a></h1>
+  <div class="section" id="interacting-with-hydroplane">
+<h1><a class="toc-backref" href="#id1">Interacting with Hydroplane</a><a class="headerlink" href="#interacting-with-hydroplane" title="Permalink to this heading"></a></h1>
 <p>To get Hydroplane running the first time, follow the <a class="reference internal" href="quickstart.html"><span class="doc">quickstart guide</span></a>.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#interacting-with-hydroplane" id="id1">Interacting with Hydroplane</a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-hydroplane-api" id="id2">The Hydroplane API</a></p></li>
+<li><p><a class="reference internal" href="#command-line-tool-hpctl" id="id3">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#how-does-hpctl-know-which-server-to-talk-to" id="id4">How does <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> know which server to talk to?</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="the-hydroplane-api">
-<h2>The Hydroplane API<a class="headerlink" href="#the-hydroplane-api" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2">The Hydroplane API</a><a class="headerlink" href="#the-hydroplane-api" title="Permalink to this heading"></a></h2>
 <p>Hydroplane exposes a REST API over HTTP.</p>
 <p>Hydroplane automatically generates detailed API documentation that it serves at</p>
 <p><code class="docutils literal notranslate"><span class="pre">http://&lt;host</span> <span class="pre">and</span> <span class="pre">port</span> <span class="pre">of</span> <span class="pre">Hydroplane</span> <span class="pre">server&gt;/docs</span></code></p>
@@ -96,12 +114,8 @@
 </ul>
 </div>
 <div class="section" id="command-line-tool-hpctl">
-<h2>Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)<a class="headerlink" href="#command-line-tool-hpctl" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a><a class="headerlink" href="#command-line-tool-hpctl" title="Permalink to this heading"></a></h2>
 <p>The REST API is useful for programmatically interacting with Hydroplane, but it can be kind of a hassle to use directly. <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> is a wrapper script that hides those calls behind a simple CLI.</p>
-<p><code class="docutils literal notranslate"><span class="pre">hpctl</span></code> looks for the address of the Hydroplane server in the <code class="docutils literal notranslate"><span class="pre">HYDROPLANE_SERVER</span></code> environment variable. If that environment variable isn’t defined, it falls back to Hydroplane’s default host and port (<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code>). You can also specify the server’s address explicitly with the <code class="docutils literal notranslate"><span class="pre">-s/--server</span></code> flag to <code class="docutils literal notranslate"><span class="pre">hpctl</span></code>, e.g.:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl -s hydroserver:4040 list
-</pre></div>
-</div>
 <p>To list the processes that are currently running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
 </pre></div>
@@ -110,7 +124,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list -g my-group
 </pre></div>
 </div>
-<p>To start a process using a process spec defined in <code class="docutils literal notranslate"><span class="pre">foo.json</span></code>:</p>
+<p>To start a process using a <a class="reference internal" href="processes.html"><span class="doc">process spec</span></a> defined in <code class="docutils literal notranslate"><span class="pre">foo.json</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl start foo.json
 </pre></div>
 </div>
@@ -121,6 +135,13 @@
 <p>To stop all processes in the group <code class="docutils literal notranslate"><span class="pre">my-group</span></code></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop -g my-group
 </pre></div>
+</div>
+<div class="section" id="how-does-hpctl-know-which-server-to-talk-to">
+<h3><a class="toc-backref" href="#id4">How does <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> know which server to talk to?</a><a class="headerlink" href="#how-does-hpctl-know-which-server-to-talk-to" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">hpctl</span></code> looks for the address of the Hydroplane server in the <code class="docutils literal notranslate"><span class="pre">HYDROPLANE_SERVER</span></code> environment variable. If that environment variable isn’t defined, it falls back to Hydroplane’s default host and port (<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code>). You can also specify the server’s address explicitly with the <code class="docutils literal notranslate"><span class="pre">-s/--server</span></code> flag to <code class="docutils literal notranslate"><span class="pre">hpctl</span></code>, e.g.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl -s hydroserver:4040 list
+</pre></div>
+</div>
 </div>
 </div>
 </div>

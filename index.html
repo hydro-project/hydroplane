@@ -40,7 +40,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">Interacting with Hydroplane</a></li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
@@ -80,9 +80,12 @@
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">Interacting with Hydroplane</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#the-hydroplane-api">The Hydroplane API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-hydroplane.html#command-line-tool-hpctl">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="using-hydroplane.html#how-does-hpctl-know-which-server-to-talk-to">How does <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> know which server to talk to?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a><ul>
@@ -92,10 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="processes.html#process-specifications">Process Specifications</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="processes.html#process-groups">Process Groups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="processes.html#public-and-private-processes">Public and Private Processes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="processes.html#listing-processes">Listing Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processes.html#public-and-private-processes">Public and Private Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="processes.html#process-culling">Process Culling</a></li>
 </ul>
 </li>
@@ -111,19 +114,15 @@
 <li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#settings">Settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#example-configuration">Example Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#step-1-create-an-eks-cluster-and-iam-user">Step 1: Create an EKS cluster and IAM user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#step-2-configure-hydroplane">Step 2: Configure Hydroplane</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#step-3-run-hydroplane">Step 3: Run Hydroplane</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html#quickstart">Quickstart</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-1-create-an-eks-cluster-and-iam-user">Step 1: Create an EKS cluster and IAM user</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-2-configure-hydroplane">Step 2: Configure Hydroplane</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#step-3-run-hydroplane">Step 3: Run Hydroplane</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="runtimes/eks.html#implementation-and-configuration-details">Implementation and Configuration Details</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#authenticating-with-aws">Authenticating with AWS</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-iam-credentials">Authenticating with IAM Credentials</a></li>
-<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-role-assumption">Authenticating with Role Assumption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#implementation-and-configuration-details">Implementation and Configuration Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-aws">Authenticating with AWS</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#a-note-on-iam-user-permissions">A Note on IAM User Permissions</a></li>
@@ -141,7 +140,18 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#chat">Chat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#web-server">Web Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#launching-the-process">Launching the Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#making-sure-it-worked">Making Sure It Worked</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#stopping-the-process">Stopping the Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#chat">Chat</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#launching-the-processes">Launching the Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#id1">Making Sure It Worked</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#stopping-the-processes">Stopping the Processes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

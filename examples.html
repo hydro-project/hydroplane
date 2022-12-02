@@ -40,13 +40,24 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">Interacting with Hydroplane</a></li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processes.html">Defining Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#chat">Chat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web-server">Web Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#launching-the-process">Launching the Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#making-sure-it-worked">Making Sure It Worked</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stopping-the-process">Stopping the Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#chat">Chat</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#launching-the-processes">Launching the Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Making Sure It Worked</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stopping-the-processes">Stopping the Processes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -76,10 +87,127 @@
            <div itemprop="articleBody">
              
   <div class="section" id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<h1><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p>
+<ul>
+<li><p><a class="reference internal" href="#web-server" id="id3">Web Server</a></p>
+<ul>
+<li><p><a class="reference internal" href="#launching-the-process" id="id4">Launching the Process</a></p></li>
+<li><p><a class="reference internal" href="#making-sure-it-worked" id="id5">Making Sure It Worked</a></p></li>
+<li><p><a class="reference internal" href="#stopping-the-process" id="id6">Stopping the Process</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#chat" id="id7">Chat</a></p>
+<ul>
+<li><p><a class="reference internal" href="#launching-the-processes" id="id8">Launching the Processes</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id9">Making Sure It Worked</a></p></li>
+<li><p><a class="reference internal" href="#stopping-the-processes" id="id10">Stopping the Processes</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="web-server">
+<h2><a class="toc-backref" href="#id3">Web Server</a><a class="headerlink" href="#web-server" title="Permalink to this heading"></a></h2>
+<p>The file <a class="reference external" href="https://github.com/hydro-project/hydroplane/blob/main/examples/nginx.json">examples/nginx.json</a> is the process spec for a public simple “hello world” <a class="reference external" href="https://www.nginx.com/">nginx</a> webserver.</p>
+<div class="section" id="launching-the-process">
+<h3><a class="toc-backref" href="#id4">Launching the Process</a><a class="headerlink" href="#launching-the-process" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># From the root of the repo</span>
+bin/hpctl start examples/nginx.json
+</pre></div>
+</div>
+</div>
+<div class="section" id="making-sure-it-worked">
+<h3><a class="toc-backref" href="#id5">Making Sure It Worked</a><a class="headerlink" href="#making-sure-it-worked" title="Permalink to this heading"></a></h3>
+<p>$s in the code block below denote commands; the rest is example output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bin/hpctl list
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">&quot;process_name&quot;</span>: <span class="s2">&quot;nginx&quot;</span>,
+    <span class="s2">&quot;group&quot;</span>: null,
+    <span class="s2">&quot;socket_addresses&quot;</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">&quot;host&quot;</span>: <span class="s2">&quot;0.0.0.0&quot;</span>,
+        <span class="s2">&quot;port&quot;</span>: <span class="m">8080</span>,
+        <span class="s2">&quot;is_public&quot;</span>: <span class="nb">true</span>
+      <span class="o">}</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;created&quot;</span>: <span class="s2">&quot;2022-12-01T20:25:36.009608+00:00&quot;</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+
+<span class="c1"># Note the host and port and concat them together</span>
+$ open http://0.0.0.0:8080
+</pre></div>
+</div>
+<p>or, if you’ve got <cite>jq</cite> on macOS and want a one-liner:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open http://<span class="k">$(</span>bin/hpctl list <span class="p">|</span> jq -r <span class="s2">&quot;(.[0].socket_addresses[0].host + \&quot;:\&quot; + (.[0].socket_addresses[0].port|tostring))&quot;</span><span class="k">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stopping-the-process">
+<h3><a class="toc-backref" href="#id6">Stopping the Process</a><a class="headerlink" href="#stopping-the-process" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop nginx
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="chat">
-<h2>Chat<a class="headerlink" href="#chat" title="Permalink to this heading"></a></h2>
-<p>An example that deploys a chat server and multiple chat clients can be found <a class="reference external" href="https://github.com/hydro-project/hydroplane/tree/main/examples/chat">in the hydroplane repo</a>.</p>
+<h2><a class="toc-backref" href="#id7">Chat</a><a class="headerlink" href="#chat" title="Permalink to this heading"></a></h2>
+<p>The JSON files in <a class="reference external" href="https://github.com/hydro-project/hydroplane/tree/main/examples/chat">examples/chat</a> are the process specs for three processes: a chat server and two chat clients. Details of how the client and server work can be found in the <a class="reference external" href="https://github.com/hydro-project/hydroflow/tree/main/hydroflow/examples/chat">hydroflow repo</a>.</p>
+<div class="section" id="launching-the-processes">
+<h3><a class="toc-backref" href="#id8">Launching the Processes</a><a class="headerlink" href="#launching-the-processes" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch the server (from the root of this repo)</span>
+bin/hpctl start examples/chat/chat-server.json
+
+<span class="c1"># Give the server some time to warm up</span>
+sleep <span class="m">5</span>
+
+<span class="c1"># Start the clients</span>
+bin/hpctl start examples/chat/chat-client-alice.json
+bin/hpctl start examples/chat/chat-client-bob.json
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id9">Making Sure It Worked</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>In the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that processes exist</span>
+docker ps
+
+<span class="c1"># Check the server&#39;s logs. It should report that it&#39;s ready.</span>
+docker logs chat-server
+
+<span class="c1"># Check the clients&#39; logs. You should see both alice and bob sending random messages to each other.</span>
+docker logs chat-client-alice
+docker logs chat-client-bob
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that pods for each process exist</span>
+kubectl get pods
+
+<span class="c1"># Check the server&#39;s logs. It should report that it&#39;s ready.</span>
+kubectl logs pod/chat-server
+
+<span class="c1"># Check the clients&#39; logs. You should see both alice and bob sending random messages to each other.</span>
+kubectl logs pod/chat-client-alice
+kubectl logs pod/chat-client-bob
+</pre></div>
+</div>
+</div>
+<div class="section" id="stopping-the-processes">
+<h3><a class="toc-backref" href="#id10">Stopping the Processes</a><a class="headerlink" href="#stopping-the-processes" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop -g chat-clients
+bin/hpctl stop chat-server
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

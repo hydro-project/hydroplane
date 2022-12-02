@@ -41,15 +41,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">How to Use Hydroplane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-hydroplane.html">Interacting with Hydroplane</a></li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Defining Processes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#process-specifications">Process Specifications</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#process-groups">Process Groups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#public-and-private-processes">Public and Private Processes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#listing-processes">Listing Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#public-and-private-processes">Public and Private Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#process-culling">Process Culling</a></li>
 </ul>
 </li>
@@ -87,7 +87,7 @@
 <p>Hydroplane is responsible for creating and destroying <strong>processes</strong>. Hydroplane defines a process as anything that runs inside a single container.</p>
 <div class="section" id="process-specifications">
 <h2>Process Specifications<a class="headerlink" href="#process-specifications" title="Permalink to this heading"></a></h2>
-<p>When launching a process, you have to provide a <strong>process specification</strong>, or <strong>process spec</strong> for short. A process spec describes the process: it gives the process a name and specifies the location of the process’s container image and how the container should be configured.</p>
+<p>When launching a process, you have to provide a <strong>process specification</strong>, or <strong>process spec</strong> for short. A process spec describes the process: it gives the process a name and specifies the location of the process’s container image and how the process’s container should be configured.</p>
 <p>Here’s an example of a simple process spec:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;process_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">,</span><span class="w"></span>
@@ -104,8 +104,8 @@
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The process that this process spec describes is named <code class="docutils literal notranslate"><span class="pre">test</span></code>, and runs the container image <a class="reference external" href="https://hub.docker.com/r/nginxdemos/hello">nginxdemos/hello</a>, which uses <code class="docutils literal notranslate"><span class="pre">nginx</span></code> to display a simple webpage.</p>
-<p>While most of the process spec is optional, it gives you the ability to change a lot of the details of how your process runs. Here’s a detailed description of the process spec:</p>
+<p>This process spec describes a process named <code class="docutils literal notranslate"><span class="pre">test</span></code> that runs the container image <a class="reference external" href="https://hub.docker.com/r/nginxdemos/hello">nginxdemos/hello</a>, which uses <code class="docutils literal notranslate"><span class="pre">nginx</span></code> to display a simple webpage.</p>
+<p>Most of the process spec is optional, but you have the ability to change a lot of the details of how your process runs by changing its process spec. Here’s a detailed description of the process spec’s format:</p>
 <span class="target" id="module-hydroplane.models.process_spec"></span><dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="hydroplane.models.process_spec.ProcessSpec">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydroplane.models.process_spec.</span></span><span class="sig-name descname"><span class="pre">ProcessSpec</span></span><a class="headerlink" href="#hydroplane.models.process_spec.ProcessSpec" title="Permalink to this definition"></a></dt>
@@ -334,15 +334,15 @@ the runtime.</p>
 <h3>Process Groups<a class="headerlink" href="#process-groups" title="Permalink to this heading"></a></h3>
 <p>A process can optionally be made part of a process <strong>group</strong> when it’s created by setting the <code class="docutils literal notranslate"><span class="pre">group</span></code> field of the process spec. Hydroplane knows how to list the processes that are part of a group, as well as how to destroy a group of processes all at once.</p>
 </div>
-<div class="section" id="public-and-private-processes">
-<h3>Public and Private Processes<a class="headerlink" href="#public-and-private-processes" title="Permalink to this heading"></a></h3>
-<p>By default, processes are private. This means that processes can communicate with one another (and, for some runtimes, other services running in that runtime), but cannot communicate with the outside world.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">has_public_ip</span></code> field of the process spec controls whether a process is public or private. If it’s set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the service will be publicly routable, and its public IP address will be provided instead of its private one(s) when it’s listed.</p>
-</div>
 </div>
 <div class="section" id="listing-processes">
 <h2>Listing Processes<a class="headerlink" href="#listing-processes" title="Permalink to this heading"></a></h2>
-<p>The Hydroplane server itself is stateless, but the server can interrogate its runtime to list processes. The way that the runtime is interrogated varies, but usually Hydroplane annotates the resources it manages with tags, and uses those tags to find those processes later.</p>
+<p>The Hydroplane server itself is stateless, but it can interrogate its runtime to list running processes. The way that the runtime is interrogated varies, but usually Hydroplane annotates the resources it manages with tags and uses those tags to distinguish processes it manages from other resources in the runtime.</p>
+</div>
+<div class="section" id="public-and-private-processes">
+<h2>Public and Private Processes<a class="headerlink" href="#public-and-private-processes" title="Permalink to this heading"></a></h2>
+<p>By default, processes are private, meaning that they can communicate with one another (and often other services running in that runtime) but cannot communicate with the outside world.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">has_public_ip</span></code> field of the process spec controls whether a process is public or private. If the field is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the service will be publicly routable, and its public IP address will be provided instead of its private one(s) when it’s listed.</p>
 </div>
 <div class="section" id="process-culling">
 <span id="process-culler"></span><h2>Process Culling<a class="headerlink" href="#process-culling" title="Permalink to this heading"></a></h2>
