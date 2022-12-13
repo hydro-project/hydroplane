@@ -7,6 +7,8 @@ This quickstart guide will get you from zero to a running Hydroplane server as q
 
     # Download and install Docker Desktop
     open "https://www.docker.com/products/docker-desktop/"
+    
+    # Launch the Docker Desktop app on your machine
 
     # Clone the hydroplane repo and enter it
     git clone git@github.com:hydro-project/hydroplane.git
@@ -32,7 +34,7 @@ This quickstart guide will get you from zero to a running Hydroplane server as q
     bin/hpctl list
 
     # Let's start a simple example process
-    bin/hpctl start examples/nginx.yml
+    bin/hpctl start examples/nginx.json
 
     # Load localhost:8080 in a browser; you should see an nginx "hello world" page
     open "http://localhost:8080/"

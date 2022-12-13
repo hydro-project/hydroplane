@@ -80,6 +80,8 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and install Docker Desktop</span>
 open <span class="s2">&quot;https://www.docker.com/products/docker-desktop/&quot;</span>
 
+<span class="c1"># Launch the Docker Desktop app on your machine</span>
+
 <span class="c1"># Clone the hydroplane repo and enter it</span>
 git clone git@github.com:hydro-project/hydroplane.git
 <span class="nb">cd</span> hydroplane
@@ -104,7 +106,7 @@ bin/hydroplane
 bin/hpctl list
 
 <span class="c1"># Let&#39;s start a simple example process</span>
-bin/hpctl start examples/nginx.yml
+bin/hpctl start examples/nginx.json
 
 <span class="c1"># Load localhost:8080 in a browser; you should see an nginx &quot;hello world&quot; page</span>
 open <span class="s2">&quot;http://localhost:8080/&quot;</span>
