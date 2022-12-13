@@ -110,6 +110,12 @@ bin/hpctl start examples/nginx.json
 
 <span class="c1"># Load localhost:8080 in a browser; you should see an nginx &quot;hello world&quot; page</span>
 open <span class="s2">&quot;http://localhost:8080/&quot;</span>
+
+<span class="c1"># stop the nginx example when you&#39;re finished with it</span>
+bin/hpctl stop nginx
+
+<span class="c1"># make sure nothing is left running</span>
+bin/hpctl list
 </pre></div>
 </div>
 </div>

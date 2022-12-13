@@ -38,3 +38,9 @@ This quickstart guide will get you from zero to a running Hydroplane server as q
 
     # Load localhost:8080 in a browser; you should see an nginx "hello world" page
     open "http://localhost:8080/"
+
+    # stop the nginx example when you're finished with it
+    bin/hpctl stop nginx
+    
+    # make sure nothing is left running
+    bin/hpctl list
