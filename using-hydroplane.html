@@ -70,8 +70,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Interacting with Hydroplane</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Interacting with Hydroplane</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/using-hydroplane.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,29 +118,29 @@
 <h2><a class="toc-backref" href="#id3">Command Line Tool (<code class="docutils literal notranslate"><span class="pre">hpctl</span></code>)</a><a class="headerlink" href="#command-line-tool-hpctl" title="Permalink to this heading"></a></h2>
 <p>The REST API is useful for programmatically interacting with Hydroplane, but it can be kind of a hassle to use directly. <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> is a wrapper script that hides those calls behind a simple CLI.</p>
 <p>To list the processes that are currently running:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>list
 </pre></div>
 </div>
 <p>To list only those processes in the group <code class="docutils literal notranslate"><span class="pre">my-group</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list -g my-group
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>list<span class="w"> </span>-g<span class="w"> </span>my-group
 </pre></div>
 </div>
 <p>To start a process using a <a class="reference internal" href="processes.html"><span class="doc">process spec</span></a> defined in <code class="docutils literal notranslate"><span class="pre">foo.json</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl start foo.json
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>start<span class="w"> </span>foo.json
 </pre></div>
 </div>
 <p>To stop a process named <code class="docutils literal notranslate"><span class="pre">foo</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop foo
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>stop<span class="w"> </span>foo
 </pre></div>
 </div>
 <p>To stop all processes in the group <code class="docutils literal notranslate"><span class="pre">my-group</span></code></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop -g my-group
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>stop<span class="w"> </span>-g<span class="w"> </span>my-group
 </pre></div>
 </div>
 <div class="section" id="how-does-hpctl-know-which-server-to-talk-to">
 <h3><a class="toc-backref" href="#id4">How does <code class="docutils literal notranslate"><span class="pre">hpctl</span></code> know which server to talk to?</a><a class="headerlink" href="#how-does-hpctl-know-which-server-to-talk-to" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">hpctl</span></code> looks for the address of the Hydroplane server in the <code class="docutils literal notranslate"><span class="pre">HYDROPLANE_SERVER</span></code> environment variable. If that environment variable isn’t defined, it falls back to Hydroplane’s default host and port (<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code>). You can also specify the server’s address explicitly with the <code class="docutils literal notranslate"><span class="pre">-s/--server</span></code> flag to <code class="docutils literal notranslate"><span class="pre">hpctl</span></code>, e.g.:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl -s hydroserver:4040 list
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>-s<span class="w"> </span>hydroserver:4040<span class="w"> </span>list
 </pre></div>
 </div>
 </div>

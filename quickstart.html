@@ -63,8 +63,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Quickstart Guide</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Quickstart Guide</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -78,24 +78,24 @@
 <h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permalink to this heading"></a></h1>
 <p>This quickstart guide will get you from zero to a running Hydroplane server as quickly as possible. This guide has been tested on macOS 12 (Monterey), but should work with minimal modification on recent versions of macOS and Linux.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and install Docker Desktop</span>
-open <span class="s2">&quot;https://www.docker.com/products/docker-desktop/&quot;</span>
+open<span class="w"> </span><span class="s2">&quot;https://www.docker.com/products/docker-desktop/&quot;</span>
 
 <span class="c1"># Launch the Docker Desktop app on your machine</span>
 
 <span class="c1"># Clone the hydroplane repo and enter it</span>
-git clone git@github.com:hydro-project/hydroplane.git
-<span class="nb">cd</span> hydroplane
+git<span class="w"> </span>clone<span class="w"> </span>git@github.com:hydro-project/hydroplane.git
+<span class="nb">cd</span><span class="w"> </span>hydroplane
 
 <span class="c1"># Make sure you&#39;re running Python 3.10 or later</span>
-python3 --version
+python3<span class="w"> </span>--version
 
 <span class="c1"># Install poetry if you haven&#39;t already</span>
 <span class="c1"># (see https://python-poetry.org/docs/ for more info)</span>
-curl -sSL https://install.python-poetry.org <span class="p">|</span> python3 -
+curl<span class="w"> </span>-sSL<span class="w"> </span>https://install.python-poetry.org<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-
 
 <span class="c1"># Use poetry to initialize Hydroplane&#39;s virtualenv and install its dependencies</span>
-poetry shell
-poetry install
+poetry<span class="w"> </span>shell
+poetry<span class="w"> </span>install
 
 <span class="c1"># Start the Hydroplane server</span>
 <span class="c1"># (uses the checked-in `basic-config.yml` config file by default)</span>
@@ -103,19 +103,19 @@ bin/hydroplane
 
 <span class="c1"># In a separate terminal, from the root of the hydroplane repo, list processes.</span>
 <span class="c1"># This should print &#39;[]&#39;, since no processes are running at first.</span>
-bin/hpctl list
+bin/hpctl<span class="w"> </span>list
 
 <span class="c1"># Let&#39;s start a simple example process</span>
-bin/hpctl start examples/nginx.json
+bin/hpctl<span class="w"> </span>start<span class="w"> </span>examples/nginx.json
 
 <span class="c1"># Load localhost:8080 in a browser; you should see an nginx &quot;hello world&quot; page</span>
-open <span class="s2">&quot;http://localhost:8080/&quot;</span>
+open<span class="w"> </span><span class="s2">&quot;http://localhost:8080/&quot;</span>
 
 <span class="c1"># stop the nginx example when you&#39;re finished with it</span>
-bin/hpctl stop nginx
+bin/hpctl<span class="w"> </span>stop<span class="w"> </span>nginx
 
 <span class="c1"># make sure nothing is left running</span>
-bin/hpctl list
+bin/hpctl<span class="w"> </span>list
 </pre></div>
 </div>
 </div>

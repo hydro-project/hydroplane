@@ -77,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../secret_stores.html">Secret Stores</a> &raquo;</li>
-      <li><code class="docutils literal notranslate"><span class="pre">local</span></code> Secret Store</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../secret_stores.html">Secret Stores</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">local</span></code> Secret Store</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/secret_stores/local.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -148,9 +148,9 @@ and experimentation.</p>
 <div class="section" id="example-configuration-snippet">
 <h3><a class="toc-backref" href="#id3">Example Configuration Snippet</a><a class="headerlink" href="#example-configuration-snippet" title="Permalink to this heading"></a></h3>
 <p>Here’s an example configuration snippet for the <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span><span class="w"></span>
-<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">secret_store</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span>
 </pre></div>
 </div>
 </div>
@@ -158,7 +158,7 @@ and experimentation.</p>
 <div class="section" id="initializing-a-local-secret-store">
 <h2><a class="toc-backref" href="#id4">Initializing a Local Secret Store</a><a class="headerlink" href="#initializing-a-local-secret-store" title="Permalink to this heading"></a></h2>
 <p>To initialize your local secret store:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store init
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>init
 </pre></div>
 </div>
 <p>You’ll be prompted to enter a password for the secret store. By default, it will be initialized in <code class="docutils literal notranslate"><span class="pre">~/.hydro_secrets</span></code> but you can change its location by adding the <code class="docutils literal notranslate"><span class="pre">--store-location</span></code> flag to the above command.</p>
@@ -166,21 +166,21 @@ and experimentation.</p>
 <div class="section" id="adding-a-simple-secret-to-the-secret-store">
 <h2><a class="toc-backref" href="#id5">Adding a Simple Secret to the Secret Store</a><a class="headerlink" href="#adding-a-simple-secret-to-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>To add a secret to the secret store:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store add &lt;secret name&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>add<span class="w"> </span>&lt;secret<span class="w"> </span>name&gt;
 </pre></div>
 </div>
 <p>You’ll be prompted to enter the password for the secret store, and then prompted to enter the contents of the secret itself.</p>
 <p>Here’s an example of what that might look like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bin/local-secret-store add my-secret
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>bin/local-secret-store<span class="w"> </span>add<span class="w"> </span>my-secret
 
-Enter the password <span class="k">for</span> the secret store: ***********
-Enter the contents of the secret: hello world
-INFO:root:Adding secret my-secret
+Enter<span class="w"> </span>the<span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>secret<span class="w"> </span>store:<span class="w"> </span>***********
+Enter<span class="w"> </span>the<span class="w"> </span>contents<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>secret:<span class="w"> </span>hello<span class="w"> </span>world
+INFO:root:Adding<span class="w"> </span>secret<span class="w"> </span>my-secret
 
-$ bin/local-secret-store get my-secret
+$<span class="w"> </span>bin/local-secret-store<span class="w"> </span>get<span class="w"> </span>my-secret
 
-Enter the password <span class="k">for</span> the secret store: ***********
-hello world
+Enter<span class="w"> </span>the<span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>secret<span class="w"> </span>store:<span class="w"> </span>***********
+hello<span class="w"> </span>world
 </pre></div>
 </div>
 </div>
@@ -188,36 +188,36 @@ hello world
 <h2><a class="toc-backref" href="#id6">Adding Longer or More Complex Secrets to the Secret Store</a><a class="headerlink" href="#adding-longer-or-more-complex-secrets-to-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>Entering a secret from a prompt is useful for secrets like passwords and authentication tokens that aren’t very long or complicated. Some secrets are longer or more complex, like a certificate or a private key, and don’t lend themselves well to being typed or pasted in at a prompt.</p>
 <p>To add the contents of a file as a secret:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store add -f &lt;input filename&gt; &lt;secret name&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>&lt;input<span class="w"> </span>filename&gt;<span class="w"> </span>&lt;secret<span class="w"> </span>name&gt;
 </pre></div>
 </div>
 <p>You’ll be prompted to enter the password for the secret store, and the provided input file’s contents will be stored in the secret.</p>
 <p>Here’s an example of what that might look like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$  <span class="nb">echo</span> <span class="s2">&quot;this is a secret token&quot;</span> &gt; token.txt
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;this is a secret token&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>token.txt
 
-$ bin/local-secret-store add -f token.txt my-secret-token
+$<span class="w"> </span>bin/local-secret-store<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>token.txt<span class="w"> </span>my-secret-token
 
-Enter the password <span class="k">for</span> the secret store: ***********
-INFO:root:Adding secret my-secret-token
+Enter<span class="w"> </span>the<span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>secret<span class="w"> </span>store:<span class="w"> </span>***********
+INFO:root:Adding<span class="w"> </span>secret<span class="w"> </span>my-secret-token
 
-$ bin/local-secret-store get my-secret-token
+$<span class="w"> </span>bin/local-secret-store<span class="w"> </span>get<span class="w"> </span>my-secret-token
 
-Enter the password <span class="k">for</span> the secret store: ***********
-this is a secret token
+Enter<span class="w"> </span>the<span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>secret<span class="w"> </span>store:<span class="w"> </span>***********
+this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>secret<span class="w"> </span>token
 </pre></div>
 </div>
 </div>
 <div class="section" id="removing-a-secret-from-the-secret-store">
 <h2><a class="toc-backref" href="#id7">Removing a Secret from the Secret Store</a><a class="headerlink" href="#removing-a-secret-from-the-secret-store" title="Permalink to this heading"></a></h2>
 <p>To remove a secret from the secret store:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store remove &lt;secret name&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>remove<span class="w"> </span>&lt;secret<span class="w"> </span>name&gt;
 </pre></div>
 </div>
 <p>Here’s an example of what that might look like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ bin/local-secret-store remove my-secret-token
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>bin/local-secret-store<span class="w"> </span>remove<span class="w"> </span>my-secret-token
 
-Enter the password <span class="k">for</span> the secret store: **********
-INFO:root:Deleting secret my-secret-token
+Enter<span class="w"> </span>the<span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>secret<span class="w"> </span>store:<span class="w"> </span>**********
+INFO:root:Deleting<span class="w"> </span>secret<span class="w"> </span>my-secret-token
 </pre></div>
 </div>
 </div>

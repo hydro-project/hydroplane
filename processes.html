@@ -72,8 +72,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Defining Processes</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Defining Processes</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/processes.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -90,19 +90,19 @@
 <h2>Process Specifications<a class="headerlink" href="#process-specifications" title="Permalink to this heading"></a></h2>
 <p>When launching a process, you have to provide a <strong>process specification</strong>, or <strong>process spec</strong> for short. A process spec describes the process: it gives the process a name and specifies the location of the process’s container image and how the process’s container should be configured.</p>
 <p>Here’s an example of a simple process spec:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;process_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;container&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;image_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginxdemos/hello&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;ports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;container_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;host_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9090</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;protocol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;process_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;container&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;image_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginxdemos/hello&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;container_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;host_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9090</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;protocol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>This process spec describes a process named <code class="docutils literal notranslate"><span class="pre">test</span></code> that runs the container image <a class="reference external" href="https://hub.docker.com/r/nginxdemos/hello">nginxdemos/hello</a>, which uses <code class="docutils literal notranslate"><span class="pre">nginx</span></code> to display a simple webpage.</p>
@@ -349,19 +349,19 @@ the runtime.</p>
 <span id="process-culler"></span><h2>Process Culling<a class="headerlink" href="#process-culling" title="Permalink to this heading"></a></h2>
 <p>If you’re running experiments in the cloud, running processes cost money, so you want to make sure you don’t leave processes sitting around accidentally. Hydroplane has a <strong>process culler</strong> that automatically stops any processes that are older than a certain age (specified in minutes).</p>
 <p>The process culler’s settings are described below. Here’s an example configuration file showing process culler configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
-<span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">secret_store</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
 
-<span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span><span class="w"></span>
+<span class="nt">runtime</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
 
-<span class="nt">process_culling</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># Cull all processes older than two hours</span><span class="w"></span>
-<span class="w">  </span><span class="nt">max_age_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+<span class="nt">process_culling</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Cull all processes older than two hours</span>
+<span class="w">  </span><span class="nt">max_age_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
 
-<span class="w">  </span><span class="c1"># Cull processes every 5 minutes</span><span class="w"></span>
-<span class="w">  </span><span class="nt">culling_interval_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Cull processes every 5 minutes</span>
+<span class="w">  </span><span class="nt">culling_interval_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </pre></div>
 </div>
 <dl class="py class pydantic_model">

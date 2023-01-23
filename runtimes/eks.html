@@ -84,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../runtimes.html">Runtimes</a> &raquo;</li>
-      <li><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../runtimes.html">Runtimes</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/runtimes/eks.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -170,23 +170,23 @@
 <div class="section" id="example-configuration">
 <h2><a class="toc-backref" href="#id4">Example Configuration</a><a class="headerlink" href="#example-configuration" title="Permalink to this heading"></a></h2>
 <p>Here’s an example of a configuration file that uses the <code class="docutils literal notranslate"><span class="pre">eks</span></code> runtime and the <code class="docutils literal notranslate"><span class="pre">local</span></code> secret store. This configuration sets up Hydroplane to talk to an EKS cluster named <code class="docutils literal notranslate"><span class="pre">my-cool-cluster</span></code> in the <code class="docutils literal notranslate"><span class="pre">us-west-2</span></code> AWS region:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
-<span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span><span class="w"></span>
-<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">secret_store</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span>
 
-<span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
-<span class="w">  </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cool-cluster</span><span class="w"></span>
-<span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
-<span class="w">  </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span><span class="w"></span>
-<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
-<span class="w">      </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span><span class="w"></span>
-<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
+<span class="nt">runtime</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span>
+<span class="w">  </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cool-cluster</span>
+<span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span>
+<span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">access_key</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">access_key_id</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span>
+<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span>
+<span class="w">      </span><span class="nt">secret_access_key</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span>
+<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span>
 </pre></div>
 </div>
 </div>
@@ -204,84 +204,84 @@
 <div class="section" id="step-2-configure-hydroplane">
 <h3><a class="toc-backref" href="#id7">Step 2: Configure Hydroplane</a><a class="headerlink" href="#step-2-configure-hydroplane" title="Permalink to this heading"></a></h3>
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">eks.yml</span></code> with the following contents:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
-<span class="nt">secret_store</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span><span class="w"></span>
-<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">secret_store</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">store_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.hydro_secrets</span>
 
-<span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
-<span class="w">  </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hydro-eks</span><span class="w"></span>
-<span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
-<span class="w">  </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span><span class="w"></span>
-<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
-<span class="w">      </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span><span class="w"></span>
-<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
+<span class="nt">runtime</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span>
+<span class="w">  </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hydro-eks</span>
+<span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span>
+<span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">access_key</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">access_key_id</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span>
+<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span>
+<span class="w">      </span><span class="nt">secret_access_key</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-credentials</span>
+<span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span>
 </pre></div>
 </div>
 <p>If you haven’t already, initialize your local secret store:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store init
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>init
 </pre></div>
 </div>
 <p>Make a note of the password you used when configuring the store; you’ll need it when Hydroplane starts.</p>
 <p>Now, create a file called <code class="docutils literal notranslate"><span class="pre">creds.json</span></code> that looks like this:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;put your user&#39;s access key ID here&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;put your user&#39;s secret access key here&gt;&quot;</span><span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;put your user&#39;s access key ID here&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;put your user&#39;s secret access key here&gt;&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Add that file to the secret store:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store add -f creds.json aws-credentials
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/local-secret-store<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>creds.json<span class="w"> </span>aws-credentials
 </pre></div>
 </div>
 <p>and delete the plaintext original afterwards:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm creds.json
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>creds.json
 </pre></div>
 </div>
 </div>
 <div class="section" id="step-3-run-hydroplane">
 <h3><a class="toc-backref" href="#id8">Step 3: Run Hydroplane</a><a class="headerlink" href="#step-3-run-hydroplane" title="Permalink to this heading"></a></h3>
 <p>Now you’ve (finally) got an EKS cluster and the ability to authenticate to it! Let’s launch Hydroplane:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hydroplane -c eks.yml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hydroplane<span class="w"> </span>-c<span class="w"> </span>eks.yml
 </pre></div>
 </div>
 <p>You’ll be prompted for the password to your local secret store. Once you enter it, the server should bind and start accepting requests.</p>
 <p>In a separate terminal, from the root of the <code class="docutils literal notranslate"><span class="pre">hydroplane</span></code> repo, let’s make sure we can list processes:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl list
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>list
 </pre></div>
 </div>
 <p>You should get back an empty list, because we haven’t launched any processes yet.</p>
 <p>Let’s try a simple example to make sure we can start something and access it remotely:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl start examples/nginx.json
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>start<span class="w"> </span>examples/nginx.json
 </pre></div>
 </div>
 <p>If you list processes with <code class="docutils literal notranslate"><span class="pre">bin/hpctl</span> <span class="pre">list</span></code> now, you should see something like this:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;process_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginx&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;group&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;socket_addresses&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;34.217.208.197&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">31491</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;is_public&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2022-12-01T22:40:33+00:00&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">]</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;process_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginx&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;group&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;socket_addresses&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;34.217.208.197&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">31491</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;is_public&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2022-12-01T22:40:33+00:00&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>Note that the process is exposing a single public port. In this example, it’s <code class="docutils literal notranslate"><span class="pre">34.217.208.197:31491</span></code>, but your host and port will be different.</p>
 <p>If you have <code class="docutils literal notranslate"><span class="pre">jq</span></code> installed, are on macOS, and want to open that server with a one-liner:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open http://<span class="k">$(</span>bin/hpctl list <span class="p">|</span> jq -r <span class="s2">&quot;(.[0].socket_addresses[0].host + \&quot;:\&quot; + (.[0].socket_addresses[0].port|tostring))&quot;</span><span class="k">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open<span class="w"> </span>http://<span class="k">$(</span>bin/hpctl<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;(.[0].socket_addresses[0].host + \&quot;:\&quot; + (.[0].socket_addresses[0].port|tostring))&quot;</span><span class="k">)</span>
 </pre></div>
 </div>
 <p>Otherwise, you can copy-paste the host and port into a browser window. Either way, you should see an <a class="reference external" href="https://www.nginx.com/">nginx</a> “hello world” page.</p>
 <p>Now that we’ve verified that everything is working, let’s stop the process:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl stop nginx
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>stop<span class="w"> </span>nginx
 </pre></div>
 </div>
 </div>
@@ -300,22 +300,22 @@
 <div class="section" id="authenticating-with-iam-credentials">
 <span id="eks-secret-example"></span><h4><a class="toc-backref" href="#id12">Authenticating with IAM Credentials</a><a class="headerlink" href="#authenticating-with-iam-credentials" title="Permalink to this heading"></a></h4>
 <p>Here’s an example configuration that uses a secret stored in Hydroplane’s secret store to authenticate with EKS. This config uses a secret named <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> that’s stored in the secret store as a JSON object like so:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXXXX&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXX&quot;</span><span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXXXX&quot;</span><span class="p">,</span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="s2">&quot;XXXXXXX&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>These related credentials are referenced individually using the <code class="docutils literal notranslate"><span class="pre">key</span></code> field.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span><span class="w"></span>
-<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
-<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
-<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
-<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span>
+<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span>
+<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span>
+<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span>
 </pre></div>
 </div>
 </div>
@@ -323,20 +323,20 @@
 <h4><a class="toc-backref" href="#id13">Authenticating with Role Assumption</a><a class="headerlink" href="#authenticating-with-role-assumption" title="Permalink to this heading"></a></h4>
 <p>While nothing stops you from authenticating directly with an access key and secret, it’s generally considered a best practice to authenticate using <a class="reference external" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli">temporary IAM credentials</a>. These credentials are associated with a given IAM role, and expire after a certain period of time. Hydroplane will attempt to automatically renew these temporary credentials periodically.</p>
 <p>Here’s an example of using the <code class="docutils literal notranslate"><span class="pre">aws-creds</span></code> secret from above to authenticate and then assume the role <code class="docutils literal notranslate"><span class="pre">EKSAdmin</span></code>. Most of this configuration will look familiar if you’ve looked at the configuration in the last section, but we’ve added an <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> block to define the role assumption.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span><span class="w"></span>
-<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span><span class="w"></span>
-<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
-<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span><span class="w"></span>
-<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span><span class="w"></span>
-<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span><span class="w"></span>
-<span class="w">      </span><span class="w w-Error"> </span><span class="nt">assume_role</span><span class="p">:</span><span class="w"></span>
-<span class="w">         </span><span class="nt">role_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:iam::123456789012:role/EKSAdmin&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eks</span>
+<span class="w">    </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span>
+<span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">access_key</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">access_key_id</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AccessKeyId</span>
+<span class="w">        </span><span class="nt">secret_access_key</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-creds</span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SecretAccessKey</span>
+<span class="w">      </span><span class="w w-Error"> </span><span class="nt">assume_role</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">role_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:iam::123456789012:role/EKSAdmin&quot;</span>
 </pre></div>
 </div>
 </div>
