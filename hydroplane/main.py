@@ -5,8 +5,10 @@ import os
 import sys
 
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi_utils.tasks import repeat_every
 from pydantic import SecretStr
+from starlette.exceptions import HTTPException as StarletteHTTPException
 import uvicorn
 import yaml
 
@@ -19,6 +21,17 @@ from .utils.process_culler import ProcessCuller
 logger = logging.getLogger('main')
 
 app = FastAPI()
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request, exc):
+    return JSONResponse(
+        content={
+            'error': exc.status_code,
+            'details': exc.detail
+        },
+        status_code=exc.status_code
+    )
 
 
 @app.on_event('startup')

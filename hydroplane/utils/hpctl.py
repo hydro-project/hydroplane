@@ -11,9 +11,13 @@ import requests
 def handle_error(response):
     try:
         response.raise_for_status()
-    except requests.exceptions.HTTPError as e:
-        print(json.dumps(response.json(), indent=2))
-        raise e
+    except requests.exceptions.HTTPError as request_error:
+        try:
+            print(json.dumps(response.json(), indent=2))
+        except requests.exceptions.JSONDecodeError as decode_error:
+            print(response.text)
+
+        raise request_error
 
 
 def start_process(process_spec_path: str, server: str):
