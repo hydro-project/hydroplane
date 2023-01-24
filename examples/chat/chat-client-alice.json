@@ -12,7 +12,7 @@
     ],
     "command": [
       "/bin/bash", "-c",
-      "/usr/src/myapp/example_utils/chat_driver.py -w /usr/src/myapp/example_utils/web2a | /usr/src/myapp/chat --name alice --role client --port 6000 --addr chat-client-alice --server-port 12347 --server-addr chat-server"
+      "/usr/src/myapp/example_utils/chat_driver.py -w /usr/src/myapp/example_utils/web2a | /usr/src/myapp/chat --name alice --role client --addr chat-client-alice:6100 --server-addr chat-server:12347"
     ]
   },
   "has_public_ip": false

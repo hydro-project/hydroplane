@@ -13,8 +13,7 @@
       "/usr/src/myapp/chat",
       "--name", "_",
       "--role", "server",
-      "--port", "12347",
-      "--addr", "0.0.0.0"
+      "--addr", "0.0.0.0:12347"
     ]
   },
   "has_public_ip": false
