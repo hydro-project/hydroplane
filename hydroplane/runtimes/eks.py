@@ -6,7 +6,6 @@ import tempfile
 from typing import List, Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
-from fastapi import HTTPException
 import kubernetes
 from pydantic import BaseModel, Field
 
@@ -19,9 +18,7 @@ from ..utils.aws import boto3_session_from_creds
 from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
                          HYDROPLANE_GROUP_LABEL,
                          discover_k8s_api_version,
-                         k8s_api_exception_to_http_exception, k8s_start_process, k8s_stop_group, k8s_stop_process,
-                         process_spec_to_pod_manifest,
-                         process_spec_to_service_manifest,
+                         k8s_start_process, k8s_stop_group, k8s_stop_process,
                          k8s_list_processes)
 
 RUNTIME_TYPE = 'eks'
