@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import logging
 from pathlib import Path
 import tempfile
-from typing import Dict, List, Literal, Optional
+from typing import List, Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
 from fastapi import HTTPException
@@ -11,7 +11,7 @@ import kubernetes
 from pydantic import BaseModel, Field
 
 from ..models.aws import AWSCredentials
-from ..models.process_info import ProcessInfo, SocketAddress
+from ..models.process_info import ProcessInfo
 from ..models.process_spec import ProcessSpec
 from .runtime import Runtime
 from ..secret_stores.secret_store import SecretStore
@@ -19,9 +19,10 @@ from ..utils.aws import boto3_session_from_creds
 from ..utils.k8s import (HYDROPLANE_PROCESS_LABEL,
                          HYDROPLANE_GROUP_LABEL,
                          discover_k8s_api_version,
-                         k8s_api_exception_to_http_exception,
+                         k8s_api_exception_to_http_exception, k8s_start_process, k8s_stop_group, k8s_stop_process,
                          process_spec_to_pod_manifest,
-                         process_spec_to_service_manifest)
+                         process_spec_to_service_manifest,
+                         k8s_list_processes)
 
 RUNTIME_TYPE = 'eks'
 
@@ -182,190 +183,38 @@ class EKSRuntime(Runtime):
 
     def start_process(self, process_spec: ProcessSpec):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
-
-        pod_manifest = process_spec_to_pod_manifest(process_spec)
-
-        try:
-            k8s_client.create_namespaced_pod(
-                body=pod_manifest,
-                namespace=self.settings.namespace
-            )
-        except kubernetes.client.exceptions.ApiException as e:
-            if e.status == 409 and e.reason == 'Conflict':
-                raise HTTPException(
-                    status_code=409,
-                    detail=f'A pod named "{process_spec.process_name}" already exists'
-                )
-            else:
-                raise k8s_api_exception_to_http_exception(e)
-
-        service_manifest = process_spec_to_service_manifest(process_spec)
-
-        try:
-            k8s_client.create_namespaced_service(
-                body=service_manifest,
-                namespace=self.settings.namespace
-            )
-        except kubernetes.client.exceptions.ApiException as e:
-            if e.status == 409 and e.reason == 'Conflict':
-                raise HTTPException(
-                    status_code=409,
-                    detail=f'A service named "{process_spec.process_name}" already exists'
-                )
-            else:
-                raise k8s_api_exception_to_http_exception(e)
+        k8s_start_process(
+            k8s_client,
+            namespace=self.settings.namespace,
+            process_spec=process_spec
+        )
 
     def stop_process(self, process_name: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
-        try:
-            k8s_client.delete_namespaced_pod(
-                name=process_name,
-                namespace=self.settings.namespace
-            )
-        except kubernetes.client.exceptions.ApiException as e:
-            if e.status == 404:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Process '{process_name}' not found"
-                )
-            else:
-                raise k8s_api_exception_to_http_exception(e)
-
-        service_list = k8s_client.list_namespaced_service(
-            label_selector=f'{HYDROPLANE_PROCESS_LABEL}={process_name}',
-            namespace=self.settings.namespace
+        k8s_stop_process(
+            k8s_client,
+            namespace=self.settings.namespace,
+            process_name=process_name
         )
-
-        for service in service_list.items:
-            k8s_client.delete_namespaced_service(
-                name=service.metadata.name,
-                namespace=self.settings.namespace
-            )
 
     def stop_group(self, group: str):
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
-        pods = k8s_client.list_namespaced_pod(
-            label_selector=f'{HYDROPLANE_GROUP_LABEL}={group}',
-            namespace=self.settings.namespace
+        k8s_stop_group(
+            k8s_client,
+            namespace=self.settings.namespace,
+            group=group
         )
-
-        services = k8s_client.list_namespaced_service(
-            label_selector=f'{HYDROPLANE_GROUP_LABEL}={group}',
-            namespace=self.settings.namespace
-        )
-
-        for pod in pods.items:
-            k8s_client.delete_namespaced_pod(
-                name=pod.metadata.name,
-                namespace=self.settings.namespace
-            )
-
-        for service in services.items:
-            k8s_client.delete_namespaced_service(
-                name=service.metadata.name,
-                namespace=self.settings.namespace
-            )
 
     def list_processes(self, group: Optional[str]) -> List[ProcessInfo]:
         k8s_client = self._get_k8s_client(self.settings.cluster_name)
 
-        # Pods will tell us the internal IP addresses of the nodes they're running on, but
-        # not what the external IP addresses of those nodes are (or if they have them at all). We
-        # need this information to tell the caller which node to talk to, so we'll list the
-        # cluster's nodes and establish a map from internal to external IPs from that.
-        nodes = k8s_client.list_node()
-
-        node_private_to_public_ip: Dict[str, Optional[str]] = {}
-
-        for node in nodes.items:
-            external_ip = None
-            internal_ip = None
-            hostname = None
-
-            for address in node.status.addresses:
-                if address.type == 'ExternalIP':
-                    external_ip = address.address
-                elif address.type == 'InternalIP':
-                    internal_ip = address.address
-                elif address.type == 'Hostname':
-                    hostname = address.address
-
-            if internal_ip is None:
-                raise RuntimeError(f'Unable to determine internal IP for node {hostname}')
-
-            node_private_to_public_ip[internal_ip] = external_ip
-
-        if group is not None:
-            label_selector = f"{HYDROPLANE_GROUP_LABEL}={group}"
-        else:
-            label_selector = HYDROPLANE_PROCESS_LABEL
-
-        services = k8s_client.list_namespaced_service(
-            label_selector=label_selector,
-            namespace=self.settings.namespace
+        return k8s_list_processes(
+            k8s_client,
+            namespace=self.settings.namespace,
+            group=group
         )
-
-        pods = k8s_client.list_namespaced_pod(
-            label_selector=label_selector,
-            namespace=self.settings.namespace
-        )
-
-        pods_by_name = {pod.metadata.labels[HYDROPLANE_PROCESS_LABEL]: pod for pod in pods.items}
-
-        process_infos = []
-
-        for service in services.items:
-            process_name = service.metadata.labels[HYDROPLANE_PROCESS_LABEL]
-            process_group = service.metadata.labels.get(HYDROPLANE_GROUP_LABEL)
-
-            pod = pods_by_name[process_name]
-
-            service_type = service.spec.type
-
-            socket_addresses = []
-
-            for port_spec in service.spec.ports:
-                # For public services, node_port will be specified and will be the same on each
-                # port. For private services, it will be None and port will be specified instead.
-                port = port_spec.node_port or port_spec.port
-
-                pod_private_ip = pod.status.host_ip
-
-                if service_type == 'NodePort':
-                    # We're exposing a NodePort service, so this process is public
-                    socket_ip = node_private_to_public_ip[pod_private_ip]
-
-                    if socket_ip is None:
-                        raise RuntimeError(
-                            f"We expected the public process {process_name} to be running on a "
-                            "node with an external IP address, but the node it's running on "
-                            f"({pod_private_ip}) doesn't have one."
-                        )
-
-                    is_public = True
-                else:
-                    # We're exposing a ClusterIP service, so this process is private
-                    socket_ip = service.spec.cluster_ip
-                    is_public = False
-
-                socket_addresses.append(
-                    SocketAddress(
-                        host=socket_ip,
-                        port=port,
-                        is_public=is_public
-                    )
-                )
-
-            process_infos.append(ProcessInfo(
-                process_name=process_name,
-                group=process_group,
-                socket_addresses=socket_addresses,
-                created=service.metadata.creation_timestamp
-            ))
-
-        return process_infos
 
     def refresh_api_clients(self):
         self._get_k8s_client(self.settings.cluster_name)
