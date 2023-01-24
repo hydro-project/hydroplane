@@ -6,6 +6,8 @@ import tempfile
 from typing import List, Literal, Optional
 
 from awscli.customizations.eks.get_token import TokenGenerator
+from kubernetes.config.kube_config import Configuration as KubeConfiguration
+from kubernetes.client import ApiClient
 import kubernetes
 from pydantic import BaseModel, Field
 
@@ -31,7 +33,7 @@ logger = logging.getLogger('eks_runtime')
 
 
 class Settings(BaseModel):
-    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
+    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE  # type: ignore
 
     credentials: AWSCredentials = Field(
         description='the credentials that will be used to authenticate with EKS'
@@ -42,7 +44,7 @@ class Settings(BaseModel):
     region: str = Field(
         description='the AWS region where the cluster is running (e.g. us-west-2)'
     )
-    namespace: Optional[str] = Field(
+    namespace: str = Field(
         'default',
         description='the Kubernetes namespace that Hydroplane will create pods and services within'
     )
@@ -56,7 +58,7 @@ class EKSRuntime(Runtime):
         self._boto3_session = None
 
         self._k8s_client = None
-        self._k8s_client_expiration_time: datetime = None
+        self._k8s_client_expiration_time: Optional[datetime] = None
 
         # We need to store certs on the filesystem for the k8s client to be able to read them.
         self.cert_storage_dir = Path(tempfile.mkdtemp())
@@ -64,6 +66,9 @@ class EKSRuntime(Runtime):
     def _k8s_client_expired(self) -> bool:
         # We'll give ourselves a one minute grace period before the token expires so we don't run
         # into problems if we process a request _right_ before it expires.
+
+        if self._k8s_client_expiration_time is None:
+            return True
 
         return self._k8s_client_expiration_time <= datetime.now() + timedelta(minutes=1)
 
@@ -85,7 +90,7 @@ class EKSRuntime(Runtime):
 
         return self._k8s_client
 
-    def _create_new_k8s_client(self, cluster_name: str):
+    def _create_new_k8s_client(self, cluster_name: str) -> ApiClient:
         """Configure and return an Kubernetes client that can be used to modify the EKS cluster.
 
         Programmatically configuring a k8s client without access to a local kube_config is a bit
@@ -111,17 +116,17 @@ class EKSRuntime(Runtime):
         bearer_token = self._generate_bearer_token(cluster_name)
 
         # Now that we've got all those pieces, we can build the client's configuration ...
-        kube_config = kubernetes.config.kube_config.Configuration(
+        kube_config = KubeConfiguration(
             host=endpoint,
             api_key={'authorization': f"Bearer {bearer_token['status']['token']}"}
         )
 
-        kube_config.ssl_ca_cert = ca_cert_file
+        kube_config.ssl_ca_cert = ca_cert_file  # type: ignore
 
         # ... and use that configuration to create an API client. Whew!
-        kube_client = kubernetes.client.ApiClient(configuration=kube_config)
+        kube_client = ApiClient(configuration=kube_config)
 
-        return kubernetes.client.CoreV1Api(api_client=kube_client)
+        return kube_client
 
     def _get_ca_cert_file(self, cluster_data: dict) -> Path:
         cert_file_path = self.cert_storage_dir / f"{cluster_data['name']}.cert"

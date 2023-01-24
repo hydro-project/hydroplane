@@ -1,5 +1,4 @@
 import base64
-import datetime
 import logging
 from pathlib import Path
 import tempfile
@@ -9,6 +8,8 @@ import google.auth
 import google.auth.transport.requests
 from google.cloud import container_v1beta1
 import kubernetes
+from kubernetes.client import ApiClient
+from kubernetes.config.kube_config import Configuration as KubeConfiguration
 from pydantic import BaseModel, Field
 
 
@@ -22,7 +23,7 @@ RUNTIME_TYPE = 'gke'
 
 
 class Settings(BaseModel):
-    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
+    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE  # type: ignore
 
     cluster_id: str = Field(description='the cluster ID of the GKE cluster')
     namespace: str = Field('default', description='the Kubernetes namespace that Hydroplane will create pods and services within')
@@ -43,7 +44,7 @@ class GKERuntime(Runtime):
 
         self._gcp_creds = None
         self._gke_client = None
-        self._k8s_client = None
+        self._k8s_client: Optional[ApiClient] = None
 
         self.cert_storage_dir = Path(tempfile.mkdtemp())
 
@@ -55,9 +56,9 @@ class GKERuntime(Runtime):
         return self._gke_client
 
     @property
-    def k8s_client(self):
+    def k8s_client(self) -> ApiClient:
         if self._k8s_client is None or self.gcp_creds.expired:
-            self._refresh_k8s_client()
+            self._k8s_client = self._new_k8s_client()
 
         return self._k8s_client
 
@@ -85,7 +86,7 @@ class GKERuntime(Runtime):
         auth_req = google.auth.transport.requests.Request()
         self.gcp_creds.refresh(auth_req)
 
-    def _refresh_k8s_client(self):
+    def _new_k8s_client(self) -> ApiClient:
         # Make sure we've got valid credentials before using their token for authorization
         if self.gcp_creds.expired:
             self._refresh_gcp_creds()
@@ -107,18 +108,19 @@ class GKERuntime(Runtime):
 
         # Now we'll actually start configuring the k8s clien, using the authorization token in our GCP credentials as
         # the bearer token for interactions with the cluster.
-        kube_config = kubernetes.config.kube_config.Configuration(
+        kube_config = KubeConfiguration(
             host=f"https://{cluster_info.endpoint}:443",
             api_key={
                 'authorization': f'Bearer {self.gcp_creds.token}'
             }
         )
 
-        kube_config.ssl_ca_cert=cert_file_path
+        kube_config.ssl_ca_cert=cert_file_path  # type: ignore
 
         # Finally, mercifully, create the client.
-        api_client = kubernetes.client.ApiClient(configuration=kube_config)
-        self._k8s_client = kubernetes.client.CoreV1Api(api_client=api_client)
+        api_client = ApiClient(configuration=kube_config)
+
+        return api_client
 
     def start_process(self, process_spec: ProcessSpec):
         k8s_start_process(
@@ -155,4 +157,4 @@ class GKERuntime(Runtime):
         if self.gcp_creds.expired:
             logger.debug('GCP credentials expired. Renewing credentials and refreshing k8s client')
             self._refresh_gcp_creds()
-            self._refresh_k8s_client()
+            self._k8s_client = self._new_k8s_client()

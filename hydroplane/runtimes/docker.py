@@ -7,7 +7,7 @@ import docker
 from fastapi import HTTPException
 from pydantic import BaseModel
 
-from ..models.process_info import ProcessInfo, SocketAddress
+from ..models.process_info import ProcessInfo, ProcessStatus, SocketAddress
 from ..models.process_spec import ProcessSpec
 from ..models.secret import HydroplaneSecret
 from ..secret_stores.secret_store import SecretStore
@@ -165,7 +165,8 @@ class DockerRuntime(Runtime):
                     process_name=container.name,
                     group=container.labels.get(HYDROPLANE_GROUP_LABEL),
                     socket_addresses=socket_addresses,
-                    created=isoparse(container.attrs['Created'])
+                    created=isoparse(container.attrs['Created']),
+                    status=ProcessStatus.RUNNING
                 )
             )
 

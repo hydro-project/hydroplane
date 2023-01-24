@@ -24,7 +24,7 @@ class PortMapping(BaseModel):
         description='the port that the host will expose. Some runtimes may not honor this setting.'
     )
 
-    protocol: Optional[PortProtocol] = Field(
+    protocol: PortProtocol = Field(
         default=PortProtocol.TCP,
         description='the protocol spoken by the bound port'
     )

@@ -4,7 +4,11 @@ from hydroplane.models.container_spec import (ContainerSpec, EnvironmentVariable
                                               PortProtocol, ResourceSpec)
 from hydroplane.models.process_spec import ProcessSpec
 from hydroplane.models.secret import ProcessSecret
-from hydroplane.utils.k8s import process_spec_to_pod_manifest, resource_spec_to_manifest
+from hydroplane.utils.k8s import process_spec_to_deployment_manifest, resource_spec_to_manifest
+
+
+def _get_container_spec(manifest: dict) -> dict:
+    return manifest['spec']['template']['spec']['containers'][0]
 
 
 def test_process_spec_to_pod_manifest_basic():
@@ -15,11 +19,11 @@ def test_process_spec_to_pod_manifest_basic():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
     assert manifest == {
-        'apiVersion': 'v1',
-        'kind': 'Pod',
+        'apiVersion': 'apps/v1',
+        'kind': 'Deployment',
         'metadata': {
             'name': 'basic',
             'labels': {
@@ -27,17 +31,33 @@ def test_process_spec_to_pod_manifest_basic():
             }
         },
         'spec': {
-            'containers': [
-                {
-                    'image': 'foo/bar',
-                    'name': 'basic',
-                    'env': [],
-                    'ports': []
+            'replicas': 1,
+            'selector': {
+                'matchLabels': {
+                    'hydroplane/process-id': 'basic'
                 }
-            ],
-            'restartPolicy': 'Never'
+            },
+            'template': {
+                'metadata': {
+                    'labels': {
+                        'hydroplane/process-id': 'basic'
+                    }
+                },
+                'spec': {
+                    'containers': [
+                        {
+                            'image': 'foo/bar',
+                            'name': 'basic',
+                            'env': [],
+                            'ports': []
+                        }
+                    ],
+                    'restartPolicy': 'Always'
+                }
+            }
         }
     }
+
 
 
 def test_process_spec_to_pod_manifest_env_vars():
@@ -67,9 +87,9 @@ def test_process_spec_to_pod_manifest_env_vars():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
-    assert manifest['spec']['containers'][0]['env'] == [
+    assert _get_container_spec(manifest)['env'] == [
         {
             'name': 'SOME_PROPERTY',
             'value': 'here is a cleartext property'
@@ -116,9 +136,9 @@ def test_process_spec_to_pod_manifest_ports():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
-    assert manifest['spec']['containers'][0]['ports'] == [
+    assert _get_container_spec(manifest)['ports'] == [
         {
             'containerPort': 7080,
             'protocol': 'TCP'
@@ -146,9 +166,9 @@ def test_process_spec_to_pod_manifest_resource_limits():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
-    assert manifest['spec']['containers'][0]['resources'] == {
+    assert _get_container_spec(manifest)['resources'] == {
         'requests': {
             'cpu': '1.5'
         }
@@ -168,9 +188,9 @@ def test_process_spec_to_pod_manifest_resource_limits():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
-    assert manifest['spec']['containers'][0]['resources'] == {
+    assert _get_container_spec(manifest)['resources'] == {
         'requests': {
             'cpu': '1.5'
         },
@@ -191,9 +211,9 @@ def test_process_spec_to_pod_manifest_resource_limits():
         )
     )
 
-    manifest = process_spec_to_pod_manifest(spec)
+    manifest = process_spec_to_deployment_manifest(spec)
 
-    assert manifest['spec']['containers'][0]['resources'] == {
+    assert _get_container_spec(manifest)['resources'] == {
         'limits': {
             'cpu': '3.0',
             'memory': '256Mi'
