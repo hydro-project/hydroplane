@@ -145,7 +145,8 @@ If you list processes with ``bin/hpctl list`` now, you should see something like
             "is_public": true
           }
         ],
-        "created": "2022-12-01T22:40:33+00:00"
+        "created": "2022-12-01T22:40:33+00:00",
+        "status": "RUNNING"
       }
     ]
 
@@ -169,15 +170,7 @@ Now that we've verified that everything is working, let's stop the process:
 Implementation and Configuration Details
 ----------------------------------------
 
-How the ``eks`` Runtime Creates Processes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Each process is run in EKS as a single pod and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. Private services only need to be routable and discoverable within the cluster, so their associated services are ``ClusterIP`` services. Public services need to be routable from outside the cluster, so we have to handle them separately.
-
-In a typical Kubernetes service where you have one service backing an auto-scaling collection of pods, you'd put a ``LoadBalancer`` service in front of the pods that round-robins traffic between them. In our case, we're expecting something higher-level than us to do things like load balancing, so we want each process to be named and exposed individually. If we were to create a ``LoadBalancer`` service per process, we'd also be creating a separate **load balancer** per process, and load balancers in AWS are really expensive. Instead, we create a ``NodePort`` service for each process that routes only to that process's pod. A ``NodePort`` service exposes a high-numbered port on every node in the cluster, and all traffic to that port on any cluster node is transparently routed to the pod by Kubernetes' overlay network.
-
-Using ``NodePort`` services does what we want without paying for additional resources, but it also makes it look from the client's perspective like the process is running on every node in the cluster at once, which is inconsistent from the abstraction presented by other runtimes. To maintain the illusion that the process is only accessible from one node, we do some introspection to determine the cluster node that the pod is actually running on and only list that node's IP address when providing information about the process in response to list calls.
-
+For details on how the ``eks`` runtime creates processes, see :doc:`/architecture/k8s`.
 
 Authenticating with AWS
 ^^^^^^^^^^^^^^^^^^^^^^^

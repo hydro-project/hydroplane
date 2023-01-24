@@ -1,7 +1,12 @@
 from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, Field, IPvAnyAddress, conint
+
+class ProcessStatus(str, Enum):
+    STARTING = 'STARTING',
+    RUNNING = 'RUNNING'
 
 
 class SocketAddress(BaseModel):
@@ -23,3 +28,5 @@ class ProcessInfo(BaseModel):
     )
 
     created: datetime = Field(description='the date and time when the process was launched')
+
+    status: ProcessStatus = Field(description="the status of the process - is the process running, or has the process started but is not running yet?")

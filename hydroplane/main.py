@@ -23,6 +23,16 @@ logger = logging.getLogger('main')
 app = FastAPI()
 
 
+@app.exception_handler(Exception)
+async def handle_general_exception(request, exc):
+    return JSONResponse(
+        content={
+            'error': 500,
+            'details': str(exc)
+        },
+        status_code=500
+    )
+
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
     return JSONResponse(
