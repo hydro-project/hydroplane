@@ -20,6 +20,7 @@ Example Configuration
 Here's an example of a configuration file that uses the ``docker`` runtime. Since the ``docker`` runtime doesn't need a secret store, this configuration uses the :doc:`"none" secret store</secret_stores/none>`.
 
 .. code-block:: yaml
+
     ---
     secret_store:
       secret_store_type: none
