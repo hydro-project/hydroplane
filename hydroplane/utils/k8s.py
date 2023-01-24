@@ -296,6 +296,22 @@ def k8s_stop_group(k8s_client: ApiClient, namespace: str, group: str):
             namespace=namespace
         )
 
+def _is_pod_running(pod) -> bool:
+    if pod is None:
+        return False
+
+    if pod.status.phase != 'Running':
+        return False
+
+    if pod.status.container_statuses is None or len(pod.status.container_statuses) == 0:
+        return False
+
+    container_status = pod.status.container_statuses[0]
+
+    if not container_status.started or not container_status.ready or container_status.state.running is None:
+        return False
+
+    return True
 
 def k8s_list_processes(k8s_client: ApiClient, namespace: str, group: Optional[str]) -> List[ProcessInfo]:
     # Pods will tell us the internal IP addresses of the nodes they're running on, but
@@ -354,7 +370,7 @@ def k8s_list_processes(k8s_client: ApiClient, namespace: str, group: Optional[st
 
         socket_addresses = []
 
-        if pod is None:
+        if not _is_pod_running(pod):
             # It's possible that the service is online, but the pod itself hasn't started yet;
             # this is usually because the pod couldn't be scheduled, and there's likely some
             # kind of scale-up happening to accommodate the pod.
