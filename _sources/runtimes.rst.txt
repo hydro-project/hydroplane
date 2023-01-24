@@ -9,3 +9,4 @@ Hydroplane doesn't run containers by itself. Instead, it communicates with a pre
 
    runtimes/docker
    runtimes/eks
+   runtimes/gke

@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secret_stores.html">Secret Stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architectural Details</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Example Process Specs</a></li>
 </ul>
 
@@ -122,12 +123,28 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#implementation-and-configuration-details">Implementation and Configuration Details</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#how-the-eks-runtime-creates-processes">How the <code class="docutils literal notranslate"><span class="pre">eks</span></code> Runtime Creates Processes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="runtimes/eks.html#authenticating-with-aws">Authenticating with AWS</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#a-note-on-iam-user-permissions">A Note on IAM User Permissions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtimes/eks.html#module-hydroplane.models.aws">AWS Authentication Configuration Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="runtimes/gke.html"><code class="docutils literal notranslate"><span class="pre">gke</span></code> - Google Kubernetes Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/gke.html#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/gke.html#example-configuration">Example Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/gke.html#quickstart">Quickstart</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#step-0-set-up-your-environment">Step 0: Set Up Your Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#step-1-create-a-vpc-if-needed">Step 1: Create a VPC If Needed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#step-2-create-a-gke-cluster">Step 2: Create a GKE Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#step-3-configure-hydroplane">Step 3: Configure Hydroplane</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#step-4-run-hydroplane">Step 4: Run Hydroplane</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="runtimes/gke.html#implementation-and-configuration-details">Implementation and Configuration Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="runtimes/gke.html#authenticating-with-gcp">Authenticating with GCP</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -157,6 +174,14 @@
 <li class="toctree-l4"><a class="reference internal" href="secret_stores/none.html#example-configuration-snippet">Example Configuration Snippet</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architectural Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture/k8s.html">How Hydroplane Interacts with Kubernetes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture/k8s.html#public-and-private-processes-use-different-services">Public and Private Processes Use Different Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture/k8s.html#process-status">Process Status</a></li>
 </ul>
 </li>
 </ul>

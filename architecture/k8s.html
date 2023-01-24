@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Hydroplane Interacts with Kubernetes &mdash; Hydroplane  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example Process Specs" href="../examples.html" />
+    <link rel="prev" title="Architectural Details" href="../architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Hydroplane
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using-hydroplane.html">Interacting with Hydroplane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processes.html">Defining Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimes.html">Runtimes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secrets.html">Defining Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret_stores.html">Secret Stores</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../architecture.html">Architectural Details</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How Hydroplane Interacts with Kubernetes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#public-and-private-processes-use-different-services">Public and Private Processes Use Different Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#process-status">Process Status</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Example Process Specs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Hydroplane</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../architecture.html">Architectural Details</a></li>
+      <li class="breadcrumb-item active">How Hydroplane Interacts with Kubernetes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/architecture/k8s.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="how-hydroplane-interacts-with-kubernetes">
+<h1>How Hydroplane Interacts with Kubernetes<a class="headerlink" href="#how-hydroplane-interacts-with-kubernetes" title="Permalink to this heading"></a></h1>
+<p>At this point, Hydroplane has a couple backends that are managed offerings of Kubernetes (<a class="reference internal" href="../runtimes/eks.html"><span class="doc">EKS</span></a> and <a class="reference internal" href="../runtimes/gke.html"><span class="doc">GKE</span></a>, at time of writing). This document provides some more details on the way that Hydroplane reifies processes into Kubernetes’ various primitives.</p>
+<p>Each Hydroplane process is run in Kubernetes as a single-pod deployment and an associated service. The service is there to give Kubernetes something to expose to the Internet when a process has a public IP address, and to give processes an easy way to name one another without relying on any kind of third-party service discovery mechanism. The deployment is there to ensure that something is keeping a process’s pod scheduled even if the pod is preempted or evicted. The pod contains the actual container that the process is running.</p>
+<p>If you want to familiarize yourself with Kubernetes’ services, pods and deployments, I’d recommend this <a class="reference external" href="https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html">article by Matthew Palmer</a>.</p>
+<div class="section" id="public-and-private-processes-use-different-services">
+<h2>Public and Private Processes Use Different Services<a class="headerlink" href="#public-and-private-processes-use-different-services" title="Permalink to this heading"></a></h2>
+<p>Private services only need to be routable and discoverable within the cluster, so their associated services are <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> services. Public services need to be routable from outside the cluster, so we have to handle them separately.</p>
+<p>In a typical Kubernetes service where you have one service backing an auto-scaling collection of pods, you’d put a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service in front of the pods that load-balances traffic between them. In our case, we’re expecting something higher-level than Hydroplane to do things like load balancing, so we want each process to be named and exposed individually. If we were to create a <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code> service per process, we’d also be creating a separate <strong>load balancer</strong> per process, and load balancers in public clouds (particularly in AWS) are really expensive.</p>
+<p>To avoid the cost overhead of having a load balancer per process, we create a <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service for each process that routes only to that process’s pod. A <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> service exposes a high-numbered port on every node in the cluster, and all traffic to that port on any cluster node is transparently routed to the pod by Kubernetes’ overlay network.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> services does what we want without additional cloud resources, but it also makes it look from the client’s perspective as though the process is running on every node in the cluster at once. This is inconsistent with the abstraction that Hydroplane’s list operation presents. To maintain the illusion that the process is only accessible from one node, we do some introspection to determine the cluster node that the pod is actually running on, and treat that cluster node’s IP address as the process’ IP address when listing running processes.</p>
+</div>
+<div class="section" id="process-status">
+<h2>Process Status<a class="headerlink" href="#process-status" title="Permalink to this heading"></a></h2>
+<p>Kubernetes can create <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> and <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> services very quickly, but sometimes it may take a while for a deployment’s pod to start after Hydroplane successfully submits the deployment’s spec. Usually, delays in pod creation are caused by resource pressure: if Kubernetes doesn’t have enough remaining resources to accommodate the pod, it may have to scale up to acquire those resources.</p>
+<p>When listing processes, Hydroplane provides an associated <strong>status</strong> for each process. If a process’s status is <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>, this means that all the process’s resources are ready and the process should be able to accept connections. If the status is <code class="docutils literal notranslate"><span class="pre">STARTING</span></code>, some of those resources are ready and others are not.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../architecture.html" class="btn btn-neutral float-left" title="Architectural Details" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples.html" class="btn btn-neutral float-right" title="Example Process Specs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Hydro Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

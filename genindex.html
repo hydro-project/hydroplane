@@ -45,6 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="runtimes.html">Runtimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secret_stores.html">Secret Stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architectural Details</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Example Process Specs</a></li>
 </ul>
 
@@ -109,6 +110,8 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="runtimes/gke.html#hydroplane.runtimes.gke.Settings.cluster_id">cluster_id (hydroplane.runtimes.gke.Settings attribute)</a>
+</li>
       <li><a href="runtimes/eks.html#hydroplane.runtimes.eks.Settings.cluster_name">cluster_name (hydroplane.runtimes.eks.Settings attribute)</a>
 </li>
       <li><a href="processes.html#hydroplane.models.container_spec.ContainerSpec.command">command (hydroplane.models.container_spec.ContainerSpec attribute)</a>
@@ -242,7 +245,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="runtimes/eks.html#hydroplane.runtimes.eks.Settings.namespace">namespace (hydroplane.runtimes.eks.Settings attribute)</a>
+
+      <ul>
+        <li><a href="runtimes/gke.html#hydroplane.runtimes.gke.Settings.namespace">(hydroplane.runtimes.gke.Settings attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -263,6 +270,8 @@
 </li>
       <li><a href="processes.html#hydroplane.models.process_spec.ProcessSpec.process_name">process_name (hydroplane.models.process_spec.ProcessSpec attribute)</a>
 </li>
+      <li><a href="runtimes/gke.html#hydroplane.runtimes.gke.Settings.project">project (hydroplane.runtimes.gke.Settings attribute)</a>
+</li>
       <li><a href="processes.html#hydroplane.models.container_spec.PortMapping.protocol">protocol (hydroplane.models.container_spec.PortMapping attribute)</a>
 </li>
   </ul></td>
@@ -272,7 +281,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="runtimes/eks.html#hydroplane.runtimes.eks.Settings.region">region (hydroplane.runtimes.eks.Settings attribute)</a>
+
+      <ul>
+        <li><a href="runtimes/gke.html#hydroplane.runtimes.gke.Settings.region">(hydroplane.runtimes.gke.Settings attribute)</a>
 </li>
+      </ul></li>
       <li><a href="processes.html#hydroplane.models.container_spec.ContainerSpec.requests_cannot_exceed_limits">requests_cannot_exceed_limits() (hydroplane.models.container_spec.ContainerSpec class method)</a>
 </li>
       <li><a href="processes.html#hydroplane.models.container_spec.ContainerSpec.resource_limit">resource_limit (hydroplane.models.container_spec.ContainerSpec attribute)</a>
@@ -287,6 +300,8 @@
 
       <ul>
         <li><a href="runtimes/eks.html#hydroplane.runtimes.eks.Settings.runtime_type">(hydroplane.runtimes.eks.Settings attribute)</a>
+</li>
+        <li><a href="runtimes/gke.html#hydroplane.runtimes.gke.Settings.runtime_type">(hydroplane.runtimes.gke.Settings attribute)</a>
 </li>
       </ul></li>
   </ul></td>

@@ -54,10 +54,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="eks.html"><code class="docutils literal notranslate"><span class="pre">eks</span></code> - Amazon EKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gke.html"><code class="docutils literal notranslate"><span class="pre">gke</span></code> - Google Kubernetes Engine</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../secrets.html">Defining Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../secret_stores.html">Secret Stores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architectural Details</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Example Process Specs</a></li>
 </ul>
 
@@ -107,6 +109,14 @@
 <div class="section" id="example-configuration">
 <h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Permalink to this heading"></a></h3>
 <p>Here’s an example of a configuration file that uses the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime. Since the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime doesn’t need a secret store, this configuration uses the <a class="reference internal" href="../secret_stores/none.html"><span class="doc">“none” secret store</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">secret_store</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret_store_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
+
+<span class="nt">runtime</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runtime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="quickstart">
