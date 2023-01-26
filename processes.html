@@ -202,6 +202,12 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="hydroplane.models.container_spec.ContainerSpec.node_selector">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">node_selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hydroplane.models.container_spec.ContainerSpec.node_selector" title="Permalink to this definition"></a></dt>
+<dd><p>a collection of label name/label value pairs. if this collection is specified and the runtime supports it, this process will only be scheduled onto a node that has these labels</p>
+</dd></dl>
+
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="hydroplane.models.container_spec.ContainerSpec.requests_cannot_exceed_limits">
 <em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">requests_cannot_exceed_limits</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#hydroplane.models.container_spec.ContainerSpec.resource_limit" title="hydroplane.models.container_spec.ContainerSpec.resource_limit"><em class="xref py py-obj"><span class="pre">resource_limit</span></em></a><a class="headerlink" href="#hydroplane.models.container_spec.ContainerSpec.requests_cannot_exceed_limits" title="Permalink to this definition"></a></dt>
