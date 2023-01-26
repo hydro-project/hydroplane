@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#stopping-the-process">Stopping the Process</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#webserver-advanced">Webserver (Advanced)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#chat">Chat</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#launching-the-processes">Launching the Processes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Making Sure It Worked</a></li>
@@ -102,11 +103,12 @@
 <li><p><a class="reference internal" href="#stopping-the-process" id="id6">Stopping the Process</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#chat" id="id7">Chat</a></p>
+<li><p><a class="reference internal" href="#webserver-advanced" id="id7">Webserver (Advanced)</a></p></li>
+<li><p><a class="reference internal" href="#chat" id="id8">Chat</a></p>
 <ul>
-<li><p><a class="reference internal" href="#launching-the-processes" id="id8">Launching the Processes</a></p></li>
-<li><p><a class="reference internal" href="#id1" id="id9">Making Sure It Worked</a></p></li>
-<li><p><a class="reference internal" href="#stopping-the-processes" id="id10">Stopping the Processes</a></p></li>
+<li><p><a class="reference internal" href="#launching-the-processes" id="id9">Launching the Processes</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id10">Making Sure It Worked</a></p></li>
+<li><p><a class="reference internal" href="#stopping-the-processes" id="id11">Stopping the Processes</a></p></li>
 </ul>
 </li>
 </ul>
@@ -147,7 +149,7 @@ bin/hpctl<span class="w"> </span>start<span class="w"> </span>examples/nginx.jso
 $<span class="w"> </span>open<span class="w"> </span>http://0.0.0.0:8080
 </pre></div>
 </div>
-<p>or, if you’ve got <cite>jq</cite> on macOS and want a one-liner:</p>
+<p>or, if you’ve got <code class="docutils literal notranslate"><span class="pre">jq</span></code> on macOS and want a one-liner:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open<span class="w"> </span>http://<span class="k">$(</span>bin/hpctl<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;(.[0].socket_addresses[0].host + \&quot;:\&quot; + (.[0].socket_addresses[0].port|tostring))&quot;</span><span class="k">)</span>
 </pre></div>
 </div>
@@ -159,11 +161,19 @@ $<span class="w"> </span>open<span class="w"> </span>http://0.0.0.0:8080
 </div>
 </div>
 </div>
+<div class="section" id="webserver-advanced">
+<h2><a class="toc-backref" href="#id7">Webserver (Advanced)</a><a class="headerlink" href="#webserver-advanced" title="Permalink to this heading"></a></h2>
+<p>The file <a class="reference external" href="https://github.com/hydro-project/hydroplane/blob/main/examples/nginx-advanced.json">examples/nginx-advanced.json</a> is just like the Webserver example above, but with two additions:</p>
+<ul class="simple">
+<li><p>The process defines resource limits on both CPU and memory</p></li>
+<li><p>The process uses node selectors to limit itself to run on a node with the label <code class="docutils literal notranslate"><span class="pre">kubernetes.io/hostname=gke-hydroplane-test-clus-default-pool-ffab0dea-gmz0</span></code></p></li>
+</ul>
+</div>
 <div class="section" id="chat">
-<h2><a class="toc-backref" href="#id7">Chat</a><a class="headerlink" href="#chat" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8">Chat</a><a class="headerlink" href="#chat" title="Permalink to this heading"></a></h2>
 <p>The JSON files in <a class="reference external" href="https://github.com/hydro-project/hydroplane/tree/main/examples/chat">examples/chat</a> are the process specs for three processes: a chat server and two chat clients. Details of how the client and server work can be found in the <a class="reference external" href="https://github.com/hydro-project/hydroflow/tree/main/hydroflow/examples/chat">hydroflow repo</a>.</p>
 <div class="section" id="launching-the-processes">
-<h3><a class="toc-backref" href="#id8">Launching the Processes</a><a class="headerlink" href="#launching-the-processes" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9">Launching the Processes</a><a class="headerlink" href="#launching-the-processes" title="Permalink to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch the server (from the root of this repo)</span>
 bin/hpctl<span class="w"> </span>start<span class="w"> </span>examples/chat/chat-server.json
 
@@ -177,7 +187,7 @@ bin/hpctl<span class="w"> </span>start<span class="w"> </span>examples/chat/chat
 </div>
 </div>
 <div class="section" id="id1">
-<h3><a class="toc-backref" href="#id9">Making Sure It Worked</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10">Making Sure It Worked</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <p>The chat server and clients don’t have any public interfaces, so we’ll to look at their logs to make sure they’re working.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">docker</span></code> runtime:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check that processes exist; should see a server container and two client containers</span>
@@ -205,7 +215,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>pod/chat-client-bob
 </div>
 </div>
 <div class="section" id="stopping-the-processes">
-<h3><a class="toc-backref" href="#id10">Stopping the Processes</a><a class="headerlink" href="#stopping-the-processes" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id11">Stopping the Processes</a><a class="headerlink" href="#stopping-the-processes" title="Permalink to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/hpctl<span class="w"> </span>stop<span class="w"> </span>-g<span class="w"> </span>chat-clients
 bin/hpctl<span class="w"> </span>stop<span class="w"> </span>chat-server
 </pre></div>

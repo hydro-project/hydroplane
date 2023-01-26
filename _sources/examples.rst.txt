@@ -44,7 +44,7 @@ $s in the code block below denote commands; the rest is example output.
     # Note the host and port and concat them together
     $ open http://0.0.0.0:8080
 
-or, if you've got `jq` on macOS and want a one-liner:
+or, if you've got ``jq`` on macOS and want a one-liner:
 
 .. code-block:: bash
 
@@ -57,6 +57,14 @@ Stopping the Process
 .. code-block:: bash
 
     bin/hpctl stop nginx
+
+Webserver (Advanced)
+--------------------
+
+The file `examples/nginx-advanced.json <https://github.com/hydro-project/hydroplane/blob/main/examples/nginx-advanced.json>`_ is just like the Webserver example above, but with two additions:
+
+* The process defines resource limits on both CPU and memory
+* The process uses node selectors to limit itself to run on a node with the label ``kubernetes.io/hostname=gke-hydroplane-test-clus-default-pool-ffab0dea-gmz0``
 
 Chat
 ----

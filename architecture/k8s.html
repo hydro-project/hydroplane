@@ -51,6 +51,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How Hydroplane Interacts with Kubernetes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#public-and-private-processes-use-different-services">Public and Private Processes Use Different Services</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#process-status">Process Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-selectors">Node Selectors</a></li>
 </ul>
 </li>
 </ul>
@@ -99,6 +100,11 @@
 <h2>Process Status<a class="headerlink" href="#process-status" title="Permalink to this heading"></a></h2>
 <p>Kubernetes can create <code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code> and <code class="docutils literal notranslate"><span class="pre">NodePort</span></code> services very quickly, but sometimes it may take a while for a deployment’s pod to start after Hydroplane successfully submits the deployment’s spec. Usually, delays in pod creation are caused by resource pressure: if Kubernetes doesn’t have enough remaining resources to accommodate the pod, it may have to scale up to acquire those resources.</p>
 <p>When listing processes, Hydroplane provides an associated <strong>status</strong> for each process. If a process’s status is <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>, this means that all the process’s resources are ready and the process should be able to accept connections. If the status is <code class="docutils literal notranslate"><span class="pre">STARTING</span></code>, some of those resources are ready and others are not.</p>
+</div>
+<div class="section" id="node-selectors">
+<h2>Node Selectors<a class="headerlink" href="#node-selectors" title="Permalink to this heading"></a></h2>
+<p>A process spec can contain <strong>node selectors</strong>, which are translated by Hydroplane directly into Kubernetes node selectors. Node selectors constrain which node(s) the process is allowed to run on. Each node selector is a label name/label value pair, and only those nodes that have a label whose name and value both match the selector will be available for the node to execute upon.</p>
+<p>This can be a great way to force a process to run on a specific node, or on a node with a specific kind of resource. For instance, <a class="reference external" href="https://github.com/hydro-project/hydroplane/blob/main/examples/nginx-advanced.json">examples/nginx-advanced.json</a> uses the <code class="docutils literal notranslate"><span class="pre">kubernetes.io/hostname</span></code> label to constrain its process to a particular node.</p>
 </div>
 </div>
 
