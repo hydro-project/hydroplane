@@ -24,3 +24,10 @@ Process Status
 Kubernetes can create ``ClusterIP`` and ``NodePort`` services very quickly, but sometimes it may take a while for a deployment's pod to start after Hydroplane successfully submits the deployment's spec. Usually, delays in pod creation are caused by resource pressure: if Kubernetes doesn't have enough remaining resources to accommodate the pod, it may have to scale up to acquire those resources.
 
 When listing processes, Hydroplane provides an associated **status** for each process. If a process's status is ``RUNNING``, this means that all the process's resources are ready and the process should be able to accept connections. If the status is ``STARTING``, some of those resources are ready and others are not.
+
+Node Selectors
+--------------
+
+A process spec can contain **node selectors**, which are translated by Hydroplane directly into Kubernetes node selectors. Node selectors constrain which node(s) the process is allowed to run on. Each node selector is a label name/label value pair, and only those nodes that have a label whose name and value both match the selector will be available for the node to execute upon.
+
+This can be a great way to force a process to run on a specific node, or on a node with a specific kind of resource. For instance, `examples/nginx-advanced.json <https://github.com/hydro-project/hydroplane/blob/main/examples/nginx-advanced.json>`_ uses the ``kubernetes.io/hostname`` label to constrain its process to a particular node.
