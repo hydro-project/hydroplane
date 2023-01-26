@@ -25,7 +25,7 @@ logger = logging.getLogger('docker_runtime')
 
 
 class Settings(BaseModel):
-    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE
+    runtime_type: Literal[RUNTIME_TYPE] = RUNTIME_TYPE  # type: ignore
 
 
 class DockerRuntime(Runtime):

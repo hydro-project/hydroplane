@@ -1,0 +1,25 @@
+{
+    "process_name": "nginx",
+    "container": {
+      "image_uri": "nginxdemos/hello",
+      "ports": [
+        {
+          "container_port": 80,
+          "host_port": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "resource_request": {
+        "cpu_vcpu": "0.25",
+        "memory_mib": 256
+      },
+      "resource_limit": {
+        "cpu_vcpu": "0.25",
+        "memory_mib": 256
+      }
+    },
+    "has_public_ip": true,
+    "node_selector": {
+        "kubernetes.io/hostname": "gke-hydroplane-test-clus-default-pool-ffab0dea-gmz0"
+    }
+  }

@@ -243,3 +243,27 @@ def test_resource_spec_to_manifest():
     }
 
     assert resource_spec_to_manifest(ResourceSpec()) == {}
+
+def test_node_selector():
+    spec = ProcessSpec(
+        process_name='basic',
+        container=ContainerSpec(
+            image_uri='foo/bar',
+            node_selector={
+                'foo': 'bar'
+            }
+        )
+    )
+
+    manifest = process_spec_to_deployment_manifest(spec)
+
+    assert manifest['spec']['template']['spec'] ==  {
+        'containers': [{
+            'env': [],
+            'image': 'foo/bar',
+            'name': 'basic',
+            'ports': []
+        }],
+        'nodeSelector': {'foo': 'bar'},
+        'restartPolicy': 'Always'
+    }

@@ -144,6 +144,9 @@ def process_spec_to_deployment_manifest(process_spec: ProcessSpec) -> dict:
         }
     }
 
+    if container_spec.node_selector is not None:
+        deployment_manifest['spec']['template']['spec']['nodeSelector'] = container_spec.node_selector
+
     return deployment_manifest
 
 

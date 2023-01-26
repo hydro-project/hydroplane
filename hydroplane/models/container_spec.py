@@ -1,6 +1,6 @@
 from decimal import Decimal
 from enum import Enum
-from typing import Optional, List, Union
+from typing import Dict, Optional, List, Union
 
 from pydantic import BaseModel, Field, conint, condecimal, validator
 
@@ -98,10 +98,16 @@ class ContainerSpec(BaseModel):
         None,
         description='a request for physical resources that should be allocated to the container'
     )
+
     resource_limit: Optional[ResourceSpec] = Field(
         None,
         description='a limit on the amount of physical resources that the container is '
         'allowed to consume'
+    )
+
+    node_selector: Optional[Dict[str, str]] = Field(
+        None,
+        description='a collection of label name/label value pairs. if this collection is specified and the runtime supports it, this process will only be scheduled onto a node that has these labels'
     )
 
     @validator('resource_limit')
