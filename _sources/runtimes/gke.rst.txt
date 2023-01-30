@@ -93,6 +93,11 @@ GCP provides a service called `Autopilot mode <https://cloud.google.com/kubernet
 
 .. code-block:: bash
 
+    # Activate GCP's container and container registry services if they aren't already activated
+    # (which usually happens automatically when you interact with them via the console)
+    gcloud services enable container.googleapis.com
+    gcloud services enable containerregistry.googleapis.com
+
     gcloud container clusters create-auto \
         "hydroplane-test-cluster" \
         --region "us-central1" \
@@ -101,6 +106,10 @@ GCP provides a service called `Autopilot mode <https://cloud.google.com/kubernet
         --subnetwork "projects/test-project/regions/us-central1/subnetworks/hydroplane-vpc" \
         --cluster-ipv4-cidr "/17" \
         --services-ipv4-cidr "/22"
+
+    # (Optional) if you want to use kubectl with your cluster, configure it:
+    gcloud components install gke-gcloud-auth-plugin
+    gcloud container clusters get-credentials --region us-central1 hydroplane-test-cluster
 
 Step 3: Configure Hydroplane
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -226,7 +226,12 @@ gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<sp
 <div class="section" id="step-2-create-a-gke-cluster">
 <h3><a class="toc-backref" href="#id7">Step 2: Create a GKE Cluster</a><a class="headerlink" href="#step-2-create-a-gke-cluster" title="Permalink to this heading"></a></h3>
 <p>GCP provides a service called <a class="reference external" href="https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#modes">Autopilot mode</a> that manages most of the minutiae of setting up a Kubernetes cluster for you. Follow the instructions in <a class="reference external" href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-an-autopilot-cluster">this document</a> to create a cluster in Autopilot mode, or just run the following, filling in the blanks as appropriate:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>create-auto<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Activate GCP&#39;s container and container registry services if they aren&#39;t already activated</span>
+<span class="c1"># (which usually happens automatically when you interact with them via the console)</span>
+gcloud<span class="w"> </span>services<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>container.googleapis.com
+gcloud<span class="w"> </span>services<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>containerregistry.googleapis.com
+
+gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>create-auto<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="s2">&quot;hydroplane-test-cluster&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--region<span class="w"> </span><span class="s2">&quot;us-central1&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--release-channel<span class="w"> </span><span class="s2">&quot;regular&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -234,6 +239,10 @@ gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<sp
 <span class="w">    </span>--subnetwork<span class="w"> </span><span class="s2">&quot;projects/test-project/regions/us-central1/subnetworks/hydroplane-vpc&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--cluster-ipv4-cidr<span class="w"> </span><span class="s2">&quot;/17&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--services-ipv4-cidr<span class="w"> </span><span class="s2">&quot;/22&quot;</span>
+
+<span class="c1"># (Optional) if you want to use kubectl with your cluster, configure it:</span>
+gcloud<span class="w"> </span>components<span class="w"> </span>install<span class="w"> </span>gke-gcloud-auth-plugin
+gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>get-credentials<span class="w"> </span>--region<span class="w"> </span>us-central1<span class="w"> </span>hydroplane-test-cluster
 </pre></div>
 </div>
 </div>
