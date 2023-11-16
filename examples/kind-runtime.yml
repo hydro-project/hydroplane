@@ -1,0 +1,7 @@
+---
+secret_store:
+    secret_store_type: none
+
+runtime:
+    runtime_type: kind
+    node_port: 31000

@@ -150,7 +150,7 @@ def process_spec_to_deployment_manifest(process_spec: ProcessSpec) -> dict:
     return deployment_manifest
 
 
-def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
+def process_spec_to_service_manifest(process_spec: ProcessSpec, node_port: int=None) -> dict:
     # We're going to expose the pod as a NodePort service, so that it's visible externally
     # without a load balancer sitting in the middle. This is a bit unorthodox (a lot of k8s
     # assumes that you've got fungible pods fronted by a load balancer), but for our purposes
@@ -178,7 +178,18 @@ def process_spec_to_service_manifest(process_spec: ProcessSpec) -> dict:
                 HYDROPLANE_PROCESS_LABEL: process_spec.process_name
             },
             'ports': [
-                {'port': p.container_port, 'protocol': p.protocol.name}
+                # We can safely assign nodePort to node_port here. If the runtime is kind
+                # then we are guaranteed to have a nodePort assigned. If not, None will be
+                # ignored by Kubernetes.
+                #
+                # A pitfall here however is that if the process spec specifies multiple ports
+                # to be exposed in the container, we end up providing a single node port for
+                # all of them, which is not allowed by Kubernetes.
+                #
+                # TODO(MadhavJivrajani): can we change the node_port config option to a list
+                # that maps on to ports we want to expose through the process spec? Is there
+                # a cleaner way to do this?
+                {'port': p.container_port, 'protocol': p.protocol.name, 'nodePort': node_port}
                 for p in container_spec.ports
             ]
         }
@@ -206,7 +217,7 @@ def k8s_api_exception_to_http_exception(e: ApiException) -> HTTPException:
     )
 
 
-def k8s_start_process(k8s_client: ApiClient, namespace: str, process_spec: ProcessSpec):
+def k8s_start_process(k8s_client: ApiClient, namespace: str, process_spec: ProcessSpec, node_port: int=None):
     k8s_apps_client = AppsV1Api(api_client=k8s_client)
     k8s_core_client = CoreV1Api(api_client=k8s_client)
 
@@ -226,7 +237,7 @@ def k8s_start_process(k8s_client: ApiClient, namespace: str, process_spec: Proce
         else:
             raise k8s_api_exception_to_http_exception(e)
 
-    service_manifest = process_spec_to_service_manifest(process_spec)
+    service_manifest = process_spec_to_service_manifest(process_spec, node_port=node_port)
 
     try:
         k8s_core_client.create_namespaced_service(
@@ -316,7 +327,7 @@ def _is_pod_running(pod) -> bool:
 
     return True
 
-def k8s_list_processes(k8s_client: ApiClient, namespace: str, group: Optional[str]) -> List[ProcessInfo]:
+def k8s_list_processes(k8s_client: ApiClient, namespace: str, group: Optional[str], node_port: int=None) -> List[ProcessInfo]:
     # Pods will tell us the internal IP addresses of the nodes they're running on, but
     # not what the external IP addresses of those nodes are (or if they have them at all). We
     # need this information to tell the caller which node to talk to, so we'll list the
@@ -344,6 +355,12 @@ def k8s_list_processes(k8s_client: ApiClient, namespace: str, group: Optional[st
         if internal_ip is None:
             raise RuntimeError(f'Unable to determine internal IP for node {hostname}')
 
+        # node_port being None is an indicator of using the kind runtime.
+        # Since an ExternalIP does not get assigned in kind unless we setup
+        # an ingress controller, we explicitly set external_ip to 0.0.0.0
+        # if it is None and if we are using the kind runtime.
+        if external_ip is None and not node_port is None:
+            external_ip = "0.0.0.0"
         node_private_to_public_ip[internal_ip] = external_ip
 
     if group is not None:
